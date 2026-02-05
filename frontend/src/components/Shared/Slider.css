@@ -1,0 +1,114 @@
+/* Slider.css - Fixed Working Slider */
+
+.slider-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.slider-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: #e0e0e0;
+    white-space: nowrap;
+    min-width: 60px;
+}
+
+.slider-track-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    min-width: 80px;
+}
+
+/* The actual slider input */
+.slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+}
+
+/* Webkit (Chrome, Safari, Edge) */
+.slider::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    background: transparent;
+    /* Background is set via inline style */
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #00C4CC;
+    border: 3px solid #ffffff;
+    border-radius: 50%;
+    cursor: grab;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    margin-top: -6px;
+    /* Center the thumb on the track */
+    position: relative;
+    z-index: 10;
+    transition: transform 0.1s ease;
+}
+
+.slider::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+    background: #00d4dc;
+}
+
+.slider::-webkit-slider-thumb:active {
+    cursor: grabbing;
+    transform: scale(1.05);
+    background: #00b4bc;
+}
+
+/* Firefox */
+.slider::-moz-range-track {
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    background: #0f3460;
+}
+
+.slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #00C4CC;
+    border: 3px solid #ffffff;
+    border-radius: 50%;
+    cursor: grab;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.slider::-moz-range-thumb:hover {
+    background: #00d4dc;
+}
+
+.slider::-moz-range-progress {
+    height: 8px;
+    background: #00C4CC;
+    border-radius: 4px 0 0 4px;
+}
+
+/* Slider Value Display */
+.slider-value {
+    min-width: 44px;
+    padding: 6px 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #00C4CC;
+    background-color: #252545;
+    border: 2px solid #3a4a6a;
+    border-radius: 4px;
+    text-align: center;
+}

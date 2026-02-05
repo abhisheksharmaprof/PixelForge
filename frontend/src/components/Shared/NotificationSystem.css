@@ -1,0 +1,111 @@
+.notification-system {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 400px;
+}
+
+.notification {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    background: var(--bg-primary, #16213e);
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    animation: slideIn 0.3s ease;
+    border-left: 4px solid;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.notification-success {
+    border-left-color: #27AE60;
+}
+
+.notification-success .notification-icon {
+    color: #27AE60;
+}
+
+.notification-error {
+    border-left-color: #E74C3C;
+}
+
+.notification-error .notification-icon {
+    color: #E74C3C;
+}
+
+.notification-warning {
+    border-left-color: #F39C12;
+}
+
+.notification-warning .notification-icon {
+    color: #F39C12;
+}
+
+.notification-info {
+    border-left-color: #3498DB;
+}
+
+.notification-info .notification-icon {
+    color: #3498DB;
+}
+
+.notification-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.notification-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.notification-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary, #e0e0e0);
+    margin: 0 0 4px 0;
+}
+
+.notification-message {
+    font-size: 13px;
+    color: var(--text-secondary, #8892b0);
+    margin: 0;
+    line-height: 1.4;
+}
+
+.notification-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary, #8892b0);
+    cursor: pointer;
+    border-radius: 4px;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+}
+
+.notification-close:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary, #e0e0e0);
+}

@@ -1,0 +1,234 @@
+/* TextProperties.css - Right Panel Styles */
+
+.text-properties {
+    padding: 16px;
+}
+
+.text-properties.empty-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #8892b0;
+    font-size: 14px;
+}
+
+/* Property Groups */
+.property-group {
+    margin-bottom: 16px;
+}
+
+.property-group:last-child {
+    margin-bottom: 0;
+}
+
+.property-group>label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: #8892b0;
+    margin-bottom: 8px;
+}
+
+/* Text Content Textarea */
+.text-content-input {
+    width: 100%;
+    padding: 10px 12px;
+    background-color: #252545;
+    border: 2px solid #3a4a6a;
+    border-radius: 6px;
+    color: #ffffff;
+    font-size: 13px;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 80px;
+    transition: border-color 0.2s ease;
+}
+
+.text-content-input:focus {
+    outline: none;
+    border-color: #00C4CC;
+}
+
+.text-info {
+    font-size: 11px;
+    color: #6a7a9a;
+    margin-top: 6px;
+    text-align: right;
+}
+
+/* Font Size Row */
+.font-size-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.font-size-input-wrapper {
+    display: flex;
+    align-items: center;
+    background-color: #252545;
+    border: 2px solid #3a4a6a;
+    border-radius: 6px;
+    overflow: hidden;
+    transition: border-color 0.2s ease;
+}
+
+.font-size-input-wrapper:focus-within {
+    border-color: #00C4CC;
+}
+
+.font-size-input {
+    flex: 1;
+    padding: 10px 12px;
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    outline: none;
+    min-width: 0;
+}
+
+.font-size-input::-webkit-outer-spin-button,
+.font-size-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.font-size-input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.font-size-unit {
+    padding: 10px 12px;
+    background-color: #1a1a2e;
+    color: #8892b0;
+    font-size: 12px;
+    font-weight: 500;
+    border-left: 1px solid #3a4a6a;
+}
+
+/* Input with Slider Row */
+.input-with-slider {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.slider-row {
+    padding: 4px 0;
+}
+
+/* Property Select (Native) */
+.property-select {
+    width: 100%;
+    padding: 10px 32px 10px 12px;
+    background-color: #252545;
+    border: 2px solid #3a4a6a;
+    border-radius: 6px;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2300C4CC' d='M2 4l4 4 4-4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 12px;
+    transition: all 0.2s ease;
+}
+
+.property-select:hover {
+    border-color: #00C4CC;
+    background-color: #303050;
+}
+
+.property-select:focus {
+    outline: none;
+    border-color: #00C4CC;
+}
+
+.property-select option {
+    background-color: #1a1a2e;
+    color: #ffffff;
+    padding: 10px;
+}
+
+/* Alignment Buttons */
+.alignment-buttons {
+    display: flex;
+    gap: 4px;
+}
+
+.alignment-buttons button {
+    flex: 1;
+    padding: 10px 8px;
+    background-color: #252545;
+    border: 2px solid #3a4a6a;
+    border-radius: 6px;
+    color: #e0e0e0;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.alignment-buttons button:hover {
+    border-color: #00C4CC;
+    color: #00C4CC;
+}
+
+.alignment-buttons button.active {
+    background-color: rgba(0, 196, 204, 0.2);
+    border-color: #00C4CC;
+    color: #00C4CC;
+}
+
+/* Checkbox Group */
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: #e0e0e0;
+    cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #00C4CC;
+    cursor: pointer;
+}
+
+/* Properties Panel Content */
+.properties-panel-content {
+    overflow-y: auto;
+    max-height: calc(100vh - 200px);
+}
+
+.properties-panel-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.properties-panel-content::-webkit-scrollbar-track {
+    background: #16213e;
+}
+
+.properties-panel-content::-webkit-scrollbar-thumb {
+    background: #0f3460;
+    border-radius: 3px;
+}
+
+.properties-panel-content::-webkit-scrollbar-thumb:hover {
+    background: #00C4CC;
+}

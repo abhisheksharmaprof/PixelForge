@@ -1,0 +1,176 @@
+/* ContextualRibbon.css - Shared Ribbon Styles */
+
+/* Base Ribbon Styles - Full Width, Fixed Height */
+.contextual-ribbon {
+    height: 80px;
+    min-height: 80px;
+    max-height: 80px;
+    background-color: #1a1a2e;
+    border-bottom: 1px solid #0f3460;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    gap: 0;
+    flex-shrink: 0;
+    width: 100%;
+    overflow: visible;
+    box-sizing: border-box;
+}
+
+.contextual-ribbon.empty {
+    justify-content: center;
+    align-items: center;
+}
+
+/* Generic Ribbon Sections */
+.contextual-ribbon .ribbon-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 6px 12px;
+    border-right: 1px solid #0f3460;
+    height: 100%;
+    min-width: fit-content;
+    flex-shrink: 0;
+}
+
+.contextual-ribbon .ribbon-section:last-child {
+    border-right: none;
+}
+
+/* Section Labels */
+.contextual-ribbon .section-label {
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #00C4CC;
+    text-align: left;
+    margin-bottom: 2px;
+}
+
+/* Placeholders */
+.contextual-ribbon .ribbon-placeholder,
+.contextual-ribbon .ribbon-info {
+    font-size: 13px;
+    color: #8892b0;
+    font-weight: 400;
+    padding: 8px 20px;
+}
+
+/* All labels in ribbon */
+.contextual-ribbon label {
+    font-size: 10px;
+    font-weight: 500;
+    color: #a0aec0;
+}
+
+/* Button Base Style */
+.contextual-ribbon .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 10px;
+    font-size: 11px;
+    font-weight: 500;
+    border-radius: 4px;
+    background-color: #252545;
+    border: 1px solid #0f3460;
+    color: #e0e0e0;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+}
+
+.contextual-ribbon .btn:hover {
+    background-color: #353560;
+    border-color: #00C4CC;
+    color: #00C4CC;
+}
+
+.contextual-ribbon .btn svg {
+    width: 12px;
+    height: 12px;
+    color: #a0aec0;
+}
+
+.contextual-ribbon .btn:hover svg {
+    color: #00C4CC;
+}
+
+.contextual-ribbon .btn-primary {
+    background-color: #00C4CC;
+    border-color: #00C4CC;
+    color: #fff;
+}
+
+.contextual-ribbon .btn-primary svg {
+    color: #fff;
+}
+
+/* Color Swatches */
+.contextual-ribbon .color-swatch {
+    width: 22px;
+    height: 22px;
+    border-radius: 4px;
+    border: 2px solid #4a5a7a;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.contextual-ribbon .color-swatch:hover {
+    border-color: #00C4CC;
+    transform: scale(1.05);
+}
+
+/* Ribbon Group for Image/Table ribbons */
+.contextual-ribbon .ribbon-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 8px;
+    flex-shrink: 0;
+}
+
+.contextual-ribbon .ribbon-separator {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom,
+            transparent 0%,
+            #0f3460 20%,
+            #0f3460 80%,
+            transparent 100%);
+    flex-shrink: 0;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .contextual-ribbon {
+        height: 70px;
+        min-height: 70px;
+        max-height: 70px;
+        padding: 0 8px;
+    }
+
+    .contextual-ribbon .ribbon-section {
+        padding: 4px 8px;
+    }
+
+    .contextual-ribbon .section-label {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .contextual-ribbon {
+        height: 60px;
+        min-height: 60px;
+        max-height: 60px;
+    }
+
+    .contextual-ribbon .ribbon-section {
+        padding: 3px 6px;
+    }
+}

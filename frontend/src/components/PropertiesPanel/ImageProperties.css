@@ -1,0 +1,33 @@
+.image-properties {
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.image-dimensions {
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+.image-source-preview {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    padding: 8px;
+    border: 1px dashed var(--border-color);
+}
+
+.four-value-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.input-with-slider {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}

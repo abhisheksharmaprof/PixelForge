@@ -1,0 +1,272 @@
+/* MainLayout.css - Proper Layout Without Overlap */
+/* Layout Order:
+   1. TOP TOOLBAR: 50px
+   2. CONTEXTUAL RIBBON: 80px (full width, no scrollbar)
+   3. WORKSPACE: Left Sidebar (280px) | Canvas (flex) | Right Panel (280px)
+   4. BOTTOM PANEL: 180px (collapsible)
+*/
+
+/* ========================================
+   ROOT LAYOUT
+   ======================================== */
+.main-layout {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #1a1a2e;
+    color: #e0e0e0;
+}
+
+.main-layout.fullscreen .top-toolbar,
+.main-layout.fullscreen .contextual-ribbon,
+.main-layout.fullscreen .left-sidebar-container,
+.main-layout.fullscreen .right-panel-container,
+.main-layout.fullscreen .bottom-panel-container {
+    display: none;
+}
+
+.main-layout.fullscreen .workspace-container {
+    height: 100vh;
+}
+
+/* ========================================
+   TOP TOOLBAR - 50px Fixed
+   ======================================== */
+.top-toolbar {
+    height: 50px;
+    min-height: 50px;
+    max-height: 50px;
+    background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+    border-bottom: 1px solid #0f3460;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    z-index: 100;
+    flex-shrink: 0;
+}
+
+/* ========================================
+   CONTEXTUAL RIBBON - 80px Full Width, NO SCROLLBAR
+   ======================================== */
+.contextual-ribbon {
+    height: 80px;
+    min-height: 80px;
+    max-height: 80px;
+    background-color: #1a1a2e;
+    border-bottom: 1px solid #0f3460;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 0;
+    flex-shrink: 0;
+    z-index: 90;
+    /* Allow dropdowns to overflow */
+    overflow: visible;
+}
+
+/* ========================================
+   WORKSPACE CONTAINER - Fills Remaining Space
+   ======================================== */
+.workspace-container {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    min-height: 0;
+}
+
+/* ========================================
+   LEFT SIDEBAR - 340px Fixed (Increased for better content visibility)
+   ======================================== */
+.left-sidebar-container {
+    width: 340px;
+    min-width: 340px;
+    max-width: 340px;
+    height: 100%;
+    background-color: #16213e;
+    border-right: 1px solid #0f3460;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 50;
+    flex-shrink: 0;
+}
+
+/* ========================================
+   CENTER WORKSPACE - Canvas Area
+   ======================================== */
+.center-workspace {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+    background-color: #252545;
+}
+
+/* ========================================
+   CANVAS WORKSPACE
+   ======================================== */
+.canvas-workspace {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    background-color: #3a3a5a;
+}
+
+.canvas-scroll-area {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: auto;
+    padding: 30px;
+    background-color: #3a3a5a;
+}
+
+.canvas-container {
+    background-color: #ffffff;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+    position: relative;
+    flex-shrink: 0;
+}
+
+/* ========================================
+   RIGHT PANEL - 280px Fixed
+   ======================================== */
+.right-panel-container {
+    width: 280px;
+    min-width: 280px;
+    max-width: 280px;
+    height: 100%;
+    background-color: #16213e;
+    border-left: 1px solid #0f3460;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 50;
+    flex-shrink: 0;
+}
+
+/* ========================================
+   BOTTOM PANEL - 180px Collapsible
+   ======================================== */
+.bottom-panel-container {
+    height: 180px;
+    min-height: 180px;
+    max-height: 180px;
+    background-color: #16213e;
+    border-top: 1px solid #0f3460;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 40;
+    flex-shrink: 0;
+}
+
+/* ========================================
+   RESPONSIVE - LARGE SCREENS
+   ======================================== */
+@media (min-width: 1600px) {
+    .left-sidebar-container {
+        width: 360px;
+        min-width: 360px;
+        max-width: 360px;
+    }
+
+    .right-panel-container {
+        width: 320px;
+        min-width: 320px;
+        max-width: 320px;
+    }
+}
+
+/* ========================================
+   RESPONSIVE - TABLET
+   ======================================== */
+@media (max-width: 1200px) {
+    .left-sidebar-container {
+        width: 280px;
+        min-width: 280px;
+        max-width: 280px;
+    }
+
+    .right-panel-container {
+        width: 260px;
+        min-width: 260px;
+        max-width: 260px;
+    }
+
+    .contextual-ribbon {
+        height: 70px;
+        min-height: 70px;
+        max-height: 70px;
+    }
+}
+
+/* ========================================
+   RESPONSIVE - TABLET SMALL
+   ======================================== */
+@media (max-width: 1024px) {
+    .left-sidebar-container {
+        width: 200px;
+        min-width: 200px;
+        max-width: 200px;
+    }
+
+    .right-panel-container {
+        width: 220px;
+        min-width: 220px;
+        max-width: 220px;
+    }
+
+    .bottom-panel-container {
+        height: 140px;
+        min-height: 140px;
+    }
+}
+
+/* ========================================
+   RESPONSIVE - MOBILE
+   ======================================== */
+@media (max-width: 768px) {
+    .workspace-container {
+        flex-direction: column;
+    }
+
+    .left-sidebar-container {
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
+        height: auto;
+        max-height: 45vh;
+        order: 2;
+        border-right: none;
+        border-top: 1px solid #0f3460;
+    }
+
+    .center-workspace {
+        order: 1;
+        flex: 1;
+    }
+
+    .right-panel-container,
+    .bottom-panel-container {
+        display: none;
+    }
+
+    .contextual-ribbon {
+        height: 60px;
+        min-height: 60px;
+        max-height: 60px;
+    }
+
+    .top-toolbar {
+        height: 45px;
+        min-height: 45px;
+    }
+}

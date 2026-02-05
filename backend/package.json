@@ -1,0 +1,43 @@
+{
+    "name": "backend",
+    "version": "1.0.0",
+    "scripts": {
+        "start": "ts-node src/app.ts",
+        "dev": "nodemon src/app.ts"
+    },
+    "dependencies": {
+        "bcrypt": "^5.1.1",
+        "canvas": "^3.2.1",
+        "compression": "^1.7.4",
+        "cors": "^2.8.5",
+        "dotenv": "^16.3.1",
+        "express": "^4.18.2",
+        "express-fileupload": "^1.4.3",
+        "express-session": "^1.17.3",
+        "fabric": "^5.3.0",
+        "helmet": "^7.1.0",
+        "jsbarcode": "^3.12.3",
+        "jsonwebtoken": "^9.0.2",
+        "jspdf": "^4.0.0",
+        "jszip": "^3.10.1",
+        "morgan": "^1.10.0",
+        "qrcode": "^1.5.4",
+        "uuid": "^9.0.0",
+        "xlsx": "^0.18.5"
+    },
+    "devDependencies": {
+        "@types/compression": "^1.7.5",
+        "@types/cors": "^2.8.17",
+        "@types/express": "^4.17.21",
+        "@types/express-fileupload": "^1.4.4",
+        "@types/fabric": "^5.3.11",
+        "@types/jsbarcode": "^3.11.4",
+        "@types/morgan": "^1.9.9",
+        "@types/node": "^20.10.0",
+        "@types/qrcode": "^1.5.6",
+        "@types/uuid": "^9.0.7",
+        "nodemon": "^3.0.1",
+        "ts-node": "^10.9.1",
+        "typescript": "^5.0.0"
+    }
+}

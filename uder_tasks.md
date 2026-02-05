@@ -1,0 +1,2141 @@
+# Project Roadmap: CanvaWord Template Builder
+
+This roadmap outlines the tasks extracted from the project specification, categorized by functional area.
+
+## 1. Project Setup & Core Infrastructure
+- [ ] Initialize Vite + React project
+- [ ] Install dependencies (Fabric.js, Lucide, clsx, uuid)
+- [ ] Define design system tokens (CSS variables for colors, spacing, typography)
+- [ ] Implement Global State Management (TemplateContext)
+- [ ] Create custom useFabric hook for canvas lifecycle
+- [ ] Implement persistent state (LocalStorage)
+- [ ] Setup basic Undo/Redo command pattern (snapshots)
+- [ ] Implement global keyboard event listeners (Del, Ctrl+Z, Ctrl+Y)
+- [ ] Implement auto-recovery on page reload with unsaved changes prompt
+- [ ] Setup error boundary components for graceful error handling
+- [ ] Implement retry logic with exponential backoff for failed operations
+
+## 2. Layout & Basic Navigation
+- [ ] Fixed layout with 100% viewport occupancy
+- [ ] Header Bar (48-56px) with menu and file dropdowns
+- [ ] Secondary Toolbar (44-52px) for contextual formatting
+- [ ] Left Sidebar (320px) with collapsible icon rail
+- [ ] Right Sidebar (320px) with panel switching
+- [ ] Bottom Status Bar (32-40px)
+- [ ] Auto-collapse sidebars for screens < 1440px
+- [ ] Desktop recommendation message for < 1024px
+- [ ] Application Menu dropdown (hamburger/logo)
+- [ ] Smooth collapse/expand animations for sidebars (280-320px ↔ 72px)
+- [ ] Expandable flyout panels for collapsed sidebar mode
+- [ ] Responsive breakpoint handling (1024px, 1440px)
+- [ ] Minimum supported width enforcement (1024px)
+
+## 3. Editor UI Components
+
+### 3.1 Header Bar Components
+- [ ] File Operations Dropdown (New, Save, Download, etc.)
+- [ ] File Operations: New Template submenu with preset sizes
+- [ ] File Operations: Save As with category selection
+- [ ] File Operations: Make a Copy functionality
+- [ ] File Operations: Rename template
+- [ ] File Operations: Move to Folder
+- [ ] File Operations: Download As submenu (PDF, PNG, JPG, SVG, JSON)
+- [ ] File Operations: Print dialog
+- [ ] File Operations: Version History viewer
+- [ ] File Operations: Template Info/Properties panel
+- [ ] Edit Dropdown (Find & Replace, Paste without formatting)
+- [ ] Edit Dropdown: Duplicate (Ctrl+D)
+- [ ] Edit Dropdown: Select All (Ctrl+A)
+- [ ] View Dropdown (Zoom modes, Grid/Guides toggles)
+- [ ] View Dropdown: Zoom presets (In, Out, Fit, 100%)
+- [ ] View Dropdown: Show/Hide Rulers toggle
+- [ ] View Dropdown: Grid Settings dialog
+- [ ] View Dropdown: Show/Hide Guides toggle
+- [ ] View Dropdown: Show/Hide Element Boundaries toggle
+- [ ] View Dropdown: Show/Hide Placeholder Highlights toggle
+- [ ] View Dropdown: Preview Mode
+- [ ] View Dropdown: Presentation Mode (full screen)
+- [ ] Editable Template Name field with save status
+- [ ] Template name: Click to edit inline behavior
+- [ ] Template name: Save status indicator (saved/unsaved icon)
+- [ ] Editing Mode Toggle dropdown (Design/Preview/Comment/Print Layout)
+- [ ] Undo/Redo Buttons with disabled states
+- [ ] Undo/Redo: Tooltips showing action names
+- [ ] Mail Merge & Preview Mode Toggles
+- [ ] Mail Merge Button: Badge indicator for connected data source
+- [ ] Share Button & Modal
+- [ ] Share Modal: Share via Google Drive
+- [ ] Share Modal: Get shareable link
+- [ ] Share Modal: Export and send
+- [ ] Share Modal: Collaborate (invite editors)
+- [ ] User Avatar/Account Menu dropdown
+- [ ] Primary "Generate Documents" Action Button
+
+### 3.2 Secondary Toolbar - Context-Sensitive
+- [ ] Toolbar: Dynamic switching based on selected element type
+- [ ] Toolbar: Smooth transition animations between states
+
+## 4. Main Canvas Workspace
+
+### 4.1 Canvas Container & Background
+- [ ] Central workspace with neutral gray background
+- [ ] White page canvas with elevation shadow
+- [ ] Canvas: Configurable desk background color
+- [ ] Canvas: Center canvas horizontally and vertically
+- [ ] Canvas: Pan behavior (click-and-drag with hand tool or spacebar)
+- [ ] Canvas: Zoom-based pan scrolling
+- [ ] Canvas: Content clipping to page boundaries option
+
+### 4.2 Rulers & Measurement
+- [ ] Accurate Rulers (Horizontal & Vertical) with unit switching
+- [ ] Rulers: Align with canvas edges (zero point at left/top)
+- [ ] Rulers: Dynamic tick marks based on zoom level
+- [ ] Rulers: Display numbers at major tick marks
+- [ ] Rulers: Cursor position marker on rulers
+- [ ] Rulers: Draggable origin point to reposition zero
+- [ ] Ruler Units Toggle button at intersection (px, in, cm, mm)
+- [ ] Rulers: Hover highlight on ruler tracks
+- [ ] Rulers: Click to create guide line
+- [ ] Rulers: Right-click to reset origin
+
+### 4.3 Guides & Grid
+- [ ] Draggable Guides from rulers
+- [ ] Guides: Vertical guides from horizontal ruler clicks
+- [ ] Guides: Horizontal guides from vertical ruler clicks
+- [ ] Guides: Double-click to enter precise position
+- [ ] Guides: Right-click to delete individual guide
+- [ ] Guides: Measurement label while dragging
+- [ ] Guides: Lock Guides toggle
+- [ ] Guides: Clear All Guides button
+- [ ] Guides: Hover highlight when mouse near guide
+- [ ] Guides: Cursor change to resize cursor when hovering
+- [ ] Guides: Snap indicator when element aligns with guide
+- [ ] Grid System (spacing settings, snap behavior)
+- [ ] Grid: Configurable spacing (8px, 16px, 32px, custom)
+- [ ] Grid: Configurable color and opacity
+- [ ] Grid: Snap-to-grid toggle
+- [ ] Grid: Exclude from exports
+- [ ] Smart Guides: Auto-appear when dragging elements
+- [ ] Smart Guides: Show alignment with other elements
+- [ ] Smart Guides: Show alignment with page center
+- [ ] Smart Guides: Show distance measurements between elements
+- [ ] Smart Guides: Highlight when element edges align
+- [ ] Snap-to-guide behavior toggle
+
+### 4.4 Selection & Manipulation
+- [ ] Selection handles (8 resize + 1 rotation)
+- [ ] Multi-element selection (Shift+Click and Drag-to-select)
+- [ ] Smart Guides for alignment while dragging
+- [ ] Selection: Click empty area to deselect
+- [ ] Selection: Shift+Click to add/remove from selection
+- [ ] Selection: Drag rectangle selection
+- [ ] Selection: Clear visible handles (corners and edges)
+- [ ] Selection: Cursor changes for resize directions
+- [ ] Selection: Hover state on selection handles (highlight/scale)
+- [ ] Selection: Selection box color change when hovering
+- [ ] Dragging: Show position coordinates while dragging
+- [ ] Dragging: Hold Shift to constrain to axis
+- [ ] Dragging: Hold Alt to duplicate element
+- [ ] Dragging: Visual feedback (element follows cursor)
+- [ ] Dragging: Ghost/shadow element at original position when Alt+Drag
+- [ ] Dragging: Cursor changes to move cursor
+- [ ] Resizing: Corner handles maintain aspect ratio by default
+- [ ] Resizing: Hold Shift to resize non-proportionally
+- [ ] Resizing: Edge handles resize in one dimension
+- [ ] Resizing: Show dimensions while resizing
+- [ ] Resizing: Hold Alt to resize from center
+- [ ] Resizing: Minimum size constraints
+- [ ] Resizing: Real-time preview of new size
+- [ ] Resizing: Cursor changes to appropriate resize cursor (nw-resize, n-resize, etc.)
+- [ ] Rotating: Show rotation angle while rotating
+- [ ] Rotating: Hold Shift to snap to 15° increments
+- [ ] Rotating: Rotation point defaults to center
+- [ ] Rotating: Cursor changes to rotation cursor
+- [ ] Rotating: Visual arc indicator showing rotation angle
+- [ ] Rotating: Snap angle indicators at 45°, 90°, 180°, 270°
+- [ ] Multi-Selection: Bounding box around all selected
+- [ ] Multi-Selection: Resize maintains relative positions
+- [ ] Multi-Selection: Hover on bounding box changes cursor
+
+### 4.5 Context Menu (Right-Click)
+
+#### 4.5.1 Canvas Empty Area Right-Click
+- [ ] Right-click on empty canvas: Context menu
+- [ ] Canvas Menu: Paste (if clipboard has content)
+- [ ] Canvas Menu: Select All
+- [ ] Canvas Menu: Add Text Box
+- [ ] Canvas Menu: Add Shape submenu
+- [ ] Canvas Menu: Add Image
+- [ ] Canvas Menu: Add Table
+- [ ] Canvas Menu: Grid Settings
+- [ ] Canvas Menu: Ruler Settings
+- [ ] Canvas Menu: Page Setup
+- [ ] Canvas Menu: Background Settings
+
+#### 4.5.2 Text Element Right-Click
+- [ ] Text Right-Click: Cut (Ctrl+X)
+- [ ] Text Right-Click: Copy (Ctrl+C)
+- [ ] Text Right-Click: Paste (Ctrl+V)
+- [ ] Text Right-Click: Duplicate (Ctrl+D)
+- [ ] Text Right-Click: Delete (Del)
+- [ ] Text Right-Click: Separator
+- [ ] Text Right-Click: Edit Text (enter edit mode)
+- [ ] Text Right-Click: Font submenu (quick access to common fonts)
+- [ ] Text Right-Click: Text Size submenu
+- [ ] Text Right-Click: Text Color picker
+- [ ] Text Right-Click: Text Alignment submenu
+- [ ] Text Right-Click: Separator
+- [ ] Text Right-Click: Convert to Placeholder
+- [ ] Text Right-Click: Add Hyperlink
+- [ ] Text Right-Click: Remove Hyperlink (if link exists)
+- [ ] Text Right-Click: Separator
+- [ ] Text Right-Click: Bring to Front
+- [ ] Text Right-Click: Bring Forward
+- [ ] Text Right-Click: Send Backward
+- [ ] Text Right-Click: Send to Back
+- [ ] Text Right-Click: Separator
+- [ ] Text Right-Click: Group (if multiple selected)
+- [ ] Text Right-Click: Ungroup (if group selected)
+- [ ] Text Right-Click: Separator
+- [ ] Text Right-Click: Lock Position
+- [ ] Text Right-Click: Unlock Position (if locked)
+- [ ] Text Right-Click: Separator
+- [ ] Text Right-Click: Copy Style
+- [ ] Text Right-Click: Paste Style
+- [ ] Text Right-Click: Save as Style Preset
+- [ ] Text Right-Click: Separator
+- [ ] Text Right-Click: Properties (focus right panel)
+
+#### 4.5.3 Image Element Right-Click
+- [ ] Image Right-Click: Cut, Copy, Paste, Duplicate, Delete
+- [ ] Image Right-Click: Separator
+- [ ] Image Right-Click: Replace Image
+- [ ] Image Right-Click: Edit Image (enter crop mode)
+- [ ] Image Right-Click: Crop Image
+- [ ] Image Right-Click: Reset Image (revert to original)
+- [ ] Image Right-Click: Separator
+- [ ] Image Right-Click: Flip Horizontal
+- [ ] Image Right-Click: Flip Vertical
+- [ ] Image Right-Click: Rotate 90° CW
+- [ ] Image Right-Click: Rotate 90° CCW
+- [ ] Image Right-Click: Separator
+- [ ] Image Right-Click: Filters submenu (quick access)
+- [ ] Image Right-Click: Adjustments submenu (brightness, contrast, etc.)
+- [ ] Image Right-Click: Remove Background (if AI feature enabled)
+- [ ] Image Right-Click: Separator
+- [ ] Image Right-Click: Set as Placeholder (for mail merge image URLs)
+- [ ] Image Right-Click: Add Hyperlink
+- [ ] Image Right-Click: Separator
+- [ ] Image Right-Click: Bring to Front, Forward, Backward, Back
+- [ ] Image Right-Click: Group/Ungroup
+- [ ] Image Right-Click: Lock/Unlock Position
+- [ ] Image Right-Click: Separator
+- [ ] Image Right-Click: Copy Style, Paste Style
+- [ ] Image Right-Click: Properties
+
+#### 4.5.4 Shape Element Right-Click
+- [ ] Shape Right-Click: Cut, Copy, Paste, Duplicate, Delete
+- [ ] Shape Right-Click: Separator
+- [ ] Shape Right-Click: Edit Shape (for custom paths)
+- [ ] Shape Right-Click: Convert to Path (if applicable)
+- [ ] Shape Right-Click: Separator
+- [ ] Shape Right-Click: Fill Color submenu (quick colors)
+- [ ] Shape Right-Click: Stroke Color submenu
+- [ ] Shape Right-Click: Stroke Width submenu
+- [ ] Shape Right-Click: Separator
+- [ ] Shape Right-Click: Flip Horizontal
+- [ ] Shape Right-Click: Flip Vertical
+- [ ] Shape Right-Click: Rotate 90° CW
+- [ ] Shape Right-Click: Rotate 90° CCW
+- [ ] Shape Right-Click: Separator
+- [ ] Shape Right-Click: Convert to Text Box (if rectangle)
+- [ ] Shape Right-Click: Set as Placeholder
+- [ ] Shape Right-Click: Separator
+- [ ] Shape Right-Click: Bring to Front, Forward, Backward, Back
+- [ ] Shape Right-Click: Group/Ungroup
+- [ ] Shape Right-Click: Lock/Unlock Position
+- [ ] Shape Right-Click: Separator
+- [ ] Shape Right-Click: Copy Style, Paste Style
+- [ ] Shape Right-Click: Properties
+
+#### 4.5.5 Table Element Right-Click
+- [ ] Table Right-Click: Cut, Copy, Paste, Duplicate, Delete
+- [ ] Table Right-Click: Separator
+- [ ] Table Right-Click: Edit Table (enter table edit mode)
+- [ ] Table Right-Click: Insert Row Above
+- [ ] Table Right-Click: Insert Row Below
+- [ ] Table Right-Click: Insert Column Left
+- [ ] Table Right-Click: Insert Column Right
+- [ ] Table Right-Click: Separator
+- [ ] Table Right-Click: Delete Row
+- [ ] Table Right-Click: Delete Column
+- [ ] Table Right-Click: Delete Table
+- [ ] Table Right-Click: Separator
+- [ ] Table Right-Click: Merge Cells (if multiple cells selected)
+- [ ] Table Right-Click: Split Cells (if merged cell selected)
+- [ ] Table Right-Click: Separator
+- [ ] Table Right-Click: Table Properties
+- [ ] Table Right-Click: Cell Properties
+- [ ] Table Right-Click: Distribute Rows Evenly
+- [ ] Table Right-Click: Distribute Columns Evenly
+- [ ] Table Right-Click: Separator
+- [ ] Table Right-Click: Select Row
+- [ ] Table Right-Click: Select Column
+- [ ] Table Right-Click: Select All Cells
+- [ ] Table Right-Click: Separator
+- [ ] Table Right-Click: Bring to Front, Forward, Backward, Back
+- [ ] Table Right-Click: Lock/Unlock Position
+- [ ] Table Right-Click: Properties
+
+#### 4.5.6 Group Element Right-Click
+- [ ] Group Right-Click: Cut, Copy, Paste, Duplicate, Delete
+- [ ] Group Right-Click: Separator
+- [ ] Group Right-Click: Ungroup (Ctrl+Shift+G)
+- [ ] Group Right-Click: Enter Group (edit within group)
+- [ ] Group Right-Click: Exit Group
+- [ ] Group Right-Click: Separator
+- [ ] Group Right-Click: Bring to Front, Forward, Backward, Back
+- [ ] Group Right-Click: Lock/Unlock Position
+- [ ] Group Right-Click: Separator
+- [ ] Group Right-Click: Add to Group (if additional elements selected)
+- [ ] Group Right-Click: Remove from Group
+- [ ] Group Right-Click: Properties
+
+#### 4.5.7 Placeholder Element Right-Click
+- [ ] Placeholder Right-Click: Cut, Copy, Paste, Duplicate, Delete
+- [ ] Placeholder Right-Click: Separator
+- [ ] Placeholder Right-Click: Edit Placeholder
+- [ ] Placeholder Right-Click: Map to Field (dropdown of data columns)
+- [ ] Placeholder Right-Click: Remove Placeholder Mapping
+- [ ] Placeholder Right-Click: Separator
+- [ ] Placeholder Right-Click: Format Options (date format, number format, etc.)
+- [ ] Placeholder Right-Click: Conditional Display Rules
+- [ ] Placeholder Right-Click: Fallback Value (if field empty)
+- [ ] Placeholder Right-Click: Separator
+- [ ] Placeholder Right-Click: Preview with Sample Data
+- [ ] Placeholder Right-Click: Separator
+- [ ] Placeholder Right-Click: Bring to Front, Forward, Backward, Back
+- [ ] Placeholder Right-Click: Group/Ungroup
+- [ ] Placeholder Right-Click: Lock/Unlock Position
+- [ ] Placeholder Right-Click: Properties
+
+#### 4.5.8 QR Code/Barcode Element Right-Click
+- [ ] QR/Barcode Right-Click: Cut, Copy, Paste, Duplicate, Delete
+- [ ] QR/Barcode Right-Click: Separator
+- [ ] QR/Barcode Right-Click: Edit QR/Barcode Data
+- [ ] QR/Barcode Right-Click: Set as Placeholder (link to data field)
+- [ ] QR/Barcode Right-Click: QR/Barcode Settings
+- [ ] QR/Barcode Right-Click: Separator
+- [ ] QR/Barcode Right-Click: Regenerate Code
+- [ ] QR/Barcode Right-Click: Download as Image
+- [ ] QR/Barcode Right-Click: Separator
+- [ ] QR/Barcode Right-Click: Bring to Front, Forward, Backward, Back
+- [ ] QR/Barcode Right-Click: Lock/Unlock Position
+- [ ] QR/Barcode Right-Click: Properties
+
+#### 4.5.9 Multi-Selection Right-Click
+- [ ] Multi-Select Right-Click: Cut, Copy, Delete
+- [ ] Multi-Select Right-Click: Duplicate All
+- [ ] Multi-Select Right-Click: Separator
+- [ ] Multi-Select Right-Click: Group (Ctrl+G)
+- [ ] Multi-Select Right-Click: Separator
+- [ ] Multi-Select Right-Click: Align Left
+- [ ] Multi-Select Right-Click: Align Center
+- [ ] Multi-Select Right-Click: Align Right
+- [ ] Multi-Select Right-Click: Align Top
+- [ ] Multi-Select Right-Click: Align Middle
+- [ ] Multi-Select Right-Click: Align Bottom
+- [ ] Multi-Select Right-Click: Separator
+- [ ] Multi-Select Right-Click: Distribute Horizontally
+- [ ] Multi-Select Right-Click: Distribute Vertically
+- [ ] Multi-Select Right-Click: Separator
+- [ ] Multi-Select Right-Click: Bring to Front
+- [ ] Multi-Select Right-Click: Send to Back
+- [ ] Multi-Select Right-Click: Separator
+- [ ] Multi-Select Right-Click: Lock All
+- [ ] Multi-Select Right-Click: Unlock All
+
+#### 4.5.10 Ruler Right-Click
+- [ ] Ruler Right-Click: Change Units (px, in, cm, mm)
+- [ ] Ruler Right-Click: Reset Origin
+- [ ] Ruler Right-Click: Clear All Guides
+- [ ] Ruler Right-Click: Lock Guides
+- [ ] Ruler Right-Click: Unlock Guides
+- [ ] Ruler Right-Click: Hide Rulers
+
+#### 4.5.11 Guide Right-Click
+- [ ] Guide Right-Click: Delete Guide
+- [ ] Guide Right-Click: Edit Guide Position (input exact value)
+- [ ] Guide Right-Click: Lock Guide
+- [ ] Guide Right-Click: Unlock Guide
+- [ ] Guide Right-Click: Clear All Guides
+- [ ] Guide Right-Click: Guide Color
+
+### 4.6 On-Canvas Controls
+- [ ] Text Elements: Double-click to enter edit mode
+- [ ] Text Elements: Text cursor and selection highlighting
+- [ ] Text Elements: Font size adjustment handle
+- [ ] Text Elements: Hover shows edit cursor (I-beam)
+- [ ] Images: Double-click to enter crop mode
+- [ ] Images: Crop mode with handles and darkened outside area
+- [ ] Images: Apply/Cancel buttons in crop mode
+- [ ] Images: Hover shows hand cursor
+- [ ] Images: Hover overlay with action icons (replace, crop, filters)
+- [ ] Tables: Column/row resize handles between cells
+- [ ] Tables: Add row/column buttons at edges
+- [ ] Tables: Tab key navigation between cells
+- [ ] Tables: Hover on cell borders shows resize cursor
+- [ ] Tables: Hover on table shows add row/column buttons
+- [ ] Tables: Click cell to select, double-click to edit
+- [ ] Groups: Visual link indicator between elements
+- [ ] Groups: Distinct group bounding box style
+- [ ] Groups: Double-click to enter group editing mode
+- [ ] Groups: Hover shows all grouped elements
+- [ ] Placeholders: Distinct border color (orange/purple dashed)
+- [ ] Placeholders: Merge field icon indicator
+- [ ] Placeholders: Tooltip showing field name on hover
+- [ ] Placeholders: Display {{FieldName}} or [Field Name]
+- [ ] Placeholders: Show actual data in preview mode
+- [ ] Placeholders: Hover shows field mapping info tooltip
+- [ ] Placeholders: Click to show field mapping dropdown
+
+### 4.7 Multi-Page Support
+- [ ] Page navigation controls (Previous, Page X of Y, Next)
+- [ ] Thumbnail strip for all pages (toggleable)
+- [ ] Add Page / Delete Page buttons
+- [ ] Page reordering via drag in thumbnail strip
+- [ ] Per-page layer management
+- [ ] Page thumbnails: Hover shows preview zoom
+- [ ] Page thumbnails: Right-click for page menu (duplicate, delete, move, properties)
+- [ ] Page thumbnails: Drag-and-drop to reorder
+- [ ] Page thumbnails: Click to switch to page
+- [ ] Page thumbnails: Double-click to rename page
+
+### 4.8 Zoom & View Controls
+- [ ] Zoom controls (25% - 400% with presets)
+- [ ] Zoom slider in bottom status bar
+- [ ] Zoom In/Out buttons
+- [ ] Zoom percentage display with dropdown presets
+- [ ] Zoom presets: 25%, 50%, 75%, 100%, 150%, 200%, Fit Page, Fit Width
+- [ ] Zoom to fit button
+- [ ] Hand tool / Panning behavior
+- [ ] Spacebar+Drag to pan
+- [ ] Scroll wheel for vertical scroll
+- [ ] Shift+Scroll for horizontal scroll
+- [ ] Ctrl+Scroll for zoom
+- [ ] Zoom: Cursor changes to magnify glass
+- [ ] Pan: Cursor changes to hand (open/closed)
+- [ ] Zoom: Zoom centered on cursor position
+
+## 5. Element Library (Left Sidebar)
+
+### 5.1 Sidebar Interaction Patterns
+- [ ] Sidebar tabs: Click to activate tab
+- [ ] Sidebar tabs: Hover shows tooltip with tab name
+- [ ] Sidebar tabs: Active tab highlighted
+- [ ] Sidebar collapse button: Click to collapse/expand
+- [ ] Sidebar collapse: Smooth slide animation
+- [ ] Collapsed sidebar: Hover shows flyout panel
+- [ ] Flyout panel: Auto-hide when mouse leaves
+- [ ] Flyout panel: Pin button to keep open
+
+### 5.2 Design Tab
+- [ ] Design Tab: Layout presets and templates
+- [ ] Design Tab: Template thumbnails organized by category
+- [ ] Design Tab: Categories (Certificates, Marksheets, ID Cards, Posters, Blank)
+- [ ] Design Tab: Show dimensions and orientation on presets
+- [ ] Design Tab: Apply preset with confirmation (replace or new)
+- [ ] Design Tab: Page layout quick options (single/two/three column, grid)
+- [ ] Design Tab: Content block presets (header+content+footer)
+- [ ] Design Tab: Recently Used section with quick-open
+- [ ] Template thumbnails: Hover shows larger preview
+- [ ] Template thumbnails: Hover shows actions (Use, Preview, Info)
+- [ ] Template thumbnails: Click to open preview modal
+- [ ] Template thumbnails: Double-click to apply immediately
+- [ ] Template thumbnails: Right-click for options (Use, Duplicate, Delete, Info)
+- [ ] Template categories: Click to expand/collapse
+- [ ] Template search: Type to filter in real-time
+
+### 5.3 Elements Tab
+- [ ] Elements Tab: Shapes (Square, Circle, Triangle)
+- [ ] Elements Tab: Search bar filtering all elements
+- [ ] Elements Tab: Quick Insert Row (horizontally scrollable icons)
+- [ ] Elements Tab: Expand library (Polygons, Stars, Callouts, Symbols)
+- [ ] Shapes: Basic Shapes (Rectangle, Square, Rounded Rectangle, Circle, Ellipse, Triangle, Right Triangle, Diamond, Pentagon, Hexagon, Octagon, Stars, Heart, Arrows)
+- [ ] Shapes: Lines & Arrows (Straight, Arrow, Double Arrow, Curved, Connector, Freeform)
+- [ ] Shapes: Callouts (Rectangular, Rounded, Oval, Cloud, Thought Bubble)
+- [ ] Shapes: Symbols (Checkmark, X, Plus, Minus, Question, Exclamation, Info)
+- [ ] Shapes: Clickable thumbnails with drag-to-canvas or click-to-insert
+- [ ] Element thumbnails: Hover shows element name tooltip
+- [ ] Element thumbnails: Hover shows scale/highlight effect
+- [ ] Element thumbnails: Click to insert at canvas center
+- [ ] Element thumbnails: Drag to canvas for custom positioning
+- [ ] Element thumbnails: Drag shows ghost element following cursor
+- [ ] Element thumbnails: Right-click for options (Insert, Add to Favorites, Info)
+- [ ] Element search: Real-time filtering as you type
+- [ ] Element search: Clear search button appears when typing
+- [ ] Element search: Hover on search shows recent searches
+- [ ] Element categories: Accordion expand/collapse
+- [ ] Element categories: Hover on category header highlights
+- [ ] Text Elements: Heading styles (H1, H2, H3 with preview)
+- [ ] Text Elements: Body text preset, Caption preset
+- [ ] Text Elements: Text Box (free-form)
+- [ ] Text Elements: Vertical Text
+- [ ] Text Elements: Curved Text/Text on Path
+- [ ] Text Elements: Placeholder Text (visually distinct for mail merge)
+- [ ] Text presets: Hover shows formatted preview
+- [ ] Text presets: Click to insert
+- [ ] Text presets: Drag to canvas
+- [ ] Tables: Insert Table dialog (specify rows/columns)
+- [ ] Tables: Preset table sizes (2x2, 3x3, 4x4, 5x5)
+- [ ] Tables: Spreadsheet-like data table
+- [ ] Tables: Layout Table for positioning
+- [ ] Table presets: Hover shows structure preview
+- [ ] Table presets: Click to insert
+- [ ] Table dialog: Hover on row/column inputs shows +/- buttons
+- [ ] Frames & Masks: Image frames of various shapes
+- [ ] Frames & Masks: Decorative borders
+- [ ] Frames & Masks: Photo collage layouts
+- [ ] Frames & Masks: Masks (circle, square, rounded, custom)
+- [ ] Charts & Data: Bar, Line, Pie, Doughnut charts
+- [ ] Charts: Link charts to data source columns
+- [ ] Chart presets: Hover shows chart type info
+- [ ] Chart presets: Click opens chart configuration dialog
+- [ ] QR Code & Barcodes: QR Code generator
+- [ ] QR Code & Barcodes: Barcode generator (Code 128, 39, EAN, UPC)
+- [ ] QR Code & Barcodes: Preview of generated codes
+- [ ] QR/Barcode buttons: Click opens generator dialog
+- [ ] QR/Barcode generator: Live preview as you type
+- [ ] Decorative Elements: Dividers and separators
+- [ ] Decorative Elements: Ornaments and flourishes
+- [ ] Decorative Elements: Borders and corner decorations
+- [ ] Decorative Elements: Searchable icon library (categorized)
+- [ ] Icon library: Hover shows icon name
+- [ ] Icon library: Click to insert
+- [ ] Icon library: Drag to canvas
+- [ ] Icon library: Search filters in real-time
+- [ ] Icon library: Category tabs for quick browsing
+- [ ] Smart Objects: Date/Time field (auto-updating or linked)
+- [ ] Smart Objects: Page Number field
+- [ ] Smart Objects: Document property fields
+- [ ] Smart Objects: Signature Line placeholder
+- [ ] Smart Objects: Logo placeholder
+- [ ] Smart Objects: Hover shows object description
+- [ ] Smart Objects: Click opens configuration dialog
+- [ ] Elements Tab: Search functionality for elements
+
+### 5.4 Text Tab
+- [ ] Text Tab: Heading/Body presets
+- [ ] Text Tab: "Add a text box" button
+- [ ] Text Tab: "Add a heading" button
+- [ ] Text Tab: "Add a subheading" button
+- [ ] Text Tab: "Add body text" button
+- [ ] Text Tab: Font pairing suggestions
+- [ ] Text Tab: Curated font combinations (click to apply)
+- [ ] Text Tab: Saved text styles with preview
+- [ ] Text Tab: Create new style button
+- [ ] Text Tab: Word Art styles gallery
+- [ ] Text Tab: Curved text presets
+- [ ] Text Tab: 3D text effect presets
+- [ ] Text buttons: Hover shows text style preview
+- [ ] Text buttons: Click to insert text at canvas center
+- [ ] Font pairings: Hover shows enlarged preview
+- [ ] Font pairings: Click to apply to selected text or insert new
+- [ ] Font pairings: Right-click for options (Apply, Save to Favorites)
+- [ ] Text styles: Hover shows full formatting details tooltip
+- [ ] Text styles: Click to apply to selection
+- [ ] Text styles: Right-click for options (Apply, Edit, Delete, Rename)
+- [ ] Text styles: Drag to reorder in list
+- [ ] WordArt gallery: Hover shows animated preview
+- [ ] WordArt gallery: Click to insert with default text
+- [ ] WordArt gallery: Right-click for options
+
+### 5.5 Uploads Tab
+- [ ] Uploads Tab: Drag-and-drop file upload (Images, SVGs)
+- [ ] Uploads: Large "Upload files" button with drag-drop
+- [ ] Uploads: Supported formats note (JPG, PNG, SVG, WebP, GIF)
+- [ ] Uploads: "Record yourself" option (if applicable)
+- [ ] Uploads: Grid of uploaded images with thumbnails
+- [ ] Uploads: Organized folders (logos, signatures, backgrounds, images)
+- [ ] Uploads: Asset actions (Insert, Delete, Download, Rename, Move)
+- [ ] Uploads: Search uploaded assets filter bar
+- [ ] Uploads: Recently Used quick access section
+- [ ] Upload button: Hover shows scale effect
+- [ ] Upload button: Click opens file picker
+- [ ] Upload button: Drag files over shows drop zone highlight
+- [ ] Upload button: Drop files triggers upload with progress
+- [ ] Upload progress: Show progress bar per file
+- [ ] Upload progress: Show success/error toast
+- [ ] Asset thumbnails: Hover shows larger preview
+- [ ] Asset thumbnails: Hover shows action buttons (Insert, Delete, Rename, Download)
+- [ ] Asset thumbnails: Click to select
+- [ ] Asset thumbnails: Double-click to insert at canvas center
+- [ ] Asset thumbnails: Drag to canvas for positioning
+- [ ] Asset thumbnails: Right-click for full context menu
+- [ ] Asset context menu: Insert, Delete, Download, Rename, Move to Folder, Set as Background, Properties
+- [ ] Asset folders: Click to expand/collapse
+- [ ] Asset folders: Drag assets to folders to move
+- [ ] Asset folders: Right-click for folder options (Rename, Delete, New Subfolder)
+- [ ] Asset search: Real-time filtering
+- [ ] Asset search: Shows result count
+- [ ] Recent assets: Automatically updated
+- [ ] Recent assets: Clear recent button
+
+### 5.6 Photos Tab
+- [ ] Photos Tab: Stock photo search integration
+- [ ] Photos: Search input for finding images
+- [ ] Photos: Search in Google Drive or stock services
+- [ ] Photos: Categories grid (Nature, Business, People, Education, Abstract)
+- [ ] Photos: Recent Searches history
+- [ ] Photo search: Type and press Enter to search
+- [ ] Photo search: Auto-suggest as you type
+- [ ] Photo search: Shows loading indicator while searching
+- [ ] Photo results: Grid layout with thumbnails
+- [ ] Photo results: Infinite scroll to load more
+- [ ] Photo thumbnails: Hover shows larger preview
+- [ ] Photo thumbnails: Hover shows photographer credit
+- [ ] Photo thumbnails: Click to select
+- [ ] Photo thumbnails: Double-click to insert
+- [ ] Photo thumbnails: Drag to canvas
+- [ ] Photo thumbnails: Right-click for options (Insert, Save to Uploads, Open in New Tab)
+- [ ] Photo categories: Click to search that category
+- [ ] Photo categories: Hover shows category image examples
+- [ ] Recent searches: Click to re-run search
+- [ ] Recent searches: Hover shows X to remove from history
+
+### 5.7 Brand Tab
+- [ ] Brand Tab: Brand kit (logos, colors, fonts)
+- [ ] Brand: Upload and manage brand logos
+- [ ] Brand: Quick insert logos into canvas
+- [ ] Brand: Define brand colors (primary, secondary, accent)
+- [ ] Brand: Color palette display with click-to-copy hex codes
+- [ ] Brand: Colors appear in all color pickers
+- [ ] Brand: Set primary and secondary brand fonts
+- [ ] Brand: Quick apply brand fonts to selected text
+- [ ] Brand logos: Hover shows logo name
+- [ ] Brand logos: Click to insert at canvas center
+- [ ] Brand logos: Drag to canvas
+- [ ] Brand logos: Right-click for options (Insert, Replace, Delete, Rename)
+- [ ] Brand logos: Upload button to add new logos
+- [ ] Brand colors: Hover shows color info (name, hex, RGB)
+- [ ] Brand colors: Click to apply to selected element
+- [ ] Brand colors: Right-click to edit or remove color
+- [ ] Brand colors: Click hex code to copy to clipboard (shows tooltip)
+- [ ] Brand colors: Add color button with color picker
+- [ ] Brand colors: Drag to reorder color palette
+- [ ] Brand fonts: Hover shows font preview
+- [ ] Brand fonts: Click to apply to selected text
+- [ ] Brand fonts: Right-click for options (Apply, Remove from Brand Kit)
+- [ ] Brand fonts: Add font button to include more fonts
+
+### 5.8 Projects Tab
+- [ ] Projects: Recent templates section
+- [ ] Projects: List/grid with thumbnail, name, last modified
+- [ ] Projects: Quick actions (Open, Duplicate, Delete)
+- [ ] Projects: Search templates by name or category
+- [ ] Projects: Template categories/folder navigation
+- [ ] Project items: Hover shows actions (Open, Duplicate, Delete, Rename, Move)
+- [ ] Project items: Click to open template
+- [ ] Project items: Right-click for context menu (Open, Open in New Tab, Duplicate, Rename, Move, Delete, Properties)
+- [ ] Project view toggle: Grid/List view switch
+- [ ] Project sort: Sort by name, date modified, date created
+- [ ] Project filter: Filter by category, tags
+- [ ] Project search: Real-time filter
+- [ ] Folder navigation: Breadcrumb trail
+- [ ] Folder navigation: Click breadcrumb to navigate up
+- [ ] Folders: Double-click to open
+- [ ] Folders: Drag templates to folders
+
+### 5.9 Apps Tab
+- [ ] Apps: Integrations grid as clickable tiles
+- [ ] Apps: Google Drive browser integration
+- [ ] Apps: Image search integration
+- [ ] Apps: Icon libraries integration
+- [ ] Apps: QR generators integration
+- [ ] Apps: Translation tool integration
+- [ ] App tiles: Hover shows app description
+- [ ] App tiles: Hover shows scale effect
+- [ ] App tiles: Click to open app panel/modal
+- [ ] App tiles: Badge showing "New" or "Beta" if applicable
+- [ ] App tiles: Installed indicator
+- [ ] App modal: Close button
+- [ ] App modal: Configuration options if needed
+
+### 5.10 Data Tab
+- [ ] Data Tab: Mail Merge source connection & fields
+- [ ] Data: "Connect Data Source" button (if none connected)
+- [ ] Data: Current data file name display
+- [ ] Data: "Change Data Source" button
+- [ ] Data: "Refresh Data" button
+- [ ] Data: Last updated timestamp
+- [ ] Data: Compact table showing first 5 rows
+- [ ] Data: Column headers clearly visible
+- [ ] Data: Total row count display
+- [ ] Data: Available Fields section (list all columns)
+- [ ] Data: Drag field to canvas to create placeholder
+- [ ] Data: Click field to insert at cursor
+- [ ] Data: Search/filter fields
+- [ ] Data: Insert Placeholder dropdown with available fields
+- [ ] Data: Insert as text, image source, or QR data options
+- [ ] Connect Data button: Hover shows supported file types
+- [ ] Connect Data button: Click opens file picker or Drive picker
+- [ ] Data source display: Click filename to see full path tooltip
+- [ ] Change Data button: Hover shows current source
+- [ ] Refresh Data button: Click shows loading spinner
+- [ ] Refresh Data button: Shows last updated time on hover
+- [ ] Data preview table: Hover on cells shows full content tooltip
+- [ ] Data preview table: Scroll horizontally to see more columns
+- [ ] Data preview table: Click column header to sort (if applicable)
+- [ ] Available fields list: Hover shows field type and sample value
+- [ ] Available fields list: Click to insert placeholder at cursor/center
+- [ ] Available fields list: Drag field to canvas creates placeholder there
+- [ ] Available fields list: Right-click for options (Insert as Text, Insert as Image URL, Insert as QR Data)
+- [ ] Field search: Real-time filter of field names
+- [ ] Insert Placeholder dropdown: Hover shows field options
+- [ ] Insert Placeholder dropdown: Select field and insertion type
+
+## 6. Contextual Formatting (Secondary Toolbar)
+
+### 6.1 Toolbar Interaction Patterns
+- [ ] All toolbar buttons: Hover shows tooltip
+- [ ] All toolbar buttons: Hover shows highlight/background change
+- [ ] Active/selected buttons: Distinct visual state
+- [ ] Disabled buttons: Grayed out, no hover effect, cursor not-allowed
+- [ ] Dropdown buttons: Hover shows down arrow clearly
+- [ ] Dropdown buttons: Click opens dropdown menu
+- [ ] Dropdown menus: Click outside to close
+- [ ] Dropdown menus: Hover on items highlights them
+- [ ] Color pickers: Click opens color picker popover
+- [ ] Color pickers: Hover shows current color tooltip
+- [ ] Sliders: Drag handle to adjust value
+- [ ] Sliders: Click track to jump to value
+- [ ] Sliders: Hover shows value tooltip
+- [ ] Number inputs: Click to focus and type
+- [ ] Number inputs: Hover shows +/- increment buttons
+- [ ] Number inputs: Scroll wheel to increment/decrement
+
+### 6.2 General Document Controls (No Selection)
+- [ ] Page Setup: Page Size dropdown (A4, Letter, Legal, A3, A5, Custom)
+- [ ] Page Setup: Custom width/height inputs (px, mm, in, cm)
+- [ ] Page Setup: Orientation toggle (Portrait/Landscape icons)
+- [ ] Page Setup: Margins button with popover
+- [ ] Margins: Preset margins (Normal, Narrow, Wide, None)
+- [ ] Margins: Custom margin inputs (Top, Bottom, Left, Right)
+- [ ] Page Size dropdown: Hover on items shows dimensions
+- [ ] Page Size dropdown: Click to apply
+- [ ] Custom inputs: Focus to edit
+- [ ] Orientation toggle: Click icon to switch
+- [ ] Orientation toggle: Hover shows label (Portrait/Landscape)
+- [ ] Margins button: Click opens popover
+- [ ] Margins popover: Hover on presets highlights them
+- [ ] Margins popover: Click preset to apply
+- [ ] Margins custom: Focus to edit, Tab to next field
+- [ ] Background: Background Color picker
+- [ ] Background: Background Image selector
+- [ ] Background: Background Pattern dropdown
+- [ ] Background: Background Opacity slider
+- [ ] Background Color: Click opens color picker
+- [ ] Background Image: Click opens image selector
+- [ ] Background Image selector: Drag-drop image or click to browse
+- [ ] Background Pattern: Dropdown with pattern previews
+- [ ] Background Pattern: Hover on patterns shows preview
+- [ ] Background Opacity: Drag slider or type value
+- [ ] Guides: Add Horizontal Guide button
+- [ ] Guides: Add Vertical Guide button
+- [ ] Guides: Clear All Guides button
+- [ ] Guides: Lock Guides toggle
+- [ ] Guide buttons: Hover shows tooltip
+- [ ] Guide buttons: Click to add guide at canvas center or cursor position
+- [ ] Lock Guides toggle: Click to lock/unlock, visual state change
+
+### 6.3 Text Formatting Toolbar
+- [ ] Text Formatting: Font family (Google Fonts), Size, Bold, Italic, Underline
+- [ ] Font Family: Dropdown with search
+- [ ] Font Family: Recently used fonts at top
+- [ ] Font Family: Categorized list (Sans-serif, Serif, Display, Handwriting, Monospace)
+- [ ] Font Family: Google Fonts integration with preview
+- [ ] Font Family dropdown: Click to open
+- [ ] Font Family dropdown: Hover on fonts shows preview of font
+- [ ] Font Family dropdown: Click font to apply
+- [ ] Font Family search: Type to filter fonts in real-time
+- [ ] Font Size: Dropdown with common sizes (8-72)
+- [ ] Font Size: Custom input field
+- [ ] Font Size: Quick increase/decrease buttons
+- [ ] Font Size dropdown: Click to open, hover highlights sizes
+- [ ] Font Size custom input: Click to type value
+- [ ] Font Size +/- buttons: Click to increment/decrement
+- [ ] Font Size +/- buttons: Hover shows tooltip (Increase/Decrease)
+- [ ] Text Formatting: Strikethrough, Sub/Superscript, All-caps
+- [ ] Underline: Dropdown for style (single, double, dotted, dashed, wavy)
+- [ ] Underline button: Click to toggle
+- [ ] Underline dropdown: Click arrow to open styles
+- [ ] Underline styles: Hover shows preview
+- [ ] Bold, Italic: Click to toggle, active state when applied
+- [ ] Strikethrough: Click to toggle
+- [ ] Subscript button: Click to toggle, mutually exclusive with superscript
+- [ ] Superscript button: Click to toggle
+- [ ] Text Formatting: Text Color & Highlight pickers
+- [ ] Text Color: Recent colors, theme colors, full picker
+- [ ] Text Highlight/Background Color picker
+- [ ] Text Color button: Click opens color picker popover
+- [ ] Text Color: Hover shows current color tooltip
+- [ ] Text Color picker: Hover on recent colors shows color value
+- [ ] Text Color picker: Click color to apply
+- [ ] Text Color picker: Custom color option opens full picker
+- [ ] Text Highlight: Same interaction as text color
+- [ ] Text Shadow: Button with popover (enable, X/Y offset, blur, color)
+- [ ] Text Shadow button: Click opens shadow settings popover
+- [ ] Text Shadow popover: Enable/disable toggle
+- [ ] Text Shadow popover: Sliders for X/Y offset, blur
+- [ ] Text Shadow popover: Color picker for shadow color
+- [ ] Text Shadow popover: Live preview on selected text
+- [ ] Text Outline/Stroke: Color and width options
+- [ ] Text Outline button: Click opens settings popover
+- [ ] Text Outline: Color picker and width slider
+- [ ] Text Formatting: Alignment controls
+- [ ] Alignment: Left, Center, Right, Justify buttons
+- [ ] Alignment buttons: Click to apply, active state shows current alignment
+- [ ] Alignment buttons: Hover shows tooltip
+- [ ] Text Formatting: Paragraph spacing (Line height, Letter spacing)
+- [ ] Line Height: Dropdown (1.0, 1.15, 1.5, 2.0, 2.5, 3.0, custom)
+- [ ] Line Height dropdown: Hover on values highlights them
+- [ ] Line Height: Custom input for precise values
+- [ ] Letter Spacing: Slider/input (-50 to +200%)
+- [ ] Letter Spacing: Drag slider or type value
+- [ ] Letter Spacing: Reset button to return to 0
+- [ ] Paragraph Spacing: Before and After values
+- [ ] Paragraph Spacing: Click to focus inputs, type values
+- [ ] Indent: Increase/Decrease buttons
+- [ ] Indent buttons: Click to adjust indentation
+- [ ] First Line Indent input: Click to type value
+- [ ] Text Formatting: Lists (Bullets & Numbered)
+- [ ] Bullet List: Toggle with style dropdown (disc, circle, square, dash, check, arrow, custom)
+- [ ] Bullet List button: Click to toggle bullet list
+- [ ] Bullet List dropdown: Click arrow for styles
+- [ ] Bullet List styles: Hover shows preview
+- [ ] Numbered List: Toggle with style dropdown (1,2,3 / a,b,c / i,ii,iii / A,B,C / roman)
+- [ ] Numbered List: Same interaction as bullet list
+- [ ] List: Decrease/Increase Indent buttons
+- [ ] List indent buttons: Click to adjust list level
+- [ ] Text Effects: All Caps toggle
+- [ ] Text Effects: Small Caps toggle
+- [ ] Text Effects: WordArt/Curved Text (arch, circle, wave, custom path)
+- [ ] Text Effects: Text Transform dropdown (None, Uppercase, Lowercase, Capitalize)
+- [ ] All Caps toggle: Click to toggle, active state when applied
+- [ ] Small Caps toggle: Same as All Caps
+- [ ] WordArt button: Click opens WordArt options panel/modal
+- [ ] WordArt panel: Hover on presets shows preview
+- [ ] WordArt panel: Click preset to apply
+- [ ] Text Transform dropdown: Click to open, select option
+- [ ] Style Presets: Heading 1, 2, 3 buttons
+- [ ] Style Presets: Body Text, Caption presets
+- [ ] Style Presets: Custom Styles dropdown (user-defined saved styles)
+- [ ] Style preset buttons: Hover shows style preview tooltip
+- [ ] Style preset buttons: Click to apply style
+- [ ] Custom Styles dropdown: Hover on styles shows preview
+- [ ] Custom Styles dropdown: Click to apply
+- [ ] Custom Styles dropdown: Right-click for style options (Apply, Edit, Delete, Rename)
+
+### 6.4 Image Formatting Toolbar
+- [ ] Image Formatting: Replace, Crop, Flip, Filters
+- [ ] Image: Replace Image button
+- [ ] Replace Image button: Click opens image selector
+- [ ] Image: Crop button (enters crop mode)
+- [ ] Crop button: Click enters crop mode with overlay
+- [ ] Image: Flip Horizontal button
+- [ ] Image: Flip Vertical button
+- [ ] Flip buttons: Click to flip, visual update immediately
+- [ ] Image: Reset Image button (revert to original)
+- [ ] Reset button: Click with confirmation if edited
+- [ ] Image Formatting: Adjustments (Brightness, Contrast, etc.)
+- [ ] Adjustments: Brightness slider (-100 to +100)
+- [ ] Adjustments: Contrast slider (-100 to +100)
+- [ ] Adjustments: Saturation slider (-100 to +100)
+- [ ] Adjustments: Blur slider (0 to 100)
+- [ ] Adjustments: Opacity slider (0 to 100%)
+- [ ] Adjustment sliders: Drag to adjust, real-time preview
+- [ ] Adjustment sliders: Hover shows current value
+- [ ] Adjustment sliders: Double-click to reset to 0/default
+- [ ] Adjustment sliders: Type exact value in input
+- [ ] Filters: Dropdown/gallery (None, Grayscale, Sepia, Invert, Vintage, Warm, Cool, High Contrast, custom)
+- [ ] Filters: Intensity slider when applied
+- [ ] Filters dropdown: Click to open filter gallery
+- [ ] Filters gallery: Grid of filter previews
+- [ ] Filters gallery: Hover on filter shows preview on image
+- [ ] Filters gallery: Click filter to apply
+- [ ] Filter intensity slider: Drag to adjust, real-time preview
+- [ ] Image Effects: Drop Shadow toggle with settings
+- [ ] Drop Shadow button: Click opens settings popover
+- [ ] Drop Shadow popover: Enable toggle, offset X/Y, blur, color, opacity sliders
+- [ ] Image Effects: Border/Frame dropdown with presets
+- [ ] Border/Frame dropdown: Hover on presets shows preview
+- [ ] Border/Frame dropdown: Click to apply
+- [ ] Image Effects: Corner Radius slider
+- [ ] Corner Radius slider: Drag to round corners, real-time preview
+- [ ] Image Effects: Mask button with shapes (circle, star, heart, hexagon, custom)
+- [ ] Mask button: Click opens mask shape selector
+- [ ] Mask selector: Hover on shapes shows preview
+- [ ] Mask selector: Click to apply mask
+- [ ] Background Remover: AI-powered removal button (if implemented)
+- [ ] Background Remover button: Click to process (shows loading)
+- [ ] Background Remover: Preview before/after with slider
+- [ ] Background Remover: Apply/Cancel buttons
+
+### 6.5 Shape Formatting Toolbar
+- [ ] Shape Formatting: Fill/Stroke controls
+- [ ] Fill: Type dropdown (Solid, Gradient, Pattern, None)
+- [ ] Fill Type dropdown: Click to select type
+- [ ] Fill: Color picker (for solid)
+- [ ] Fill Color picker: Click to open, same interaction as text color
+- [ ] Fill: Gradient editor (type, colors, stops, angle)
+- [ ] Gradient editor button: Click opens gradient editor modal
+- [ ] Gradient editor: Drag gradient stops to adjust
+- [ ] Gradient editor: Click on gradient bar to add new stop
+- [ ] Gradient editor: Click stop to edit color
+- [ ] Gradient editor: Drag angle slider or type degrees
+- [ ] Gradient editor: Select gradient type (linear/radial) with toggle
+- [ ] Fill: Pattern selector
+- [ ] Pattern selector: Click opens pattern gallery
+- [ ] Pattern gallery: Grid of pattern thumbnails
+- [ ] Pattern gallery: Hover shows pattern name
+- [ ] Pattern gallery: Click to apply pattern
+- [ ] Fill: Opacity slider
+- [ ] Fill Opacity slider: Drag to adjust transparency
+- [ ] Stroke: Color picker
+- [ ] Stroke Color: Click to open color picker
+- [ ] Stroke: Width input (0 to 50px)
+- [ ] Stroke Width: Click to type, or use +/- buttons
+- [ ] Stroke Width: Drag mini-slider if available
+- [ ] Stroke: Style dropdown (Solid, Dashed, Dotted, Dash-Dot, custom)
+- [ ] Stroke Style dropdown: Hover shows line style preview
+- [ ] Stroke Style dropdown: Click to apply
+- [ ] Stroke Style custom: Opens dash array editor
+- [ ] Stroke: Opacity slider
+- [ ] Stroke: Position dropdown (Center, Inside, Outside)
+- [ ] Stroke Position dropdown: Hover shows visual explanation
+- [ ] Corner: Radius slider/input (for rectangles)
+- [ ] Corner Radius slider: Drag to round corners
+- [ ] Corner: Individual corner controls toggle
+- [ ] Individual corners toggle: Click to enable separate corner editing
+- [ ] Individual corners: Four separate sliders/inputs for each corner
+- [ ] Shape-Specific: Number of sides (polygons)
+- [ ] Polygon sides input: Click to type, or +/- buttons
+- [ ] Shape-Specific: Number of points, inner radius (stars)
+- [ ] Star points input: Same as polygon sides
+- [ ] Star inner radius slider: Drag to adjust star shape
+- [ ] Shape-Specific: Line caps, arrowhead options (lines)
+- [ ] Line caps dropdown: Select butt, round, square
+- [ ] Arrowhead dropdowns: Separate for start and end
+- [ ] Arrowhead dropdown: Hover shows arrow preview
+- [ ] Shape-Specific: Start/end angle (arcs)
+- [ ] Arc angle sliders: Drag to adjust start/end angles
+- [ ] Arc angle inputs: Click to type precise degrees
+
+### 6.6 Table Formatting Toolbar
+- [ ] Table Formatting: Rows/Columns, Merging cells, Styling presets
+- [ ] Table Structure: Add Row Above/Below
+- [ ] Table Structure: Add Column Left/Right
+- [ ] Table Structure: Delete Row/Column
+- [ ] Add Row/Column buttons: Click to add, hover shows tooltip
+- [ ] Delete Row/Column buttons: Click to delete selected row/column
+- [ ] Table Structure: Merge Cells button
+- [ ] Merge Cells button: Click to merge selected cells, disabled if not applicable
+- [ ] Table Structure: Split Cells button
+- [ ] Split Cells button: Click to split merged cell
+- [ ] Table Structure: Table Properties button (detailed settings)
+- [ ] Table Properties button: Click opens properties modal/panel
+- [ ] Cell Formatting: Cell Background Color
+- [ ] Cell Background: Click to open color picker
+- [ ] Cell Formatting: Cell Border Color and Width
+- [ ] Cell Border: Color picker and width input
+- [ ] Cell Border: Individual border controls (top, right, bottom, left)
+- [ ] Cell Formatting: Cell Padding input
+- [ ] Cell Padding: Click to type, or use slider
+- [ ] Cell Formatting: Vertical Alignment (Top, Middle, Bottom)
+- [ ] Vertical Alignment: Icon buttons, click to select
+- [ ] Cell Formatting: Horizontal Alignment (Left, Center, Right)
+- [ ] Horizontal Alignment: Icon buttons, click to select
+- [ ] Table Styles: Preset gallery (plain, bordered, striped, header highlighted)
+- [ ] Table Styles gallery: Grid of style thumbnails
+- [ ] Table Styles gallery: Hover shows style name and preview
+- [ ] Table Styles gallery: Click to apply style to entire table
+
+### 6.7 Multi-Selection Toolbar
+- [ ] Multi-selection: Group/Ungroup, Distribute, Alignment
+- [ ] Alignment: Align Left, Center Horizontally, Align Right
+- [ ] Alignment: Align Top, Middle Vertically, Align Bottom
+- [ ] Alignment: Distribute Horizontally, Distribute Vertically
+- [ ] Alignment buttons: Click to align all selected elements
+- [ ] Alignment buttons: Hover shows alignment preview (optional)
+- [ ] Distribute buttons: Click to evenly space elements
+- [ ] Grouping: Group button (Ctrl+G)
+- [ ] Group button: Click to group selected elements
+- [ ] Grouping: Ungroup button (Ctrl+Shift+G)
+- [ ] Ungroup button: Click to ungroup, disabled if no group selected
+- [ ] Common: Opacity slider (applies to all)
+- [ ] Multi-selection Opacity slider: Drag to adjust all selected elements
+- [ ] Common: Delete All button
+- [ ] Delete All button: Click with confirmation dialog
+
+## 7. Configuration Panels (Right Sidebar)
+
+### 7.1 Panel Interaction Patterns
+- [ ] Panel tabs: Click to switch between Properties/Page/Layers
+- [ ] Panel tabs: Hover highlights tab
+- [ ] Panel tabs: Active tab has distinct visual state
+- [ ] Panel sections: Accordion collapse/expand on header click
+- [ ] Panel sections: Hover on header shows collapse/expand icon
+- [ ] Panel sections: Remember collapsed state per session
+- [ ] Panel "Expand All" button: Click to expand all sections
+- [ ] Panel "Collapse All" button: Click to collapse all sections
+- [ ] Panel inputs: Click to focus and edit
+- [ ] Panel inputs: Hover shows focus state
+- [ ] Panel dropdowns: Click to open
+- [ ] Panel sliders: Drag to adjust
+- [ ] Panel color pickers: Click to open
+- [ ] Panel toggles: Click to toggle on/off, visual state change
+
+### 7.2 Properties Panel
+- [ ] Properties Panel: Sync with selection (X, Y, W, H, Rotation, Opacity)
+- [ ] Properties Panel: Advanced transforms (Lock aspect ratio, Flip)
+- [ ] Properties Panel: Effects (Shadows, Blur, Blend modes)
+- [ ] Element Info: Type label, Name (editable), Placeholder toggle
+- [ ] Element Name: Click to edit inline
+- [ ] Element Name: Hover shows edit cursor
+- [ ] Placeholder toggle: Click to enable/disable placeholder mode
+- [ ] Element Info: Field mapping dropdown (if placeholder)
+- [ ] Field mapping dropdown: Click to select data field
+- [ ] Field mapping dropdown: Hover on fields shows sample data tooltip
+- [ ] Transform: Position X/Y inputs with units
+- [ ] Position inputs: Click to type value
+- [ ] Position inputs: Hover shows +/- increment buttons
+- [ ] Transform: Width/Height inputs with lock aspect toggle
+- [ ] Width/Height inputs: Click to edit
+- [ ] Lock aspect ratio toggle: Click to lock/unlock (chain icon)
+- [ ] Lock aspect ratio toggle: Hover shows tooltip
+- [ ] Transform: Rotation angle input (degrees)
+- [ ] Rotation input: Click to type, or use circular slider if available
+- [ ] Transform: Flip Horizontal/Vertical buttons
+- [ ] Flip buttons: Click to flip element
+- [ ] Appearance: Opacity slider (0-100%)
+- [ ] Opacity slider: Drag to adjust transparency
+- [ ] Opacity slider: Shows percentage value
+- [ ] Appearance: Blend mode dropdown (Normal, Multiply, Screen, Overlay, etc.)
+- [ ] Blend mode dropdown: Hover on modes shows description
+- [ ] Blend mode dropdown: Click to apply
+- [ ] Text Properties: All font properties (mirrored from toolbar)
+- [ ] Text Properties: Text content editor (quick edit)
+- [ ] Text content editor: Click to focus, type to edit
+- [ ] Text content editor: Expands to multi-line if needed
+- [ ] Text Properties: Character limit with count
+- [ ] Character limit: Shows current count / max
+- [ ] Character limit: Warning when approaching limit
+- [ ] Text Properties: Overflow behavior (Visible, Hidden, Ellipsis, Shrink to Fit)
+- [ ] Overflow dropdown: Select behavior, hover shows example
+- [ ] Shape Properties: Fill and stroke properties
+- [ ] Shape Properties: Shadow settings (enable, offsets, blur, spread, color)
+- [ ] Shadow enable toggle: Click to enable/disable
+- [ ] Shadow settings: Sliders for all properties
+- [ ] Shadow settings: Live preview on element
+- [ ] Image Properties: Filter and adjustment sliders
+- [ ] Image Properties: Source display (filename/URL)
+- [ ] Image source: Click to view full path tooltip
+- [ ] Image Properties: Replace button
+- [ ] Replace button: Click to open image selector
+- [ ] Image Properties: Fit mode (Fill, Fit, Stretch, Tile)
+- [ ] Fit mode dropdown: Hover shows visual example
+- [ ] Image Properties: Crop button
+- [ ] Crop button: Click to enter crop mode
+- [ ] Link Section: Add/Edit Link button
+- [ ] Add Link button: Click opens link editor
+- [ ] Link: Type dropdown (URL, Email, Phone, Page link)
+- [ ] Link type dropdown: Select link type
+- [ ] Link: URL input, Open in new tab toggle
+- [ ] Link URL input: Click to type, paste supported
+- [ ] Open in new tab toggle: Click to enable/disable
+- [ ] Link: Test Link button
+- [ ] Test Link button: Click to open link in new tab (test)
+- [ ] Actions: On Click action dropdown (for interactive PDFs)
+- [ ] On Click dropdown: Select action type
+- [ ] Actions: Action configuration based on selection
+- [ ] Action configuration: Dynamic fields based on action type
+- [ ] Advanced: Element ID (auto-generated)
+- [ ] Element ID: Display only, copy button to copy ID
+- [ ] Advanced: CSS class input
+- [ ] CSS class input: Click to type class names
+- [ ] Advanced: Custom data attributes
+- [ ] Data attributes: Add/remove attribute pairs (key-value)
+- [ ] Advanced: Export settings (include/exclude)
+- [ ] Export toggle: Click to include/exclude from export
+
+### 7.3 Page Panel
+- [ ] Page Panel: Page Setup (Size presets, Orientation, Margins)
+- [ ] Page Properties: Page/Template name (editable)
+- [ ] Page name: Click to edit inline
+- [ ] Page Properties: Category dropdown
+- [ ] Category dropdown: Click to select or create category
+- [ ] Page Properties: Description textarea
+- [ ] Description textarea: Click to edit, auto-expands
+- [ ] Page Dimensions: Width/Height inputs with unit dropdown
+- [ ] Dimension inputs: Click to type value
+- [ ] Dimension inputs: Unit dropdown next to input (click to change)
+- [ ] Page Dimensions: Orientation toggle buttons
+- [ ] Orientation toggle: Click Portrait or Landscape icon
+- [ ] Page Dimensions: Size presets dropdown
+- [ ] Size presets dropdown: Hover on presets shows dimensions
+- [ ] Size presets dropdown: Click to apply
+- [ ] Page Dimensions: "Apply to All Pages" checkbox
+- [ ] Apply to All checkbox: Click to enable/disable
+- [ ] Page Panel: Background settings (Patterns, Images)
+- [ ] Page Background: Type toggle (Color/Image/Pattern)
+- [ ] Background type toggle: Click to switch type
+- [ ] Page Background: Color picker
+- [ ] Background color: Click to open color picker
+- [ ] Page Background: Image selector with position, size, repeat
+- [ ] Background image selector: Click to browse/upload
+- [ ] Background image: Position dropdown (center, top-left, etc.)
+- [ ] Background image: Size dropdown (cover, contain, actual)
+- [ ] Background image: Repeat toggle (repeat, no-repeat, repeat-x, repeat-y)
+- [ ] Page Background: Pattern selector
+- [ ] Pattern selector: Click to open pattern gallery
+- [ ] Page Background: Opacity slider
+- [ ] Background opacity: Drag to adjust
+- [ ] Page Margins: Top, Right, Bottom, Left inputs
+- [ ] Margin inputs: Click to type value
+- [ ] Page Margins: Link toggle for same margin on all sides
+- [ ] Margin link toggle: Click to link/unlink (chain icon)
+- [ ] Margin link toggle: When linked, all inputs sync
+- [ ] Page Margins: Show margins on canvas toggle
+- [ ] Show margins toggle: Click to display margin guides on canvas
+- [ ] Page Panel: Watermark configuration
+- [ ] Watermark: Enable toggle
+- [ ] Watermark enable: Click to enable/disable watermark
+- [ ] Watermark: Type (Text/Image)
+- [ ] Watermark type toggle: Click to switch
+- [ ] Watermark Text: Content, font, size, color, opacity, rotation
+- [ ] Watermark text content: Click to type
+- [ ] Watermark font: Dropdown, click to select
+- [ ] Watermark size: Slider or input
+- [ ] Watermark color: Color picker
+- [ ] Watermark opacity: Slider
+- [ ] Watermark rotation: Slider (0-360°)
+- [ ] Watermark Image: Upload/select, size, opacity, position
+- [ ] Watermark image: Click to upload/select
+- [ ] Watermark image size: Slider or input
+- [ ] Watermark: Position preset (Center, Corners, Tile)
+- [ ] Watermark position: Click preset buttons or custom X/Y inputs
+- [ ] Document Setup: Page size visual selector
+- [ ] Page size visual selector: Click on page size icons
+- [ ] Document Setup: Resolution/DPI dropdown (72, 150, 300, custom)
+- [ ] DPI dropdown: Click to select, custom input option
+- [ ] Document Setup: Bleed settings (for print)
+- [ ] Bleed settings: Inputs for top, right, bottom, left bleed
+- [ ] Margins & Guides: Visual preview
+- [ ] Margins preview: Miniature canvas preview showing margins
+- [ ] Margins & Guides: Safe area toggle
+- [ ] Safe area toggle: Click to show/hide safe area on canvas
+- [ ] Margins & Guides: Column guides (columns, gutter width)
+- [ ] Column guides: Number input for columns
+- [ ] Column guides: Gutter width slider/input
+- [ ] Grid Section: Show grid toggle, size, color, opacity, snap toggle
+- [ ] Grid show toggle: Click to show/hide grid
+- [ ] Grid size: X and Y inputs
+- [ ] Grid color: Color picker
+- [ ] Grid opacity: Slider
+- [ ] Grid snap toggle: Click to enable/disable snapping
+- [ ] Header & Footer: Enable toggles
+- [ ] Header enable toggle: Click to enable/disable
+- [ ] Header & Footer: Height inputs
+- [ ] Header/Footer height: Click to type value
+- [ ] Header & Footer: Content editors
+- [ ] Header/Footer content: Click button to open editor modal/panel
+- [ ] Page Numbering: Enable toggle
+- [ ] Page numbering enable: Click to enable/disable
+- [ ] Page Numbering: Position dropdown, Format options
+- [ ] Page numbering position: Dropdown with corner/center options
+- [ ] Page numbering format: Dropdown (1,2,3 / Page 1 / 1 of N / i,ii,iii)
+- [ ] Page Numbering: Starting number, Font/size settings
+- [ ] Starting number: Input, click to type
+- [ ] Page numbering font/size: Dropdowns and inputs
+
+### 7.4 Layers Panel
+- [ ] Layers Panel: Visibility, Locking, Reordering (Z-index), Search
+- [ ] Layers: List showing visibility (eye), lock, type icon, name, thumbnail
+- [ ] Layer visibility toggle: Click eye icon to show/hide
+- [ ] Layer visibility toggle: Hover shows tooltip (Show/Hide)
+- [ ] Layer lock toggle: Click lock icon to lock/unlock
+- [ ] Layer lock toggle: Hover shows tooltip (Lock/Unlock)
+- [ ] Layer type icon: Displays element type (text, image, shape, etc.)
+- [ ] Layer name: Click to select layer
+- [ ] Layer name: Double-click to rename inline
+- [ ] Layer name: Hover highlights layer row
+- [ ] Layer thumbnail: Click to select layer
+- [ ] Layer thumbnail: Hover shows larger preview
+- [ ] Layers: Ordered by z-index (top first)
+- [ ] Layers: Selected element highlighted
+- [ ] Layers: Multi-select with Shift/Ctrl+Click
+- [ ] Layer multi-select: Shift+Click to select range
+- [ ] Layer multi-select: Ctrl+Click to toggle individual selection
+- [ ] Layers: Drag to reorder
+- [ ] Layer drag: Click and drag layer row to reorder
+- [ ] Layer drag: Show drop indicator line where layer will be placed
+- [ ] Layer drag: Scroll layer list while dragging near edges
+- [ ] Layers: Double-click name to rename
+- [ ] Layer rename: Inline edit with text input
+- [ ] Layer rename: Press Enter to save, Escape to cancel
+- [ ] Layers: Right-click for context menu (Delete, Duplicate, Group, Lock, Hide)
+- [ ] Layer context menu: Delete layer
+- [ ] Layer context menu: Duplicate layer
+- [ ] Layer context menu: Group with selected
+- [ ] Layer context menu: Lock/Unlock
+- [ ] Layer context menu: Show/Hide
+- [ ] Layer context menu: Rename
+- [ ] Layer context menu: Bring to Front/Send to Back
+- [ ] Layer context menu: Properties
+- [ ] Layer Controls: Add new layer/element dropdown
+- [ ] Add layer button: Click opens dropdown of element types to add
+- [ ] Layer Controls: Delete selected layer button
+- [ ] Delete layer button: Click to delete (with confirmation if needed)
+- [ ] Layer Controls: Duplicate selected layer button
+- [ ] Duplicate layer button: Click to duplicate
+- [ ] Layer Controls: Group selected layers button
+- [ ] Group button: Click to group selected layers
+- [ ] Layer Controls: Ungroup button
+- [ ] Ungroup button: Click to ungroup (enabled only when group selected)
+- [ ] Layer Controls: Lock/Unlock toggle
+- [ ] Lock toggle: Click to lock/unlock selected layers
+- [ ] Layer Controls: Show/Hide toggle
+- [ ] Show/Hide toggle: Click to toggle visibility of selected layers
+- [ ] Groups: Expandable/collapsible entries
+- [ ] Group expand/collapse: Click arrow icon to expand/collapse
+- [ ] Groups: Indented child elements
+- [ ] Groups: Expand/collapse toggle
+- [ ] Group hover: Highlights all child elements on canvas
+- [ ] Layers: Search input to filter by name
+- [ ] Layer search: Type to filter layers in real-time
+- [ ] Layer search: Clear button appears when typing
+- [ ] Layers: Filter dropdown (All, Images, Text, Shapes, Placeholders)
+- [ ] Layer filter dropdown: Click to select filter
+- [ ] Layer filter dropdown: Hover shows count of each type
+- [ ] Layer filter: Updates layer list to show only filtered types
+
+### 7.5 Panel Management
+- [ ] Tab buttons: Properties, Page, Layers switching
+- [ ] Collapsible sections (accordion style) within panels
+- [ ] Remember collapsed state per user session
+- [ ] "Expand All" and "Collapse All" options
+
+## 8. Mail Merge & Advanced Logic
+
+### 8.1 Data Source Connection
+- [ ] Connect Data Source (Sample JSON / File)
+- [ ] Start Mail Merge section with document type options
+- [ ] Document types: Labels, Envelopes, Single Document, Directory
+- [ ] Document type selection: Click to select type
+- [ ] Document type: Hover shows description and use case
+- [ ] Select Recipients: Data Source button (Drive file picker)
+- [ ] Data Source button: Click opens Drive file picker
+- [ ] Data Source button: Hover shows current source if connected
+- [ ] Select Recipients: Connected source indicator (filename, row count)
+- [ ] Connected source display: Click to view details
+- [ ] Select Recipients: Edit Recipient List button
+- [ ] Edit Recipient button: Click opens data editor modal
+- [ ] Select Recipients: Refresh Data button
+- [ ] Refresh Data button: Click to reload data from source
+- [ ] Refresh Data button: Shows loading spinner while refreshing
+- [ ] Refresh Data button: Shows last refreshed timestamp on hover
+
+### 8.2 Data Editor Modal
+- [ ] Filter & Edit recipient list modal
+- [ ] Data modal: Close button (X)
+- [ ] Data modal: Click outside to close (with unsaved changes warning)
+- [ ] Data Table: Full spreadsheet-style view
+- [ ] Data Table: Column headers, row numbers
+- [ ] Data Table: Scrollable with fixed header
+- [ ] Data Table: Sortable columns (click header)
+- [ ] Data Table: Filterable (icon on each column)
+- [ ] Column header: Click to sort ascending/descending
+- [ ] Column header: Hover shows sort icon
+- [ ] Column header: Click filter icon to open filter menu
+- [ ] Column filter: Checkboxes for unique values, search input
+- [ ] Column filter: Select All/Deselect All
+- [ ] Row Selection: Checkbox column for include/exclude
+- [ ] Row checkbox: Click to include/exclude from merge
+- [ ] Row Selection: Select All / Deselect All buttons
+- [ ] Select All checkbox: Click to select/deselect all rows
+- [ ] Row Selection: Selection count indicator
+- [ ] Selection count: Updates in real-time as rows selected
+- [ ] Data Actions: Add Row, Delete Selected Rows
+- [ ] Add Row button: Click to add new blank row at bottom
+- [ ] Delete Selected button: Click with confirmation dialog
+- [ ] Data Actions: Find and Replace in data
+- [ ] Find and Replace button: Click opens find/replace dialog
+- [ ] Find and Replace: Input for find, input for replace
+- [ ] Find and Replace: Find Next, Replace, Replace All buttons
+- [ ] Data Actions: Duplicate Row
+- [ ] Duplicate Row button: Click to duplicate selected row(s)
+- [ ] Filter Controls: Active filters display
+- [ ] Active filters: Chips showing active filters with X to remove
+- [ ] Filter Controls: Clear all filters button
+- [ ] Clear filters button: Click to remove all filters
+- [ ] Filter Controls: Advanced filter builder
+- [ ] Advanced filter button: Click opens filter builder
+- [ ] Filter builder: Add condition rows (Column, Operator, Value)
+- [ ] Filter builder: AND/OR logic toggles
+- [ ] Data Validation: Highlight cells with issues
+- [ ] Validation highlights: Red border or background for invalid cells
+- [ ] Validation issues: Hover shows error tooltip
+- [ ] Data Validation: Rules configuration
+- [ ] Validation rules button: Click to configure validation rules
+- [ ] Validation rules: Define required fields, data types, ranges
+
+### 8.3 Field Mapping & Insertion
+- [ ] Map Fields to {{Placeholders}}
+- [ ] Highlight Merge Fields button (toggle)
+- [ ] Highlight button: Click to toggle placeholder highlights on canvas
+- [ ] Highlight button: Active state when enabled
+- [ ] Address Block Button: Opens builder
+- [ ] Address Block button: Click opens address block builder modal
+- [ ] Address Block: Format selection, Field mapping
+- [ ] Address Block format: Radio buttons or dropdown for format
+- [ ] Address Block field mapping: Dropdowns to map Name, Company, Street, City, etc.
+- [ ] Address Block: Preview with sample data
+- [ ] Address Block preview: Updates in real-time as fields mapped
+- [ ] Address Block: Insert button
+- [ ] Address Block insert: Click to insert block at cursor or canvas center
+- [ ] Greeting Line Button: Opens builder
+- [ ] Greeting Line button: Click opens greeting line builder modal
+- [ ] Greeting Line: Salutation, Name format, Fallback
+- [ ] Greeting Line salutation: Dropdown (Dear, Hello, Hi, To, custom)
+- [ ] Greeting Line name format: Dropdown (Full name, First name, Title + Last, etc.)
+- [ ] Greeting Line fallback: Input for text when name missing
+- [ ] Greeting Line: Preview
+- [ ] Greeting Line preview: Updates as options changed
+- [ ] Greeting Line: Insert button
+- [ ] Greeting Line insert: Click to insert
+- [ ] Insert Merge Field Dropdown: List of available fields
+- [ ] Insert Field dropdown: Click to open
+- [ ] Insert Field: Hover on fields shows sample data tooltip
+- [ ] Insert Field: Click to insert at cursor/selection
+- [ ] Insert Field: Shows field name with icon
+- [ ] Insert Field: Search/filter fields within dropdown
+- [ ] Rules Button: Conditional logic rules
+- [ ] Rules button: Click opens rules builder
+- [ ] Rules builder: Add rule button
+- [ ] Rules builder: If...Then...Else logic
+- [ ] Rules builder: Select field, operator, value
+- [ ] Rules builder: Then action (show field, skip record, format)
+- [ ] Rules builder: Else action (optional)
+- [ ] Rules builder: Save/Cancel buttons
+- [ ] Match Fields Button: Map placeholders to columns
+- [ ] Match Fields button: Click opens mapping dialog
+- [ ] Match Fields: Two-column layout (Placeholder | Data Column)
+- [ ] Match Fields: Dropdowns for each placeholder to select column
+- [ ] Match Fields: Auto-match button (matches by similar names)
+- [ ] Match Fields: Manual override by selecting from dropdown
+- [ ] Match Fields: Save mappings button
+- [ ] Update Labels Button (for label documents)
+- [ ] Update Labels button: Click propagates design from first label to all
+- [ ] Update Labels: Shows progress indicator
+- [ ] Update Labels: Confirmation before overwriting
+
+### 8.4 Preview & Validation
+- [ ] Preview Mode: Real-time placeholder replacement with sample data
+- [ ] Preview Toggle: Switch between placeholders and merged data
+- [ ] Preview toggle button: Click to enter/exit preview mode
+- [ ] Preview toggle: Active state when in preview mode
+- [ ] Preview mode: All placeholders replaced with data from current record
+- [ ] Record Navigation: Previous, Current/Total, Next buttons
+- [ ] Record Previous button: Click to show previous record data
+- [ ] Record Next button: Click to show next record data
+- [ ] Record indicator: Shows "Record X of Y"
+- [ ] Record indicator: Click to open record jump dialog
+- [ ] Record jump dialog: Input record number and go
+- [ ] Record Navigation: First, Last buttons
+- [ ] Record First button: Click to jump to first record
+- [ ] Record Last button: Click to jump to last record
+- [ ] Record Navigation: Find Recipient search
+- [ ] Find Recipient button: Click opens search dialog
+- [ ] Find Recipient: Search input, searches all fields
+- [ ] Find Recipient: Results list, click result to jump to record
+- [ ] "Check for Errors" validation scanner
+- [ ] Check for Errors button: Click to run validation
+- [ ] Check for Errors: Shows progress indicator while scanning
+- [ ] Error Check: Unmapped placeholders
+- [ ] Error Check: Missing required data
+- [ ] Error Check: Invalid field references
+- [ ] Error Check: Formatting issues
+- [ ] Error Check: Display report with fix suggestions
+- [ ] Error report: List of errors with severity (error, warning)
+- [ ] Error report: Click error to jump to problem location
+- [ ] Error report: Fix button for auto-fixable errors
+- [ ] Error report: Dismiss or fix all button
+
+### 8.5 Conditional Logic
+- [ ] Conditional Logic: Show/Hide elements based on data rules
+- [ ] Conditional Text: Appears only if condition met
+- [ ] Conditional Text: Condition builder (Field, Operator, Value)
+- [ ] Condition builder: Click to add condition
+- [ ] Condition builder: Select field from dropdown
+- [ ] Condition builder: Select operator from dropdown
+- [ ] Condition builder: Input value or select from options
+- [ ] Conditional Text: Operators (equals, contains, greater than, is empty, etc.)
+- [ ] Conditional Text: AND/OR logic for multiple conditions
+- [ ] Condition AND/OR toggle: Click to switch logic
+- [ ] Conditional Visibility: Any element display rules
+- [ ] Conditional Visibility: Show/Hide if condition met
+- [ ] Conditional Visibility: Set in properties panel
+- [ ] Element properties: Conditional Display section
+- [ ] Element properties: Enable conditional display toggle
+- [ ] Element properties: Condition builder (same as above)
+- [ ] Conditional Formatting: Change styles based on values
+- [ ] Conditional Formatting: If value > X, change color
+- [ ] Conditional Formatting: Set up rules in properties panel
+- [ ] Conditional Format rule: Select property to change (color, font size, etc.)
+- [ ] Conditional Format rule: Condition and new value
+- [ ] Conditional Formatting: Fallback for empty fields
+- [ ] Conditional Format: Fallback value input if field is empty
+
+### 8.6 Document Generation
+- [ ] Finish & Merge: Dropdown options
+- [ ] Finish & Merge button: Click opens dropdown
+- [ ] Finish & Merge: Edit Individual Documents
+- [ ] Edit Individual: Click to generate all documents in edit mode
+- [ ] Finish & Merge: Print Documents
+- [ ] Print Documents: Click opens print dialog
+- [ ] Finish & Merge: Send Email Messages (if email field available)
+- [ ] Send Email: Click opens email configuration dialog
+- [ ] Send Email config: Subject, body template, attachment options
+- [ ] Finish & Merge: Generate PDFs (batch to Drive)
+- [ ] Generate PDFs: Click to start batch generation
+- [ ] Merge Options Dialog: Record range (All, Current, Range)
+- [ ] Merge Options: Radio buttons for All/Current/Range
+- [ ] Merge Options Range: Input start and end record numbers
+- [ ] Merge Options: Output destination folder
+- [ ] Merge Options destination: Click to select Drive folder
+- [ ] Merge Options: File naming pattern builder
+- [ ] File naming pattern: Drag-drop fields and text to build pattern
+- [ ] File naming pattern: Preview shows example filename
+- [ ] Merge Options: Output format selection
+- [ ] Output format: Dropdown (PDF, DOCX, PNG, etc.)
+- [ ] Merge Options: Quality/resolution settings
+- [ ] Quality settings: DPI slider/input for image exports
+- [ ] Merge Options: Include/exclude options
+- [ ] Include/exclude: Checkboxes for optional elements
+- [ ] Merge Options: Start/Generate button
+- [ ] Generate button: Click to start merge process
+- [ ] Merge progress: Progress bar showing X of Y documents
+- [ ] Merge progress: Cancel button to stop process
+- [ ] Merge complete: Success message with link to output folder
+- [ ] Merge complete: View generated files button
+
+## 9. File Operations & Export
+
+### 9.1 Local Storage
+- [ ] Save to LocalStorage
+- [ ] Auto-save to LocalStorage (every 30 seconds)
+- [ ] Auto-save on significant changes
+- [ ] Auto-save indicator: Shows "Saving..." then "Saved" status
+
+### 9.2 Export Formats
+- [ ] Export as PNG
+- [ ] Export PNG dialog: Resolution/DPI selection
+- [ ] Export PNG dialog: Transparent background toggle
+- [ ] Export PNG dialog: Click Export button
+- [ ] Export PNG: Shows progress indicator
+- [ ] Export PNG: Success toast with download link
+- [ ] Export as High-Quality PDF
+- [ ] Export PDF dialog: Page range selection
+- [ ] Export PDF dialog: Quality settings (compression level)
+- [ ] Export PDF dialog: Include interactive elements toggle
+- [ ] Export PDF: Click Export button
+- [ ] PDF Export: jsPDF or similar library
+- [ ] PDF Export: WYSIWYG output matching canvas
+- [ ] PDF Export: Shows progress indicator
+- [ ] PDF Export: Success with download link
+- [ ] Export as SVG
+- [ ] Export SVG dialog: Options (embed fonts, optimize)
+- [ ] Export SVG: Click Export button
+- [ ] SVG Export: Vector graphics preservation
+- [ ] SVG Export: Success with download
+- [ ] Export as JSON Template
+- [ ] Export JSON: Click to download template definition
+- [ ] JSON Export: Template definition for backup/sharing
+- [ ] JSON Export: Instant download
+- [ ] Export: PNG/JPG at specified DPI
+- [ ] Export: Quality/resolution settings
+- [ ] Export common: File name input before export
+- [ ] Export common: Cancel button in dialogs
+
+### 9.3 Google Drive Integration
+- [ ] Google Drive Integration (Save/Open)
+- [ ] Drive: Browse and select files
+- [ ] Drive browser: Click to open Drive file picker
+- [ ] Drive browser: Navigate folders by clicking
+- [ ] Drive browser: Search files in Drive
+- [ ] Drive browser: Thumbnail/list view toggle
+- [ ] Drive browser: Click file to select
+- [ ] Drive browser: Double-click file to open
+- [ ] Drive browser: Right-click file for options (Open, Rename, Delete, Move)
+- [ ] Drive: Save templates as JSON
+- [ ] Drive Save: Click Save to Drive button
+- [ ] Drive Save: Select destination folder
+- [ ] Drive Save: Input filename
+- [ ] Drive Save: Confirm save
+- [ ] Drive Save: Shows progress indicator
+- [ ] Drive Save: Success toast
+- [ ] Drive: Read Excel data files
+- [ ] Drive: Open Excel file for mail merge
+- [ ] Drive Excel: Shows preview of data
+- [ ] Drive: Save generated documents
+- [ ] Drive: Batch save merged documents to folder
+- [ ] Drive: Manage assets folder
+- [ ] Drive assets: Browse assets in Drive
+- [ ] Drive assets: Upload to Drive assets folder
+- [ ] Drive: Upload assets
+- [ ] Drive upload: Drag-drop to upload
+- [ ] Drive upload: Progress indicator per file
+- [ ] Drive: Retrieve and display thumbnails
+- [ ] Drive: Insert assets into canvas
+- [ ] Drive asset: Click to insert
+- [ ] Drive asset: Drag to canvas
+- [ ] Drive: Track asset usage across templates
+- [ ] Template Version History
+- [ ] Version History button: Click to open version history
+- [ ] Version History: List of saved versions with timestamps
+- [ ] Version History: Hover on version shows preview
+- [ ] Version History: Click version to restore (with confirmation)
+- [ ] Version History: Compare versions (side-by-side view)
+- [ ] Version History: Name/annotate versions
+
+### 9.4 Validation Before Save/Export
+- [ ] Validation: All elements within page bounds
+- [ ] Validation warning: Highlight elements outside bounds
+- [ ] Validation: Required placeholder mappings complete
+- [ ] Validation warning: List unmapped placeholders
+- [ ] Validation: No circular group references
+- [ ] Validation error: Prevent save/export if circular references
+- [ ] Validation: Valid font references
+- [ ] Validation warning: List missing fonts, offer alternatives
+- [ ] Validation: Valid image references
+- [ ] Validation warning: List missing images
+- [ ] Validation dialog: Show all warnings/errors before save/export
+- [ ] Validation dialog: Fix automatically button for fixable issues
+- [ ] Validation dialog: Ignore and continue button
+- [ ] Validation dialog: Cancel button
+
+## 10. Element Type Implementations
+
+### 10.1 Text Elements
+- [ ] Text Box: Content with rich formatting
+- [ ] Text Box: Placeholder text when empty
+- [ ] Text Box placeholder: Click to start typing, placeholder disappears
+- [ ] Text Box: Character limit (optional)
+- [ ] Text Box: Auto-grow height toggle
+- [ ] Text Box auto-grow: Expands as text is typed
+- [ ] Text Box: All text formatting properties
+- [ ] Text Box: Box properties (background, border, padding, radius)
+- [ ] Text Box: Overflow handling options
+- [ ] Text Box overflow: Visible, Hidden, Ellipsis, Scroll (if applicable)
+- [ ] Text Box: Auto-fit text to box toggle
+- [ ] Text Box auto-fit: Text scales down to fit box
+- [ ] Text Box: Vertical alignment within box
+- [ ] Text Box vertical align: Top, Middle, Bottom selection
+- [ ] Text Box: Double-click to enter edit mode
+- [ ] Text Box edit mode: Cursor, text selection, typing
+- [ ] Text Box edit mode: Click outside or Escape to exit
+- [ ] Rich Text Block: Multiple paragraphs with different styles
+- [ ] Rich Text Block: Inline images, placeholders
+- [ ] Rich Text Block: Bullet and numbered lists
+- [ ] Rich Text Block: Clickable links within text
+- [ ] Rich Text Block: Columns within text block
+- [ ] Rich Text Block: Hover on links shows URL tooltip
+- [ ] Rich Text Block: Click link (if in preview/export mode)
+
+### 10.2 Image Elements
+- [ ] Image: Source (file reference or URL)
+- [ ] Image: Alt text for accessibility
+- [ ] Image alt text: Input in properties panel
+- [ ] Image: Placeholder image for mail merge
+- [ ] Image: Object fit (cover, contain, fill, none)
+- [ ] Image fit: Dropdown in properties to select
+- [ ] Image: Object position
+- [ ] Image position: Grid selector for position (top-left, center, etc.)
+- [ ] Image: Crop settings (stored crop area)
+- [ ] Image: Aspect ratio lock
+- [ ] Image aspect lock: Toggle in properties
+- [ ] Image: All effects (opacity, filters, shadow, border, radius, mask)
+- [ ] Image: Load asynchronously with loading indicators
+- [ ] Image loading: Spinner or skeleton while loading
+- [ ] Image: Cache loaded images
+- [ ] Image: CORS support for external images
+- [ ] Image CORS error: Show error message, offer to re-upload
+- [ ] Image: Generate thumbnails for browser
+- [ ] Image: Handle large images with scaling
+- [ ] Image large file: Automatically scale down for canvas performance
+- [ ] Image: Click to select
+- [ ] Image: Double-click to enter crop mode
+- [ ] Image: Hover shows action overlay (replace, crop, filters)
+- [ ] Image overlay actions: Click to perform action
+
+### 10.3 Shape Elements
+- [ ] Shape: Type (Rectangle, Ellipse, Triangle, Polygon, Star, Line, Arrow, Custom Path)
+- [ ] Shape: Geometry properties (width, height, corners, points, radius)
+- [ ] Shape: Stroke properties (color, width, style, cap, join, arrows)
+- [ ] Shape: Fill properties (solid, gradient, pattern, none)
+- [ ] Shape: All effects (shadow, blur, opacity)
+- [ ] Shape: Click to select
+- [ ] Shape: Drag to move
+- [ ] Shape: Resize handles to adjust size
+- [ ] Shape: Hover shows tooltip with shape type
+
+### 10.4 Line Elements
+- [ ] Line: Start/end points (x, y)
+- [ ] Line: Line style
+- [ ] Line style: Solid, dashed, dotted, etc.
+- [ ] Line: Start/end decorations (arrows, circles, etc.)
+- [ ] Line decorations: Dropdown in properties to select
+- [ ] Line: Curved/straight toggle
+- [ ] Line curve toggle: Click to switch, adds control points if curved
+- [ ] Line: Control points for curves
+- [ ] Line control points: Drag to adjust curve shape
+- [ ] Line: Click to select
+- [ ] Line: Drag endpoints to reposition
+- [ ] Line: Drag line to move entire line
+
+### 10.5 Table Elements
+- [ ] Table: Structure (rows, columns)
+- [ ] Table: Column widths (fixed, percentage, auto)
+- [ ] Table column width: Drag column border to resize
+- [ ] Table: Row heights (fixed, auto)
+- [ ] Table row height: Drag row border to resize
+- [ ] Table: Merged cells information
+- [ ] Table: Per-cell properties (content, background, border, padding, alignment)
+- [ ] Table cell: Click to select cell
+- [ ] Table cell: Double-click to edit content
+- [ ] Table cell: Drag to select multiple cells
+- [ ] Table cell: Tab to move to next cell
+- [ ] Table cell: Shift+Tab to move to previous cell
+- [ ] Table cell: Right-click for cell context menu
+- [ ] Table: Table-wide properties (border, header row, alternating colors, style preset)
+- [ ] Table: Click to select entire table
+- [ ] Table: Hover on edges shows add row/column buttons
+- [ ] Table add row/column buttons: Click to add
+
+### 10.6 QR Code Elements
+- [ ] QR Code: Data/content (static or placeholder)
+- [ ] QR Code data: Input field in properties
+- [ ] QR Code placeholder: Dropdown to map to data field
+- [ ] QR Code: Version/size
+- [ ] QR Code size: Slider or dropdown
+- [ ] QR Code: Error correction level
+- [ ] QR Code error correction: Dropdown (Low, Medium, High)
+- [ ] QR Code: Foreground/background colors
+- [ ] QR Code colors: Color pickers for foreground and background
+- [ ] QR Code: Logo in center (optional)
+- [ ] QR Code logo: Upload image for center
+- [ ] QR Code: Quiet zone/padding
+- [ ] QR Code quiet zone: Slider to adjust
+- [ ] QR Code: Live preview as settings change
+- [ ] QR Code: Click to select
+- [ ] QR Code: Right-click for QR-specific options
+
+### 10.7 Barcode Elements
+- [ ] Barcode: Type (Code128, Code39, EAN13, EAN8, UPC, etc.)
+- [ ] Barcode type: Dropdown to select
+- [ ] Barcode: Data/content
+- [ ] Barcode data: Input field
+- [ ] Barcode: Show text below toggle
+- [ ] Barcode text toggle: Checkbox to show/hide
+- [ ] Barcode: Bar width, height
+- [ ] Barcode bar width: Slider or input
+- [ ] Barcode height: Slider or input
+- [ ] Barcode: Foreground/background colors
+- [ ] Barcode colors: Color pickers
+- [ ] Barcode: Live preview
+- [ ] Barcode: Click to select
+- [ ] Barcode: Right-click for barcode-specific options
+
+### 10.8 Signature Elements
+- [ ] Signature: Signer name field
+- [ ] Signature name: Input or placeholder mapping
+- [ ] Signature: Signer title field
+- [ ] Signature title: Input or placeholder mapping
+- [ ] Signature: Date signed field (auto or placeholder)
+- [ ] Signature date: Dropdown (auto date, placeholder, custom)
+- [ ] Signature: Signature image placeholder
+- [ ] Signature image: Click to upload or map to data field
+- [ ] Signature: Instructions text
+- [ ] Signature instructions: Editable text field
+- [ ] Signature: Line style
+- [ ] Signature line: Solid, dashed, or custom style
+- [ ] Signature: Click to select
+- [ ] Signature: Visual representation on canvas (line with label)
+
+### 10.9 Date/Time Elements
+- [ ] Date/Time: Format pattern (various formats)
+- [ ] Date format: Dropdown with common formats (MM/DD/YYYY, DD-MM-YYYY, etc.)
+- [ ] Date/Time: Source (current, placeholder, fixed)
+- [ ] Date source: Dropdown (Current Date/Time, Data Field, Custom)
+- [ ] Date/Time: Update behavior (static or auto-update)
+- [ ] Date update: Toggle for auto-update on each generation
+- [ ] Date/Time: Timezone
+- [ ] Date timezone: Dropdown to select timezone
+- [ ] Date/Time: Live preview showing formatted date
+- [ ] Date/Time: Click to select
+- [ ] Date/Time: Edit format in properties
+
+### 10.10 Page Number Elements
+- [ ] Page Number: Format (number only, "Page X", "X of Y", roman numerals)
+- [ ] Page number format: Dropdown to select
+- [ ] Page Number: Starting number
+- [ ] Page number start: Input field
+- [ ] Page Number: Font styling
+- [ ] Page number font: Font, size, color settings
+- [ ] Page Number: Auto-updates in multi-page documents
+- [ ] Page Number: Click to select
+- [ ] Page Number: Visual representation on canvas
+
+### 10.11 Group Elements
+- [ ] Group: Contains child elements
+- [ ] Group: Group-level transform (position, rotation, scale)
+- [ ] Group: Children maintain relative positions
+- [ ] Group: Nested groups support
+- [ ] Group: Click to select entire group
+- [ ] Group: Bounding box around all children
+- [ ] Group: Double-click to enter group (edit children)
+- [ ] Group edit mode: Click outside group to exit
+- [ ] Group: Drag to move all children together
+- [ ] Group: Resize scales all children proportionally
+- [ ] Group: Rotate rotates entire group
+- [ ] Group: Right-click for group-specific options (Ungroup, Enter Group)
+
+### 10.12 Frame Elements
+- [ ] Frame: Acts as clipping container
+- [ ] Frame: Shape (rectangle, circle, custom path)
+- [ ] Frame shape: Dropdown to select frame shape
+- [ ] Frame: Image adapts to frame shape
+- [ ] Frame: Drag image into frame to insert
+- [ ] Frame: Image clips to frame boundaries
+- [ ] Frame: Decorative border options
+- [ ] Frame border: Select from presets or customize
+- [ ] Frame: Click to select
+- [ ] Frame: Double-click to edit/replace content
+
+### 10.13 Icon Elements
+- [ ] Icon: SVG content or reference
+- [ ] Icon: Color override
+- [ ] Icon color: Color picker to change icon color
+- [ ] Icon: Size
+- [ ] Icon size: Slider or input
+- [ ] Icon: Library integration
+- [ ] Icon: Click to select
+- [ ] Icon: Drag from library to canvas
+- [ ] Icon: Hover shows icon name
+
+### 10.14 Chart Elements
+- [ ] Chart: Type (bar, line, pie, doughnut)
+- [ ] Chart type: Dropdown or icon selection
+- [ ] Chart: Data source (manual or linked to columns)
+- [ ] Chart data: Input data manually or link to data source
+- [ ] Chart data linked: Auto-updates when data changes
+- [ ] Chart: Colors, legend, axis labels, title
+- [ ] Chart colors: Customize bar/line/pie colors
+- [ ] Chart legend: Toggle show/hide, position
+- [ ] Chart axis labels: Edit labels for X and Y axes
+- [ ] Chart title: Editable title text
+- [ ] Chart: Live preview
+- [ ] Chart: Click to select
+- [ ] Chart: Double-click to edit data/settings
+
+### 10.15 Header/Footer Elements
+- [ ] Header: Content area with design elements
+- [ ] Header: Height setting
+- [ ] Header height: Adjustable in properties
+- [ ] Header: Appears on every page
+- [ ] Header: Can contain page numbers, title, logo
+- [ ] Header: Click to edit header content
+- [ ] Header: Visual indicator showing header area on canvas
+- [ ] Footer: Similar to header with content area and height
+- [ ] Footer: Repeats on each page
+- [ ] Footer: Click to edit footer content
+
+## 11. Keyboard Shortcuts Implementation
+- [ ] Ctrl+N: New template
+- [ ] Ctrl+O: Open from Drive
+- [ ] Ctrl+S: Save
+- [ ] Ctrl+Shift+S: Save As
+- [ ] Ctrl+P: Print
+- [ ] Ctrl+E: Export (may conflict with text align, consider alternative)
+- [ ] Ctrl+Z: Undo
+- [ ] Ctrl+Y or Ctrl+Shift+Z: Redo
+- [ ] Ctrl+X: Cut
+- [ ] Ctrl+C: Copy
+- [ ] Ctrl+V: Paste
+- [ ] Ctrl+D: Duplicate selection
+- [ ] Delete or Backspace: Delete selection
+- [ ] Ctrl+A: Select all elements
+- [ ] Escape: Deselect / Cancel / Exit edit mode
+- [ ] Arrow keys: Move selection by 1 pixel
+- [ ] Shift+Arrow: Move by 10 pixels
+- [ ] Ctrl+]: Bring forward
+- [ ] Ctrl+[: Send backward
+- [ ] Ctrl+Shift+]: Bring to front
+- [ ] Ctrl+Shift+[: Send to back
+- [ ] Ctrl+G: Group selected
+- [ ] Ctrl+Shift+G: Ungroup
+- [ ] Ctrl+L: Lock selection (may conflict with text align, consider alternative)
+- [ ] Ctrl+Shift+L: Unlock selection
+- [ ] Ctrl++ or Ctrl+=: Zoom in
+- [ ] Ctrl+-: Zoom out
+- [ ] Ctrl+0: Zoom to 100%
+- [ ] Ctrl+1: Zoom to fit
+- [ ] Ctrl+R: Toggle rulers (may conflict with text align, consider alternative)
+- [ ] Ctrl+': Toggle grid
+- [ ] F11: Full screen
+- [ ] Ctrl+B: Bold (text)
+- [ ] Ctrl+I: Italic (text)
+- [ ] Ctrl+U: Underline (text)
+- [ ] Ctrl+Shift+X: Strikethrough (text)
+- [ ] Ctrl+Shift+.: Superscript (text)
+- [ ] Ctrl+Shift+,: Subscript (text)
+- [ ] Text alignment: Use Ctrl+Shift+L/E/R/J to avoid conflicts
+- [ ] Ctrl+Shift+L: Align left (text)
+- [ ] Ctrl+Shift+E: Align center (text)
+- [ ] Ctrl+Shift+R: Align right (text)
+- [ ] Ctrl+J or Ctrl+Shift+J: Justify (text)
+- [ ] Spacebar+Drag: Pan canvas
+- [ ] Scroll wheel: Vertical scroll
+- [ ] Shift+Scroll: Horizontal scroll
+- [ ] Ctrl+Scroll: Zoom
+- [ ] Double-click text: Enter edit mode
+- [ ] Double-click image: Enter crop mode
+- [ ] Alt+Drag: Duplicate while dragging
+- [ ] Shift+Drag: Constrain to axis
+- [ ] Shift+Resize: Maintain/toggle aspect ratio
+- [ ] Ctrl+/ or ?: Keyboard shortcuts reference panel
+- [ ] All shortcuts: Show toast notification when used (optional, for learning)
+
+## 12. Hover States & Visual Feedback
+
+### 12.1 General Hover States
+- [ ] All buttons: Hover background color change or scale effect
+- [ ] All buttons: Smooth transition (150-200ms)
+- [ ] Disabled buttons: No hover effect, cursor not-allowed
+- [ ] Links: Hover underline or color change
+- [ ] Dropdowns: Hover highlights dropdown trigger
+- [ ] Input fields: Hover border color change
+- [ ] Checkboxes/Toggles: Hover scale or highlight effect
+- [ ] Sliders: Hover handle highlights or scales
+- [ ] Icon buttons: Hover background circle or square appears
+
+### 12.2 Canvas Element Hover States
+- [ ] Canvas elements: Hover shows thin highlight border
+- [ ] Canvas elements: Hover shows bounding box (if not selected)
+- [ ] Canvas elements: Hover changes cursor to move cursor
+- [ ] Locked elements: Hover shows lock icon cursor
+- [ ] Placeholder elements: Hover shows field name tooltip
+- [ ] Groups: Hover highlights all child elements
+- [ ] Images: Hover shows action overlay icons (replace, crop, filters)
+- [ ] Text: Hover shows I-beam cursor
+- [ ] Shapes: Hover shows resize cursors near edges
+- [ ] Tables: Hover on borders shows resize cursor
+- [ ] Tables: Hover shows add row/column buttons
+- [ ] Links: Hover shows link icon and URL tooltip
+- [ ] Selection handles: Hover scales up or changes color
+- [ ] Rotation handle: Hover shows rotation cursor
+
+### 12.3 Sidebar & Panel Hover States
+- [ ] Sidebar tabs: Hover highlights tab
+- [ ] Sidebar collapse button: Hover shows scale or color change
+- [ ] Element thumbnails: Hover scales up or adds shadow
+- [ ] Element thumbnails: Hover shows element name tooltip
+- [ ] Template thumbnails: Hover shows larger preview
+- [ ] Asset thumbnails: Hover shows action buttons
+- [ ] Font list items: Hover shows font preview
+- [ ] Color swatches: Hover shows color value tooltip
+- [ ] Layer items: Hover highlights layer row
+- [ ] Layer visibility/lock icons: Hover changes color
+- [ ] Accordion headers: Hover highlights header
+- [ ] Panel tabs: Hover highlights tab
+
+### 12.4 Toolbar Hover States
+- [ ] Toolbar buttons: Hover background color or scale
+- [ ] Toolbar dropdowns: Hover shows dropdown arrow
+- [ ] Toolbar color pickers: Hover shows current color tooltip
+- [ ] Toolbar sliders: Hover shows value tooltip
+- [ ] Toolbar inputs: Hover border highlight
+
+### 12.5 Drag & Drop Visual Feedback
+- [ ] Dragging element from library: Ghost element follows cursor
+- [ ] Dragging element from library: Valid drop zones highlight
+- [ ] Dragging element on canvas: Element follows cursor with offset
+- [ ] Dragging element on canvas: Drop shadow on element
+- [ ] Dragging element on canvas: Smart guides appear
+- [ ] Dragging with Alt (duplicate): Ghost element at original position
+- [ ] Dragging to reorder layers: Drop indicator line shows position
+- [ ] Dragging file to upload: Drop zone highlights
+- [ ] Dragging file to upload: Shows file count and types accepted
+- [ ] Dragging to resize: Real-time dimension display
+- [ ] Dragging to rotate: Real-time angle display
+- [ ] Drag forbidden: Not-allowed cursor when invalid drop target
+
+### 12.6 Loading & Progress States
+- [ ] Loading spinner: Appears during async operations
+- [ ] Progress bar: Shows percentage for file uploads/exports
+- [ ] Skeleton screens: Placeholder UI while content loads
+- [ ] Button loading state: Spinner replaces button text/icon
+- [ ] Saving indicator: "Saving..." text or icon
+- [ ] Saved confirmation: Checkmark or "Saved" text with fade-out
+
+### 12.7 Focus States
+- [ ] All inputs: Focus border color change (blue ring or similar)
+- [ ] All inputs: Focus outline visible
+- [ ] Buttons: Focus outline when tabbed to
+- [ ] Canvas: Focus outline on selected element
+- [ ] Dropdowns: Focus on trigger shows outline
+- [ ] Modal: Focus trap within modal
+- [ ] Tab navigation: Logical tab order through UI
+
+### 12.8 Active/Selected States
+- [ ] Selected elements: Blue selection border and handles
+- [ ] Selected buttons: Distinct background color
+- [ ] Active sidebar tab: Highlighted with different background
+- [ ] Active toolbar button: Highlighted when feature active
+- [ ] Active layer: Highlighted in layers panel
+- [ ] Checked checkboxes: Checkmark visible
+- [ ] Toggled switches: Slider in "on" position with color change
+
+### 12.9 Error & Warning States
+- [ ] Invalid inputs: Red border
+- [ ] Error messages: Red text with error icon
+- [ ] Warning messages: Amber/yellow with warning icon
+- [ ] Toast notifications: Color-coded by type (success, error, warning, info)
+- [ ] Validation errors: Inline error text below input
+- [ ] Missing required fields: Red asterisk or border
+
+### 12.10 Disabled States
+- [ ] Disabled buttons: Grayed out, no hover effect
+- [ ] Disabled inputs: Grayed out background, cursor not-allowed
+- [ ] Disabled elements on canvas: Semi-transparent, no interaction
+- [ ] Disabled menu items: Grayed out text
+
+## 13. Final Polish
+
+### 13.1 Visual & UI Polish
+- [ ] Custom scrollbar styling
+- [ ] Scrollbar: Thin, rounded scrollbar track and thumb
+- [ ] Scrollbar: Hover on thumb makes it darker/more visible
+- [ ] Consistent color palette (Primary, Secondary, Success, Warning, Error, Neutral)
+- [ ] Consistent typography (UI fonts, size scale, weights)
+- [ ] Consistent spacing scale (4, 8, 12, 16, 24, 32, 48, 64px)
+- [ ] Button styles (Primary, Secondary, Ghost, Icon)
+- [ ] Input styles (heights, border radius, focus states, error states)
+- [ ] Dropdown styles (matching inputs, animations, max height, search)
+- [ ] Tooltip implementation (dark background, intelligent positioning)
+- [ ] Tooltip: Delay before showing (300-500ms)
+- [ ] Tooltip: Fade in/out animation
+- [ ] Tooltip: Smart positioning to stay in viewport
+- [ ] Modal/Dialog styles (centered, backdrop, title, close, footer, animations)
+- [ ] Modal backdrop: Click to close (with confirmation if unsaved changes)
+- [ ] Modal animations: Fade in backdrop, scale in modal
+- [ ] Consistent icon set (Lucide/Heroicons, stroke width, sizes)
+- [ ] Icons: Consistent 1.5-2px stroke width
+- [ ] Icons: Sizes 16px, 20px, 24px used consistently
+- [ ] Transitions (150-300ms, ease-out)
+- [ ] Micro-interactions (button hover, panel expand/collapse)
+- [ ] Button click: Subtle scale down effect
+- [ ] Panel expand: Smooth height animation
+- [ ] Loading states (skeleton screens or spinners)
+- [ ] Canvas manipulation: Immediate response (no animation)
+
+### 13.2 Accessibility
+- [ ] Accessibility: WCAG AA contrast, Keyboard navigation
+- [ ] Sufficient color contrast (WCAG AA minimum)
+- [ ] Color contrast checker: Run on all text/background combinations
+- [ ] Focus visible on all interactive elements
+- [ ] Focus ring: 2-3px, contrasting color, visible offset
+- [ ] Keyboard navigation for all features
+- [ ] Tab order: Logical flow through UI
+- [ ] Tab navigation: Skip to main content link
+- [ ] Screen reader labels on icon buttons
+- [ ] All icon buttons: aria-label attribute
+- [ ] Alt text on images
+- [ ] Form labels: Properly associated with inputs
+- [ ] No information conveyed by color alone
+- [ ] Color + icon/text to convey status
+- [ ] ARIA landmarks: header, nav, main, aside, footer
+- [ ] ARIA live regions: For dynamic content updates
+- [ ] Keyboard shortcuts: Documented and accessible
+
+### 13.3 User Feedback & Notifications
+- [ ] Tooltips for all icon buttons
+- [ ] Toast notifications for success/error messages
+- [ ] Toast position: Top-right or bottom-right
+- [ ] Toast auto-dismiss: After 3-5 seconds
+- [ ] Toast action button: Undo, View, Dismiss
+- [ ] Toast stack: Multiple toasts stack vertically
+- [ ] Inline validation errors (red borders, messages)
+- [ ] Validation: Real-time or on blur
+- [ ] Validation messages: Clear, actionable
+- [ ] Confirmation dialogs for destructive actions
+- [ ] Confirmation dialog: Clear description of action
+- [ ] Confirmation dialog: Confirm and Cancel buttons
+- [ ] Confirmation dialog: Escape to cancel
+- [ ] Progress indicators for long operations
+- [ ] Progress: Determinate progress bar when % known
+- [ ] Progress: Indeterminate spinner when time unknown
+- [ ] Progress: Cancel button for cancellable operations
+- [ ] Loading states & Toast notifications
+- [ ] Empty states: Helpful messages when no content
+- [ ] Empty state: Illustration and call-to-action
+
+### 13.4 Help & Documentation
+- [ ] Keyboard Shortcuts Reference Panel (Ctrl+/)
+- [ ] Shortcuts panel: Searchable list of all shortcuts
+- [ ] Shortcuts panel: Categorized by function
+- [ ] Reference: Searchable, categorized by category
+- [ ] Reference: Visual key representation (e.g., ⌘ Cmd)
+- [ ] Help & Tutorials access from menu
+- [ ] Help menu: Links to documentation, video tutorials
+- [ ] Help menu: Contact support option
+- [ ] Onboarding tour: Optional first-time user tour
+- [ ] Onboarding: Highlight key features step-by-step
+- [ ] Tooltips: Contextual help throughout app
+- [ ] About section
+- [ ] About: Version number, credits, license info
+
+### 13.5 Performance Optimization
+- [ ] Performance: Virtualization for large layer lists/libraries
+- [ ] Virtualization: Only render visible items in long lists
+- [ ] Virtualization: Smooth scrolling with buffer
+- [ ] Virtualize layer lists for many elements
+- [ ] Debounce frequent updates (typing, dragging)
+- [ ] Debounce search inputs: 300ms delay
+- [ ] Debounce auto-save: 2-3 seconds after last change
+- [ ] Throttle drag events: Update at 60fps max
+- [ ] Use requestAnimationFrame for canvas updates
+- [ ] Canvas rendering: Batch updates, render on RAF
+- [ ] Lazy-load sidebar content (icon libraries, stock photos)
+- [ ] Lazy loading: Load images as they scroll into view
+- [ ] Code splitting: Load heavy features on demand
+- [ ] Image optimization: Compress uploaded images
+- [ ] Font optimization: Load only used font weights
+- [ ] Memoization: Expensive calculations memoized
+
+### 13.6 Error Handling & Recovery
+- [ ] Error boundary components
+- [ ] Error boundary: Catch React errors, show fallback UI
+- [ ] Error boundary: Report errors to error logging service
+- [ ] Graceful error handling for Drive API
+- [ ] Drive errors: User-friendly error messages
+- [ ] Drive errors: Retry button or suggestion
+- [ ] Retry logic with exponential backoff
+- [ ] Retry: 3 attempts with increasing delay
+- [ ] Clear error messages with resolution steps
+- [ ] Error messages: Describe what happened and how to fix
+- [ ] Unsaved changes recovery prompt
+- [ ] Unsaved changes: Prompt on page reload/close
+- [ ] Unsaved changes: Auto-recovery from LocalStorage
+- [ ] Network errors: Offline mode indicator
+- [ ] Network errors: Queue actions for when back online
+
+### 13.7 State Management & Persistence
+- [ ] Comprehensive state object (Template schema)
+- [ ] Element schema with common and type-specific properties
+- [ ] Command pattern/state snapshot system
+- [ ] History stack (50-100 states)
+- [ ] History: Efficient storage (only diffs if possible)
+- [ ] Clear redo stack on new actions
+- [ ] Merge rapid changes into single undo step
+- [ ] Merge: Changes within 500ms considered rapid
+- [ ] Periodic auto-save to LocalStorage
+- [ ] Auto-save: Every 30 seconds or on significant change
+- [ ] Drive save on explicit save
+- [ ] State hydration: Load from LocalStorage on app start
+- [ ] State: Handle migration if schema changes
+
+### 13.8 Canvas & Rendering
+- [ ] Fabric.js/Konva.js implementation
+- [ ] Canvas library: Initialize with config
+- [ ] Custom object types (placeholders, QR codes, etc.)
+- [ ] Custom objects: Extend base canvas object class
+- [ ] Serialization/deserialization to/from JSON
+- [ ] Serialize: Convert canvas to JSON for saving
+- [ ] Deserialize: Restore canvas from JSON
+- [ ] SVG/PDF export capabilities
+- [ ] Export: Render canvas to SVG/PDF with library
+- [ ] Touch support for tablet devices
+- [ ] Touch: Pinch to zoom, two-finger pan
+- [ ] Touch: Touch selection and dragging
+- [ ] Accurate text rendering matching export
+- [ ] Canvas text rendering with font loading
+- [ ] Fonts: Preload fonts before rendering
+- [ ] Google Fonts loaded before rendering
+- [ ] Google Fonts: Web Font Loader for font loading
+- [ ] Text wrapping, alignment, line height accuracy
+- [ ] Text: Match browser rendering exactly
+- [ ] HTML-to-canvas for rich text (consider)
+- [ ] Rich text: Use html2canvas or similar if needed
+
+### 13.9 Bottom Status Bar Details
+- [ ] Selection Info: "No selection" / "X element(s) selected"
+- [ ] Selection info: Updates in real-time
+- [ ] Element Dimensions: "W: Xpx H: Ypx" when selected
+- [ ] Dimensions: Updates as element resized
+- [ ] Cursor Position: "X: Y" over canvas
+- [ ] Cursor position: Updates on mouse move over canvas
+- [ ] Page Navigation: First, Previous, Page X of Y, Next, Last, Add Page
+- [ ] Page navigation: Buttons enabled/disabled based on current page
+- [ ] View Mode Toggles: Notes, Outline/Structure, Comments
+- [ ] View toggles: Click to toggle view modes
+- [ ] Zoom Controls: Out (-), Slider (25-400%), In (+), Percentage dropdown, Fit
+- [ ] Zoom slider: Drag to zoom smoothly
+- [ ] Zoom percentage: Click to open dropdown with presets
+- [ ] Grid/Ruler Quick Toggles: Grid icon, Ruler icon
+- [ ] Grid toggle: Click to show/hide grid
+- [ ] Ruler toggle: Click to show/hide rulers
+- [ ] Full Screen Button: Enter/exit
+- [ ] Full screen: Click to enter, Escape to exit
+
+### 13.10 Excel Data Integration
+- [ ] User selects Excel file from Drive
+- [ ] Excel selection: Drive file picker filtered to Excel files
+- [ ] Backend reads file, extracts columns and sample data
+- [ ] Backend: Parse Excel with library (SheetJS, etc.)
+- [ ] Display column names for field insertion
+- [ ] Column names: List in Data tab
+- [ ] Create placeholders linked to columns
+- [ ] Placeholder creation: Drag field to canvas or click to insert
+- [ ] Preview mode shows merged sample data
+- [ ] Preview: First row of data used for preview
+- [ ] Generation processes each row, replacing placeholders
+- [ ] Generation: Loop through rows, replace placeholders, export
+
+### 13.11 Asset Management
+- [ ] Upload assets to Drive
+- [ ] Asset upload: Multi-file upload supported
+- [ ] Retrieve and display asset thumbnails
+- [ ] Thumbnails: Generated on upload or retrieved from Drive
+- [ ] Insert assets into canvas
+- [ ] Asset insertion: Drag from Uploads tab or click to insert
+- [ ] Track asset usage across templates
+- [ ] Asset tracking: Track which templates use which assets
+- [ ] Asset management: Delete confirmation if asset in use
+
+### 13.12 Additional Interaction Enhancements
+- [ ] Context-sensitive help: "?" icon in panels with tooltips
+- [ ] Smart defaults: Remember user's last used settings
+- [ ] Favorites: Star elements/templates for quick access
+- [ ] Search: Global search for elements, templates, assets
+- [ ] Recent actions: Quick access to recent operations
+- [ ] Customizable workspace: Save panel layouts
+- [ ] Dark mode: Toggle for dark theme (optional)
+- [ ] Zoom to selection: Right-click option to zoom to selected element
+- [ ] Align to pixel: Snap elements to pixel boundaries for crisp rendering
+- [ ] Copy/paste between templates: Cross-template clipboard
+- [ ] Import: Import from other formats (PDF, SVG, etc.)
+
+---
+
+**Total Tasks:** 1000+ comprehensive implementation tasks covering all aspects of the CanvaWord Template Builder, including all interaction patterns (click, right-click, hover, drag, double-click), visual feedback, and user experience enhancements.

@@ -1,0 +1,78 @@
+/* CanvasWorkspace.css - Clean Canvas Without Rulers */
+
+.canvas-workspace {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #3a3a5a;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Canvas Scroll Area - Full Space */
+.canvas-scroll-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: auto;
+    padding: 40px;
+}
+
+.canvas-container {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.1);
+    position: relative;
+    background-color: white;
+    transform-origin: center center;
+    flex-shrink: 0;
+}
+
+.margin-indicator {
+    position: absolute;
+    border: 1px dashed rgba(0, 196, 204, 0.3);
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* Scrollbar styling */
+.canvas-scroll-area::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+.canvas-scroll-area::-webkit-scrollbar-track {
+    background: #2a2a4a;
+}
+
+.canvas-scroll-area::-webkit-scrollbar-thumb {
+    background: #4a4a6a;
+    border-radius: 6px;
+    border: 2px solid #2a2a4a;
+}
+
+.canvas-scroll-area::-webkit-scrollbar-thumb:hover {
+    background: #00C4CC;
+}
+
+.canvas-scroll-area::-webkit-scrollbar-corner {
+    background: #2a2a4a;
+}
+
+/* Canvas info message */
+.select-element-message {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #8892b0;
+    font-size: 13px;
+    padding: 8px 20px;
+    background-color: #1a1a2e;
+    border-radius: 20px;
+    border: 1px solid #0f3460;
+    z-index: 30;
+}

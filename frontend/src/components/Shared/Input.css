@@ -1,0 +1,77 @@
+/* Input.css - Proper Styling */
+
+.input-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.input-wrapper>label {
+    font-size: 12px;
+    font-weight: 500;
+    color: #8892b0;
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+    background-color: #252545;
+    border: 2px solid #3a4a6a;
+    border-radius: 6px;
+    overflow: hidden;
+    transition: border-color 0.2s ease;
+}
+
+.input-container:focus-within {
+    border-color: #00C4CC;
+}
+
+.input-field {
+    flex: 1;
+    padding: 10px 12px;
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 500;
+    outline: none;
+    min-width: 0;
+}
+
+.input-field::placeholder {
+    color: #6a7a9a;
+}
+
+.input-field::-webkit-outer-spin-button,
+.input-field::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.input-field[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.input-suffix {
+    padding: 10px 12px;
+    background-color: #1a1a2e;
+    color: #8892b0;
+    font-size: 12px;
+    font-weight: 500;
+    border-left: 1px solid #3a4a6a;
+}
+
+/* Small variant */
+.input-wrapper.small .input-container {
+    height: 32px;
+}
+
+.input-wrapper.small .input-field {
+    padding: 6px 10px;
+    font-size: 12px;
+}
+
+.input-wrapper.small .input-suffix {
+    padding: 6px 10px;
+    font-size: 11px;
+}

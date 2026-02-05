@@ -1,0 +1,70 @@
+/* ColorPicker.css - High Contrast Dark Theme */
+
+.color-picker {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.color-picker-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: #e0e0e0;
+    text-transform: capitalize;
+}
+
+.color-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    background-color: #252545;
+    border: 1px solid #0f3460;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.color-input-wrapper:hover {
+    border-color: #00C4CC;
+}
+
+.color-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #e0e0e0;
+    font-size: 14px;
+}
+
+.color-icon svg {
+    width: 16px;
+    height: 16px;
+}
+
+.color-input {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background: transparent;
+}
+
+.color-input::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+.color-input::-webkit-color-swatch {
+    border: 1px solid #0f3460;
+    border-radius: 4px;
+}
+
+.color-preview {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #0f3460;
+    border-radius: 4px;
+    flex-shrink: 0;
+}

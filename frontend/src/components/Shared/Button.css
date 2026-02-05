@@ -1,0 +1,177 @@
+/* Button.css - Complete with High Contrast Colors */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    color: #ffffff;
+}
+
+.btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* Default Variant - Standard button on dark background */
+.btn-default {
+    background-color: #252545;
+    border-color: #0f3460;
+    color: #ffffff;
+}
+
+.btn-default:hover:not(:disabled) {
+    background-color: #353560;
+    border-color: #00C4CC;
+    color: #00C4CC;
+}
+
+.btn-default svg {
+    color: #e0e0e0;
+}
+
+.btn-default:hover:not(:disabled) svg {
+    color: #00C4CC;
+}
+
+/* Ghost Variant - Transparent background */
+.btn-ghost {
+    background: transparent;
+    border: none;
+    color: #e0e0e0;
+}
+
+.btn-ghost:hover:not(:disabled) {
+    background-color: rgba(0, 196, 204, 0.15);
+    color: #00C4CC;
+}
+
+.btn-ghost svg {
+    color: #e0e0e0;
+}
+
+.btn-ghost:hover:not(:disabled) svg {
+    color: #00C4CC;
+}
+
+/* Primary Variant - Accent color */
+.btn-primary {
+    background: linear-gradient(135deg, #00C4CC 0%, #00a0a8 100%);
+    color: #ffffff;
+    border-color: #00C4CC;
+    box-shadow: 0 2px 8px rgba(0, 196, 204, 0.3);
+}
+
+.btn-primary:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 196, 204, 0.4);
+}
+
+.btn-primary svg {
+    color: #ffffff;
+}
+
+/* Secondary Variant */
+.btn-secondary {
+    background-color: #0f3460;
+    color: #ffffff;
+    border-color: #1a4a7a;
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background-color: #1e4d6d;
+    border-color: #00C4CC;
+}
+
+.btn-secondary svg {
+    color: #ffffff;
+}
+
+/* Outline Variant */
+.btn-outline {
+    background: transparent;
+    border: 1px solid #0f3460;
+    color: #e0e0e0;
+}
+
+.btn-outline:hover:not(:disabled) {
+    border-color: #00C4CC;
+    background-color: rgba(0, 196, 204, 0.1);
+    color: #00C4CC;
+}
+
+.btn-outline svg {
+    color: #e0e0e0;
+}
+
+.btn-outline:hover:not(:disabled) svg {
+    color: #00C4CC;
+}
+
+/* Danger Variant */
+.btn-danger {
+    background-color: #f44336;
+    color: #ffffff;
+    border-color: #f44336;
+}
+
+.btn-danger:hover:not(:disabled) {
+    background-color: #d32f2f;
+}
+
+.btn-danger svg {
+    color: #ffffff;
+}
+
+/* Sizes */
+.btn-small {
+    padding: 6px 10px;
+    font-size: 12px;
+    border-radius: 5px;
+}
+
+.btn-medium {
+    padding: 8px 14px;
+    font-size: 13px;
+}
+
+.btn-large {
+    padding: 12px 20px;
+    font-size: 14px;
+}
+
+/* Full width */
+.w-full {
+    width: 100%;
+}
+
+/* Icon */
+.btn-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+.btn-small svg {
+    width: 12px;
+    height: 12px;
+}
+
+.btn-large svg {
+    width: 16px;
+    height: 16px;
+}
