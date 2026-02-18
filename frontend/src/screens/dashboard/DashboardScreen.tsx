@@ -1,15 +1,18 @@
 import React, { useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { useTemplateStore, Template } from '../../store/templateStore';
 import { StitchButton } from '../../components/common/StitchButton';
 import { StitchCard } from '../../components/common/StitchCard';
 import { StitchContainer, StitchGrid, StitchFlex } from '../../components/common/StitchLayout';
-import { Plus, Search, Layout, MoreHorizontal, FileBox, Image } from 'lucide-react';
+import { Plus, Search, Layout, MoreHorizontal, FileBox, Image, Database } from 'lucide-react';
 
 const DashboardScreen: React.FC = () => {
     const navigate = useNavigate();
-    const { savedTemplates, loadTemplates, isLoading } = useTemplateStore();
+    const { savedTemplates, loadTemplates, isLoading, deleteTemplate, saveTemplate } = useTemplateStore();
     const [activeTab, setActiveTab] = React.useState('all');
+    const [menuState, setMenuState] = React.useState<{ id: string; x: number; y: number; placement: 'top' | 'bottom' } | null>(null);
+    const menuRef = React.useRef<HTMLDivElement>(null);
 
     const filteredTemplates = savedTemplates.filter(t => {
         if (activeTab === 'templates') return t.category === 'Template';
@@ -21,7 +24,26 @@ const DashboardScreen: React.FC = () => {
         loadTemplates();
     }, [loadTemplates]);
 
-    // Format date helper
+    // Close menu on outside click
+    useEffect(() => {
+        if (!menuState) return;
+        const handleClickOutside = (e: MouseEvent) => {
+            if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+                setMenuState(null);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [menuState]);
+
+    // Close menu on scroll
+    useEffect(() => {
+        if (!menuState) return;
+        const handleScroll = () => setMenuState(null);
+        window.addEventListener('scroll', handleScroll, true);
+        return () => window.removeEventListener('scroll', handleScroll, true);
+    }, [menuState]);
+
     const formatDate = (dateString: string) => {
         if (!dateString) return '';
         try {
@@ -42,8 +64,132 @@ const DashboardScreen: React.FC = () => {
         navigate('/editor/new');
     };
 
+
+
+    const handleDataSources = () => {
+        navigate('/data-sources');
+    };
+
+    const toggleMenu = (id: string, e: React.MouseEvent) => {
+        e.stopPropagation();
+        e.preventDefault();
+        if (menuState && menuState.id === id) {
+            setMenuState(null);
+        } else {
+            const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+            const spaceBelow = window.innerHeight - rect.bottom;
+            const MENU_HEIGHT = 200; // Approx height
+
+            if (spaceBelow < MENU_HEIGHT) {
+                // Open upwards
+                setMenuState({
+                    id,
+                    x: rect.right,
+                    y: window.innerHeight - rect.top + 4, // y becomes 'bottom' value
+                    placement: 'top'
+                });
+            } else {
+                // Open downwards
+                setMenuState({
+                    id,
+                    x: rect.right,
+                    y: rect.bottom + 4, // y becomes 'top' value
+                    placement: 'bottom'
+                });
+            }
+        }
+    };
+
+    const handleDelete = async (id: string, e: React.MouseEvent) => {
+        e.stopPropagation();
+        setMenuState(null);
+        if (window.confirm('Are you sure you want to delete this design? This action cannot be undone.')) {
+            await deleteTemplate(id);
+        }
+    };
+
+    const handleRename = async (template: Template, e: React.MouseEvent) => {
+        e.stopPropagation();
+        setMenuState(null);
+        const newName = window.prompt('Enter new name:', template.name);
+        if (newName && newName.trim() !== '' && newName !== template.name) {
+            const updated = { ...template, name: newName };
+            await saveTemplate(updated);
+        }
+    };
+
+    const handleDuplicate = async (template: Template, e: React.MouseEvent) => {
+        e.stopPropagation();
+        setMenuState(null);
+        const newTemplate = { ...template, id: '', name: `${template.name} (Copy)` };
+        await saveTemplate(newTemplate);
+    };
+
+    // Find the template for the open menu
+    const menuTemplate = menuState ? savedTemplates.find(t => t.id === menuState.id) : null;
+
+    // Render context menu via portal so it's never clipped
+    const contextMenu = menuState && menuTemplate ? ReactDOM.createPortal(
+        <div
+            ref={menuRef}
+            style={{
+                position: 'fixed',
+                top: menuState.placement === 'bottom' ? menuState.y : 'auto',
+                bottom: menuState.placement === 'top' ? menuState.y : 'auto',
+                left: menuState.x - 176,
+                zIndex: 99999,
+                width: '176px',
+                backgroundColor: '#fff',
+                borderRadius: '8px',
+                boxShadow: '0 4px 24px rgba(0,0,0,0.15)',
+                border: '1px solid #e5e7eb',
+                padding: '4px 0',
+                display: 'flex',
+                flexDirection: 'column' as const,
+            }}
+            onClick={(e) => e.stopPropagation()}
+        >
+            <button
+                style={{ textAlign: 'left', padding: '10px 16px', fontSize: '14px', color: '#374151', background: 'none', border: 'none', cursor: 'pointer' }}
+                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#f3f4f6')}
+                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+                onClick={(e) => { e.stopPropagation(); handleEdit(menuState.id); }}
+            >
+                ✏️ Edit Design
+            </button>
+            <button
+                style={{ textAlign: 'left', padding: '10px 16px', fontSize: '14px', color: '#374151', background: 'none', border: 'none', cursor: 'pointer' }}
+                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#f3f4f6')}
+                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+                onClick={(e) => handleRename(menuTemplate, e)}
+            >
+                📝 Rename
+            </button>
+            <button
+                style={{ textAlign: 'left', padding: '10px 16px', fontSize: '14px', color: '#374151', background: 'none', border: 'none', cursor: 'pointer' }}
+                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#f3f4f6')}
+                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+                onClick={(e) => handleDuplicate(menuTemplate, e)}
+            >
+                📋 Duplicate
+            </button>
+            <div style={{ height: '1px', backgroundColor: '#e5e7eb', margin: '4px 0' }} />
+            <button
+                style={{ textAlign: 'left', padding: '10px 16px', fontSize: '14px', color: '#ef4444', background: 'none', border: 'none', cursor: 'pointer' }}
+                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#fef2f2')}
+                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+                onClick={(e) => handleDelete(menuState.id, e)}
+            >
+                🗑️ Delete
+            </button>
+        </div>,
+        document.body
+    ) : null;
+
     return (
         <div className="min-h-screen bg-[var(--stitch-background)]">
+            {contextMenu}
+
             {/* Top Navigation */}
             <nav className="bg-[var(--stitch-surface)] border-b border-[var(--stitch-border)] sticky top-0 z-10">
                 <StitchContainer className="h-16 flex items-center justify-between">
@@ -92,8 +238,24 @@ const DashboardScreen: React.FC = () => {
                                 <span className="font-medium text-[var(--stitch-text-secondary)]">{item}</span>
                             </StitchCard>
                         ))}
+
+
+
+                        {/* Data Sources Card */}
+                        <StitchCard
+                            hoverEffect
+                            onClick={handleDataSources}
+                            className="min-w-[120px] flex flex-col items-center justify-center py-6 cursor-pointer border-transparent shadow-sm bg-gradient-to-br from-blue-50 to-cyan-50 hover:from-blue-100 hover:to-cyan-100 transition-all ring-1 ring-blue-200/50"
+                        >
+                            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center text-white mb-3 shadow-md">
+                                <Database size={24} />
+                            </div>
+                            <span className="font-semibold text-blue-700">Data Sources</span>
+                        </StitchCard>
                     </div>
                 </div>
+
+
 
                 {/* Recent Designs */}
                 <div>
@@ -104,8 +266,8 @@ const DashboardScreen: React.FC = () => {
                                     key={tab.id}
                                     onClick={() => setActiveTab(tab.id)}
                                     className={`pb-2 text-sm font-medium transition-colors relative ${activeTab === tab.id
-                                            ? 'text-[var(--stitch-primary)]'
-                                            : 'text-[var(--stitch-text-secondary)] hover:text-[var(--stitch-text-primary)]'
+                                        ? 'text-[var(--stitch-primary)]'
+                                        : 'text-[var(--stitch-text-secondary)] hover:text-[var(--stitch-text-primary)]'
                                         }`}
                                 >
                                     {tab.label}
@@ -139,7 +301,6 @@ const DashboardScreen: React.FC = () => {
                             {filteredTemplates.map((project: Template) => (
                                 <StitchCard key={project.id} className="p-0 overflow-hidden group cursor-pointer border border-[var(--stitch-border)] shadow-sm hover:shadow-md transition-all h-full flex flex-col" hoverEffect onClick={() => handleEdit(project.id)}>
                                     <div className="h-40 bg-[var(--stitch-background)] relative overflow-hidden group-hover:opacity-95 transition-opacity">
-                                        {/* Thumbnail or placeholder */}
                                         {project.thumbnail ? (
                                             <img src={project.thumbnail} alt={project.name} className="w-full h-full object-cover" />
                                         ) : (
@@ -155,7 +316,10 @@ const DashboardScreen: React.FC = () => {
                                     <div className="p-4 flex-1 flex flex-col justify-between bg-[var(--stitch-surface)]">
                                         <div className="flex justify-between items-start mb-2">
                                             <h3 className="font-semibold text-[var(--stitch-text-primary)] truncate pr-2 flex-1" title={project.name}>{project.name}</h3>
-                                            <button className="text-[var(--stitch-text-tertiary)] hover:text-[var(--stitch-text-primary)] transition-colors" onClick={(e) => { e.stopPropagation(); /* show menu */ }}>
+                                            <button
+                                                className="text-[var(--stitch-text-tertiary)] hover:text-[var(--stitch-text-primary)] transition-colors p-1 rounded-full hover:bg-[var(--stitch-surface-hover)]"
+                                                onClick={(e) => toggleMenu(project.id, e)}
+                                            >
                                                 <MoreHorizontal size={16} />
                                             </button>
                                         </div>

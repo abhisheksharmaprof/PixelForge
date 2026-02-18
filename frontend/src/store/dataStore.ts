@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { ExcelService, ExcelData } from '../utils/excelService';
+import { DataColumn } from '../types/mailMergeTypes';
 
 export interface Placeholder {
     id: string;
@@ -46,6 +47,7 @@ interface DataState {
     mapPlaceholderToColumn: (placeholderId: string, columnName: string) => void;
     autoMapPlaceholders: () => number; // Returns count of auto-mapped
     validateMappings: () => boolean;
+    loadData: (data: any[], columns: DataColumn[]) => void;
 }
 
 export const useDataStore = create<DataState>((set, get) => ({
@@ -282,5 +284,33 @@ export const useDataStore = create<DataState>((set, get) => ({
     validateMappings: () => {
         const { placeholders, mappings } = get();
         return placeholders.every(p => !!mappings[p.name]);
+    },
+
+    loadData: (data: any[], columns: DataColumn[]) => {
+        // Construct minimum viable ExcelData object
+        const excelData: ExcelData = {
+            rows: data,
+            columns: columns.map(c => ({
+                name: c.name,
+                type: 'string', // Default to string or map types? ExcelColumn uses specific string/number etc.
+                sampleValue: ''
+            })),
+            rawRows: [], // optional/empty as we might not have raw buffer
+            totalRows: data.length,
+            totalColumns: columns.length
+        };
+
+        set({
+            excelFile: null, // No physical file
+            excelData: excelData,
+            filteredRows: data,
+            previewRowIndex: 0,
+            headerRowIndex: 0,
+            mappings: {}, // Reset mappings on new data load? Or try to keep? 
+            // Usually new data = new mapping needed unless columns match exactly.
+            // Let's reset to be safe, or auto-map.
+        });
+
+        get().autoMapPlaceholders();
     }
 }));

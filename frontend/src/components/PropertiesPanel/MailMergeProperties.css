@@ -1,0 +1,260 @@
+/* ── Mail Merge Properties Panel ──────────────────────── */
+
+.mmp-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.mmp-title {
+    padding: 16px;
+    border-bottom: 1px solid var(--stitch-border, #e2e8f0);
+}
+
+.mmp-title-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.mmp-title-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: #ede9fe;
+    color: #7c3aed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mmp-title-text {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+}
+
+.mmp-title-field {
+    font-size: 11px;
+    color: #7c3aed;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    margin: 1px 0 0 0;
+}
+
+/* ── Sections ─────────────────────────────────────────── */
+
+.mmp-section {
+    border-bottom: 1px solid var(--stitch-border, #e2e8f0);
+}
+
+.mmp-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 16px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: #475569;
+    transition: background 0.12s;
+}
+
+.mmp-section-header:hover {
+    background: #f8fafc;
+}
+
+.mmp-section-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.mmp-section-body {
+    padding: 0 16px 12px;
+}
+
+/* ── Form Fields ──────────────────────────────────────── */
+
+.mmp-field-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.mmp-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: #64748b;
+    white-space: nowrap;
+    min-width: 80px;
+}
+
+.mmp-select,
+.mmp-input {
+    flex: 1;
+    font-size: 11px;
+    padding: 5px 8px;
+    border: 1px solid #e2e8f0;
+    border-radius: 5px;
+    background: #fff;
+    color: #334155;
+    outline: none;
+    transition: border-color 0.12s;
+}
+
+.mmp-select:focus,
+.mmp-input:focus {
+    border-color: #93c5fd;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+/* ── Metadata badges ──────────────────────────────────── */
+
+.mmp-field-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+}
+
+.mmp-meta-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: #f1f5f9;
+    color: #475569;
+    text-transform: capitalize;
+}
+
+.mmp-meta-text {
+    font-size: 10px;
+    color: #94a3b8;
+}
+
+.mmp-meta-sample {
+    font-size: 10px;
+    color: #7c3aed;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ── Toggle Switch ────────────────────────────────────── */
+
+.mmp-toggle {
+    position: relative;
+    display: inline-block;
+    width: 32px;
+    height: 18px;
+}
+
+.mmp-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.mmp-toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #cbd5e1;
+    transition: .2s;
+    border-radius: 18px;
+}
+
+.mmp-toggle-slider::before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 14px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: .2s;
+    border-radius: 50%;
+}
+
+.mmp-toggle input:checked+.mmp-toggle-slider {
+    background-color: #3b82f6;
+}
+
+.mmp-toggle input:checked+.mmp-toggle-slider::before {
+    transform: translateX(14px);
+}
+
+/* ── Action Buttons ───────────────────────────────────── */
+
+.mmp-action-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #3b82f6;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.12s;
+}
+
+.mmp-action-btn:hover {
+    background: #dbeafe;
+}
+
+/* ── Condition Info ───────────────────────────────────── */
+
+.mmp-condition-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.mmp-info-text {
+    font-size: 11px;
+    color: #64748b;
+    line-height: 1.4;
+    margin: 0;
+}
+
+/* ── Preview Card ─────────────────────────────────────── */
+
+.mmp-preview-card {
+    padding: 10px;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 8px;
+}
+
+.mmp-preview-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: #166534;
+    margin: 0 0 2px;
+    word-break: break-word;
+}
+
+.mmp-preview-label {
+    font-size: 10px;
+    color: #4ade80;
+    margin: 0;
+}

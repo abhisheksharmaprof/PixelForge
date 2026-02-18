@@ -25,7 +25,12 @@ export class ExcelService {
             reader.onload = (e) => {
                 try {
                     const data = e.target?.result;
-                    const workbook = XLSX.read(data, { type: 'binary' });
+                    const workbook = XLSX.read(data, {
+                        type: 'binary',
+                        cellDates: true,
+                        cellNF: false,
+                        cellText: false
+                    });
 
                     // Get first sheet
                     const sheetName = workbook.SheetNames[0];
@@ -39,7 +44,7 @@ export class ExcelService {
                     // Convert to array of arrays (raw data without headers)
                     const rawRows: any[][] = XLSX.utils.sheet_to_json(worksheet, {
                         header: 1, // Use array of arrays
-                        raw: false,
+                        raw: true,
                         defval: '',
                     });
 
@@ -97,7 +102,9 @@ export class ExcelService {
         const dataRows = rawRows.slice(headerRowIndex + 1).map(row => {
             const rowObj: Record<string, any> = {};
             columns.forEach((col, index) => {
-                rowObj[col.name] = row?.[index] !== undefined ? row[index] : '';
+                const val = row?.[index];
+                // If it's a date from XLSX, keep it as is. sheet_to_json(..., {raw:true}) would be better but we use raw:1 for rawRows.
+                rowObj[col.name] = val !== undefined ? val : '';
             });
             return rowObj;
         });

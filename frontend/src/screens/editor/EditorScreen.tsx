@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { LeftSidebar } from '../../components/LeftSidebar/LeftSidebar';
 import { CanvasWorkspace } from '../../components/Canvas/CanvasWorkspace';
 import { PropertiesPanel } from '../../components/PropertiesPanel/PropertiesPanel';
 import { ContextualRibbon } from '../../components/ContextualRibbon/ContextualRibbon';
 import { useUIStore } from '../../store/uiStore';
 import { useTemplateStore } from '../../store/templateStore';
+import { useCanvasStore } from '../../store/canvasStore';
+import { useMailMergeStore } from '../../store/mailMergeStore';
 import { DataPreviewModal } from '../../components/Shared/DataPreviewModal';
 import { KeyboardShortcutsModal } from '../../components/Shared/KeyboardShortcutsModal';
 import {
@@ -14,9 +16,11 @@ import {
     AlignLeft, AlignCenter, AlignRight, Layers, Sliders, X,
     RefreshCw, ZoomIn, ZoomOut, FilePlus, Copy, Trash2, Lock, Unlock, Eye, ChevronUp
 } from 'lucide-react';
+import { DataSourceModal } from '../../components/Modals/DataSourceModal';
 
 const EditorScreen: React.FC = () => {
     const navigate = useNavigate();
+    const { id } = useParams<{ id: string }>();
     const {
         leftSidebarOpen,
         rightPanelOpen,
@@ -25,8 +29,96 @@ const EditorScreen: React.FC = () => {
         toggleLeftSidebar,
         toggleRightPanel
     } = useUIStore();
-    const { currentTemplate } = useTemplateStore();
+    const { currentTemplate, loadTemplate, newTemplate, isLoading } = useTemplateStore();
+    const { canvas } = useCanvasStore();
     const [zoom, setZoom] = useState(100);
+
+    // Name Editing State
+    const [isEditingName, setIsEditingName] = useState(false);
+    const [tempName, setTempName] = useState('');
+    const { updateCurrentTemplate, saveTemplate } = useTemplateStore();
+
+    // Autosave Logic
+    const { isPreviewMode, generationProgress } = useMailMergeStore();
+    const autoSaveTimerRef = React.useRef<NodeJS.Timeout | null>(null);
+    const isRunning = isPreviewMode || generationProgress.status !== 'idle';
+
+    const triggerAutoSave = React.useCallback(() => {
+        if (!canvas || !currentTemplate || isRunning) return;
+
+        if (autoSaveTimerRef.current) clearTimeout(autoSaveTimerRef.current);
+
+        autoSaveTimerRef.current = setTimeout(async () => {
+            const canvasJson = canvas.toJSON();
+            // Generate thumbnail
+            const thumbnail = canvas.toDataURL({
+                format: 'webp',
+                quality: 0.5,
+                multiplier: 0.2 // Small thumbnail for dashboard
+            });
+
+            await saveTemplate({
+                ...currentTemplate,
+                data: canvasJson,
+                thumbnail
+            });
+            console.log("Autosaved template with thumbnail");
+        }, 2000); // 2 second debounce
+    }, [canvas, currentTemplate, isRunning, saveTemplate]);
+
+    // Listen to canvas changes for autosave
+    React.useEffect(() => {
+        if (!canvas) return;
+
+        const handleCanvasChange = () => {
+            triggerAutoSave();
+        };
+
+        canvas.on('object:modified', handleCanvasChange);
+        canvas.on('object:added', handleCanvasChange);
+        canvas.on('object:removed', handleCanvasChange);
+
+        return () => {
+            canvas.off('object:modified', handleCanvasChange);
+            canvas.off('object:added', handleCanvasChange);
+            canvas.off('object:removed', handleCanvasChange);
+            if (autoSaveTimerRef.current) clearTimeout(autoSaveTimerRef.current);
+        };
+    }, [canvas, triggerAutoSave]);
+
+    // Initial Load Logic
+    React.useEffect(() => {
+        if (id && id !== 'new') {
+            loadTemplate(id);
+        } else {
+            // New design
+            newTemplate();
+        }
+    }, [id, loadTemplate, newTemplate]);
+
+    // Auto-select sidebar tab from query param (e.g., ?tab=mailmerge)
+    const [searchParams] = useSearchParams();
+    const { setActiveTab } = useUIStore();
+    React.useEffect(() => {
+        const tab = searchParams.get('tab');
+        if (tab) {
+            setActiveTab(tab);
+        }
+    }, [searchParams, setActiveTab]);
+
+    // Load Data into Canvas
+    // We use a ref to track if we've already loaded the initial data for this specific ID
+    // to prevent overwriting if currentTemplate updates (e.g. during saves)
+    const loadedIdRef = React.useRef<string | null>(null);
+
+    React.useEffect(() => {
+        if (canvas && currentTemplate && currentTemplate.data && currentTemplate.id !== loadedIdRef.current) {
+            canvas.loadFromJSON(currentTemplate.data, () => {
+                canvas.renderAll();
+                loadedIdRef.current = currentTemplate.id;
+            });
+        }
+    }, [canvas, currentTemplate]);
 
     // Placeholder for export action
     const handleExport = () => {
@@ -50,15 +142,61 @@ const EditorScreen: React.FC = () => {
                     <div className="hidden sm:block w-px h-6 bg-[var(--stitch-divider)]"></div>
 
                     <div className="flex flex-col min-w-0">
-                        <div className="flex items-center gap-2 group cursor-pointer">
-                            <h1 className="text-sm font-semibold text-[var(--stitch-text-primary)] truncate group-hover:underline decoration-indigo-500 underline-offset-2 transition-all">
-                                {currentTemplate?.name || 'Untitled Design'}
-                            </h1>
-                            <PenTool size={12} className="text-[var(--stitch-text-tertiary)] opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <div className="flex items-center gap-2 group">
+                            {isEditingName ? (
+                                <input
+                                    autoFocus
+                                    className="text-sm font-semibold text-[var(--stitch-text-primary)] bg-transparent border-b border-[var(--stitch-primary)] outline-none min-w-[120px]"
+                                    value={tempName}
+                                    onChange={(e) => setTempName(e.target.value)}
+                                    onBlur={() => {
+                                        if (tempName && tempName !== currentTemplate?.name) {
+                                            const thumbnail = canvas?.toDataURL({
+                                                format: 'webp',
+                                                quality: 0.5,
+                                                multiplier: 0.2
+                                            });
+                                            updateCurrentTemplate({ name: tempName, thumbnail });
+                                            saveTemplate({ ...currentTemplate!, name: tempName, thumbnail: thumbnail || currentTemplate?.thumbnail || '' });
+                                        }
+                                        setIsEditingName(false);
+                                    }}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter') {
+                                            if (tempName && tempName !== currentTemplate?.name) {
+                                                const thumbnail = canvas?.toDataURL({
+                                                    format: 'webp',
+                                                    quality: 0.5,
+                                                    multiplier: 0.2
+                                                });
+                                                updateCurrentTemplate({ name: tempName, thumbnail });
+                                                saveTemplate({ ...currentTemplate!, name: tempName, thumbnail: thumbnail || currentTemplate?.thumbnail || '' });
+                                            }
+                                            setIsEditingName(false);
+                                        }
+                                        if (e.key === 'Escape') {
+                                            setIsEditingName(false);
+                                        }
+                                    }}
+                                />
+                            ) : (
+                                <div
+                                    className="flex items-center gap-2 cursor-pointer group"
+                                    onClick={() => {
+                                        setTempName(currentTemplate?.name || 'Untitled Design');
+                                        setIsEditingName(true);
+                                    }}
+                                >
+                                    <h1 className="text-sm font-semibold text-[var(--stitch-text-primary)] truncate group-hover:underline decoration-indigo-500 underline-offset-2 transition-all">
+                                        {currentTemplate?.name || 'Untitled Design'}
+                                    </h1>
+                                    <PenTool size={12} className="text-[var(--stitch-text-tertiary)] opacity-0 group-hover:opacity-100 transition-opacity" />
+                                </div>
+                            )}
                         </div>
                         <div className="flex items-center gap-1 text-[10px] text-[var(--stitch-text-tertiary)]">
                             <CheckCircle2 size={10} className="text-[var(--stitch-success)] fill-current" />
-                            <span>Saved</span>
+                            <span>{isLoading ? 'Saving...' : 'Saved'}</span>
                         </div>
                     </div>
                 </div>
@@ -166,6 +304,7 @@ const EditorScreen: React.FC = () => {
                 isOpen={activeModal === 'dataPreview'}
                 onClose={closeModal}
             />
+            <DataSourceModal />
             <KeyboardShortcutsModal
                 isOpen={activeModal === 'keyboardShortcuts'}
                 onClose={closeModal}

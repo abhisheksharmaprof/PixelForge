@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { useDataStore } from '../../store/dataStore';
+import { useMailMergeStore } from '../../store/mailMergeStore';
 import { Modal } from './Modal';
 import { Button } from './Button';
 import { Dropdown } from './Dropdown';
@@ -19,7 +19,7 @@ export const DataPreviewModal: React.FC<DataPreviewModalProps> = ({
     isOpen,
     onClose,
 }) => {
-    const { excelData } = useDataStore();
+    const { dataSource, filteredRows } = useMailMergeStore();
 
     const [currentPage, setCurrentPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(25);
@@ -29,9 +29,17 @@ export const DataPreviewModal: React.FC<DataPreviewModalProps> = ({
 
     // Filter and sort data
     const processedData = useMemo(() => {
-        if (!excelData) return [];
+        if (!dataSource) return [];
+        let data = [...filteredRows]; // use filteredRows from store as base, or dataSource.rows if we want raw. 
+        // Actually, DataTab usually wants to see the *current* data, which might be filtered by the store?
+        // But DataPreviewModal has its own search. 
+        // If I use filteredRows from store, I'm double filtering?
+        // The store's filtering is "business logic" filters (e.g. "Status = Active").
+        // The modal's filtering is "visual search" (e.g. "Find 'John'").
+        // So using filteredRows from store is correct.
 
-        let data = [...excelData.rows];
+        // However, mailMergeStore.filteredRows is the source of truth for generation.
+        // So yes, use filteredRows.
 
         // Apply search
         if (searchQuery) {
@@ -60,7 +68,7 @@ export const DataPreviewModal: React.FC<DataPreviewModalProps> = ({
         }
 
         return data;
-    }, [excelData, searchQuery, sortColumn, sortOrder]);
+    }, [dataSource, searchQuery, sortColumn, sortOrder]);
 
     // Pagination
     const totalPages = Math.ceil(processedData.length / rowsPerPage);
@@ -78,7 +86,7 @@ export const DataPreviewModal: React.FC<DataPreviewModalProps> = ({
         }
     };
 
-    if (!excelData) return null;
+    if (!dataSource) return null;
 
     return (
         <Modal
@@ -131,7 +139,7 @@ export const DataPreviewModal: React.FC<DataPreviewModalProps> = ({
                         <thead>
                             <tr>
                                 <th className="row-number-header">#</th>
-                                {excelData.columns.map((column, index) => (
+                                {dataSource.columns.map((column, index) => (
                                     <th key={index} onClick={() => handleSort(column.name)} className="sortable-th">
                                         <div className="th-content">
                                             {column.name}
@@ -147,7 +155,7 @@ export const DataPreviewModal: React.FC<DataPreviewModalProps> = ({
                             {currentPageData.map((row, rowIndex) => (
                                 <tr key={rowIndex}>
                                     <td className="row-number">{startIndex + rowIndex + 1}</td>
-                                    {excelData.columns.map((column, colIndex) => (
+                                    {dataSource.columns.map((column, colIndex) => (
                                         <td key={colIndex}>
                                             {String(row[column.name] || '')}
                                         </td>

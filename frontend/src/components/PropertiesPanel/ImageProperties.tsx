@@ -24,7 +24,7 @@ export const ImageProperties: React.FC = () => {
     // State to force re-render when object on canvas changes
     const [_, setTick] = useState(0);
 
-    if (selectedObjects.length === 0 || selectedObjects[0].type !== 'image') {
+    if (selectedObjects.length === 0 || (selectedObjects[0].type !== 'image' && (selectedObjects[0] as any).elementType !== 'mailmerge-image-placeholder')) {
         return (
             <div className="flex flex-col items-center justify-center p-8 text-[var(--stitch-text-tertiary)] gap-2">
                 <ImageIcon size={32} strokeWidth={1.5} />

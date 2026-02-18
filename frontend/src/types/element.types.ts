@@ -195,16 +195,31 @@ export interface TableElement extends BaseElement {
         // Merge
         colSpan: number;
         rowSpan: number;
+        hidden: boolean;
     }>>;
 
     // Table Style
     cellPadding: number;
     cellSpacing: number;
     borderCollapse: boolean;
+    borderColor: string;
+    borderWidth: number;
+
+    // Header & Alternate Rows
+    hasHeaderRow: boolean;
+    headerBackgroundColor: string;
+    headerTextColor: string;
+    alternateRows: boolean;
+    alternateRowBackgroundColor: string;
 
     // Column Widths
     columnWidths: number[];
     rowHeights: number[];
+
+    // Data Binding
+    dataSourceId?: string;
+    columnMapping?: Record<number, string>; // columnIndex -> fieldName
+    visibleRowCount?: number;
 }
 
 export interface QRCodeElement extends BaseElement {

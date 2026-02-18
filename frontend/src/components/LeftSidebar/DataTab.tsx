@@ -1,461 +1,453 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useMailMergeStore } from '../../store/mailMergeStore';
 import { useDataStore } from '../../store/dataStore';
 import { useUIStore } from '../../store/uiStore';
+import { useCanvasStore } from '../../store/canvasStore';
 import { Button } from '../Shared/Button';
-import { Input } from '../Shared/Input';
-import { Dropdown } from '../Shared/Dropdown';
-import { Accordion } from '../Shared/Accordion';
+
 import {
-    FaUpload,
-    FaFileExcel,
-    FaTable,
-    FaFilter,
-    FaSort,
-    FaSearch,
-    FaSync,
-    FaEye,
-    FaDownload,
-} from 'react-icons/fa';
-import './DataTab.css';
+    Database,
+    FileSpreadsheet,
+    RefreshCw,
+    LogOut,
+    PlusCircle,
+    Search,
+    Type,
+    Image as ImageIcon,
+    Hash,
+    Calendar,
+    CheckSquare,
+    List,
+    ChevronDown,
+    ChevronLeft,
+    ChevronRight,
+    Filter,
+    Eye,
+    AlertCircle,
+    CheckCircle2,
+    LayoutTemplate
+} from 'lucide-react';
+
+const FIELD_TYPE_ICONS: Record<string, React.ReactNode> = {
+    string: <Type size={18} className="text-slate-400" />,
+    text: <Type size={18} className="text-slate-400" />,
+    number: <Hash size={18} className="text-slate-400" />,
+    date: <Calendar size={18} className="text-slate-400" />,
+    boolean: <CheckSquare size={18} className="text-slate-400" />,
+    image: <ImageIcon size={18} className="text-slate-400" />,
+    link: <List size={18} className="text-slate-400" />,
+};
+
+// Reusable Collapsible Section
+const CollapsibleSection: React.FC<{
+    title: string;
+    badge?: string | number;
+    icon?: React.ReactNode;
+    defaultOpen?: boolean;
+    children: React.ReactNode;
+}> = ({ title, badge, icon, defaultOpen = true, children }) => {
+    const [isOpen, setIsOpen] = useState(defaultOpen);
+
+    return (
+        <div className="border-b border-slate-100">
+            <div
+                className="flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-slate-50 transition-colors"
+                onClick={() => setIsOpen(!isOpen)}
+            >
+                <div className="flex items-center gap-2">
+                    {icon}
+                    <h2 className="text-[13px] font-semibold text-slate-500 uppercase tracking-tight">{title}</h2>
+                    {badge !== undefined && (
+                        <span className="bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded text-[10px] font-bold">{badge}</span>
+                    )}
+                </div>
+                <ChevronDown size={14} className={`text-slate-400 transition-transform ${!isOpen ? '-rotate-90' : ''}`} />
+            </div>
+            {isOpen && (
+                <div className="px-4 pb-4">
+                    {children}
+                </div>
+            )}
+        </div>
+    );
+};
 
 export const DataTab: React.FC = () => {
+    // Connect to MailMergeStore
     const {
-        excelFile,
-        excelData,
-        headerRowIndex,
-        loadExcelFile,
-        setHeaderRow,
-        clearExcelData,
+        dataSource,
+        fields,
+        disconnectDataSource,
+        refreshDataSource,
         filteredRows,
-        filterRows,
-        sortRows,
-        setPreviewRow,
-        previewRowIndex,
-        placeholders,
-        scanForPlaceholders,
-        mapPlaceholderToColumn,
-        mappings,
-    } = useDataStore();
+        previewRecordIndex,
+        setPreviewRecordIndex,
+
+        // Filters & Sorts
+        activeFilters,
+        activeSorts,
+        addFilter,
+        removeFilter,
+        addSort,
+        removeSort,
+        clearAllFilters
+    } = useMailMergeStore();
 
     const { openModal } = useUIStore();
+    const { canvas } = useCanvasStore();
+    const { loadData } = useDataStore();
+    const navigate = useNavigate();
 
     const [searchQuery, setSearchQuery] = useState('');
-    const [filterColumn, setFilterColumn] = useState('');
+    const [scannedPlaceholders, setScannedPlaceholders] = useState<{ id: string; name: string; isMapped: boolean }[]>([]);
+
+    // Scan canvas for {{placeholders}}
+    const scanCanvas = () => {
+        if (!canvas) return;
+        const objects = canvas.getObjects();
+        const found: { id: string; name: string; isMapped: boolean }[] = [];
+        const regex = /\{\{([^}]+)\}\}/g;
+
+        objects.forEach((obj: any) => {
+            if (obj.type === 'i-text' || obj.type === 'textbox' || obj.type === 'text') {
+                const text = obj.text || '';
+                let match;
+                while ((match = regex.exec(text)) !== null) {
+                    const name = match[1];
+                    if (!found.some(p => p.name === name)) {
+                        found.push({
+                            id: obj.id || `ph_${name}`,
+                            name: name,
+                            isMapped: fields.some(f => f.name === name)
+                        });
+                    }
+                }
+            }
+        });
+        setScannedPlaceholders(found);
+    };
+
+    // Auto-scan on mount and when fields change
+    useEffect(() => {
+        scanCanvas();
+
+        if (canvas) {
+            const handleCanvasChange = () => scanCanvas();
+
+            canvas.on('object:added', handleCanvasChange);
+            canvas.on('object:removed', handleCanvasChange);
+            canvas.on('text:changed', handleCanvasChange);
+
+            return () => {
+                canvas.off('object:added', handleCanvasChange);
+                canvas.off('object:removed', handleCanvasChange);
+                canvas.off('text:changed', handleCanvasChange);
+            };
+        }
+    }, [canvas, fields]);
+
+
+    // Filter State
+    const [filterField, setFilterField] = useState('');
     const [filterOperator, setFilterOperator] = useState('contains');
     const [filterValue, setFilterValue] = useState('');
-    const [sortColumn, setSortColumn] = useState('');
-    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
-    const [hasHeader, setHasHeader] = useState(true);
 
-    // Handle file upload
-    const handleFileUpload = () => {
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = '.xlsx,.xls,.csv';
-
-        input.onchange = async (e) => {
-            const file = (e.target as HTMLInputElement).files?.[0];
-            if (!file) return;
-
-            try {
-                await loadExcelFile(file);
-            } catch (error) {
-                console.error('Failed to load Excel file:', error);
-                alert('Failed to load Excel file. Please check the file format.');
-            }
-        };
-
-        input.click();
+    const handleApplyFilter = () => {
+        if (!filterField || !filterValue) return;
+        addFilter({ field: filterField, operator: filterOperator as any, value: filterValue, logicOperator: 'AND' });
+        setFilterValue(''); // Reset value for next filter
     };
 
-    // Apply filter
-    const applyFilter = () => {
-        if (!filterColumn || !filterValue) return;
-
-        filterRows([
-            {
-                column: filterColumn,
-                operator: filterOperator as any,
-                value: filterValue,
-            },
-        ]);
-    };
-
-    // Clear filter
-    const clearFilter = () => {
-        setFilterColumn('');
-        setFilterValue('');
-        filterRows([]);
-    };
-
-    // Apply sort
-    const applySort = () => {
-        if (!sortColumn) return;
-        sortRows(sortColumn, sortOrder);
-    };
-
-    // Search in data
-    const handleSearch = (query: string) => {
-        setSearchQuery(query);
-        if (!excelData || !query) {
-            filterRows([]);
-            return;
-        }
-
-        // Since search isn't directly in store, currently we handle it by updating filtered rows?
-        // The prompt implementation suggests a handleSearch but logic was "Update filtered rows (this would need to be added to the store)".
-        // I will implement a basic version that relies on filterRows but search usually searches all columns.
-        // The dataStore I implemented has `filteredRows` which is used for display.
-        // I'll skip complex global search logic here in local state and stick to what the store provides or just use filterRows for single column.
-        // For now, I'll just map searching to filtering on *first* matching column or just alert.
-        // Actually, let's just ignore global text search for now as the logic is complex without backend or robust store support.
+    const handleBulkGenerate = () => {
+        if (!dataSource) return;
+        loadData(dataSource.rows, dataSource.columns);
+        navigate('/bulk-generate');
     };
 
     return (
-        <div className="data-tab sidebar-tab-content">
-            {/* Upload Section */}
-            {!excelFile ? (
-                <div className="upload-section">
-                    <div className="upload-icon">
-                        <FaFileExcel size={64} color="#217346" />
+        <div className="flex flex-col h-full bg-white">
+
+            {/* Scrollable Content */}
+            <div className="flex-1 overflow-y-auto custom-scrollbar">
+
+                {/* Data Source Section */}
+                <div className="p-4 border-b border-slate-100">
+                    <div className="flex items-center justify-between mb-3">
+                        <h2 className="text-[13px] font-semibold text-slate-500 uppercase tracking-tight">Data Source</h2>
+                        {dataSource && (
+                            <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-bold uppercase">Connected</span>
+                        )}
                     </div>
 
-                    <h3>Load Excel Data</h3>
-                    <p>Upload an Excel file (.xlsx, .xls) or CSV to use data in your template</p>
-
-                    <Button
-                        variant="primary"
-                        onClick={handleFileUpload}
-                        className="w-full"
-                        icon={<FaUpload />}
-                    >
-                        Upload Excel File
-                    </Button>
-
-                    <div className="header-option">
-                        <label className="checkbox-label">
-                            <input
-                                type="checkbox"
-                                checked={hasHeader}
-                                onChange={(e) => setHasHeader(e.target.checked)}
-                            />
-                            <span>First row contains headers</span>
-                        </label>
-                    </div>
-
-                    <div className="supported-formats">
-                        <small>Supported formats: .xlsx, .xls, .csv</small>
-                    </div>
-                </div>
-            ) : (
-                <>
-                    {/* File Info */}
-                    <Accordion title="File Information" defaultOpen>
-                        <div className="file-info">
-                            <div className="info-row">
-                                <FaFileExcel className="info-icon" />
-                                <div className="info-content">
-                                    <div className="info-label">File Name</div>
-                                    <div className="info-value">{excelFile.name}</div>
-                                </div>
-                            </div>
-
-                            <div className="info-row">
-                                <FaTable className="info-icon" />
-                                <div className="info-content">
-                                    <div className="info-label">Dimensions</div>
-                                    <div className="info-value">
-                                        {excelData?.totalRows} rows × {excelData?.totalColumns} columns
+                    {dataSource ? (
+                        <>
+                            <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg mb-3">
+                                <div className="flex gap-3 items-start">
+                                    <div className="p-2 bg-white border border-slate-200 rounded-lg shadow-sm">
+                                        <FileSpreadsheet className="text-emerald-600" size={20} />
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                        <p className="text-sm font-bold text-slate-800 truncate" title={dataSource.name}>{dataSource.name}</p>
+                                        <p className="text-xs text-slate-500">
+                                            {dataSource.rowCount} rows • {dataSource.type.toUpperCase()}
+                                        </p>
+                                    </div>
+                                    <div className="flex flex-col gap-1">
+                                        <button
+                                            className="p-1 hover:text-blue-500 transition-colors text-slate-400"
+                                            title="Replace"
+                                            onClick={() => openModal('dataSourceConnection')}
+                                        >
+                                            <RefreshCw size={16} />
+                                        </button>
+                                        <button
+                                            className="p-1 hover:text-red-500 transition-colors text-slate-400"
+                                            title="Disconnect"
+                                            onClick={disconnectDataSource}
+                                        >
+                                            <LogOut size={16} />
+                                        </button>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div className="info-row">
-                                <div className="info-content">
-                                    <div className="info-label">File Size</div>
-                                    <div className="info-value">
-                                        {(excelFile.size / 1024).toFixed(2)} KB
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="file-actions">
-                                <Button
-                                    variant="secondary"
-                                    size="small"
-                                    onClick={() => openModal('dataPreview')}
-                                    icon={<FaEye />}
-                                >
-                                    View Data
-                                </Button>
-
-                                <Button
-                                    variant="secondary"
-                                    size="small"
-                                    onClick={handleFileUpload}
-                                    icon={<FaSync />}
-                                >
-                                    Replace
-                                </Button>
-
-                                <Button
-                                    variant="secondary"
-                                    size="small"
-                                    onClick={clearExcelData}
-                                    className="text-red-500"
-                                >
-                                    Remove
-                                </Button>
-                            </div>
-
-                            {/* Header Row Selection */}
-                            <div className="header-row-selection">
-                                <label>Header Row</label>
-                                <Dropdown
-                                    value={headerRowIndex}
-                                    onChange={(val) => setHeaderRow(Number(val))}
-                                    options={Array.from({ length: Math.min(20, excelData?.rawRows?.length || excelData?.totalRows || 0) }, (_, i) => ({
-                                        label: `Row ${i + 1}`,
-                                        value: i
-                                    }))}
-                                />
-                                <small className="helper-text">Select which row contains column headers</small>
-                            </div>
-                        </div>
-                    </Accordion>
-
-                    {/* Placeholders */}
-                    <Accordion title="Placeholders">
-                        <div className="placeholders-list">
-                            {placeholders.length === 0 ? (
-                                <p className="no-data">No placeholders detected. Add text like {"{{Name}}"} to canvas.</p>
-                            ) : (
-                                placeholders.map((placeholder, idx) => (
-                                    <div key={idx} className={`placeholder-item ${placeholder.isMapped ? 'mapped' : 'unmapped'}`}>
-                                        <div className="placeholder-header">
-                                            <span className="placeholder-type-icon">
-                                                {placeholder.type === 'image' && '🖼️'}
-                                                {placeholder.type === 'link' && '🔗'}
-                                                {placeholder.type === 'emoji' && '😀'}
-                                                {(placeholder.type === 'text' || !placeholder.type) && '🔤'}
-                                            </span>
-                                            <span className="placeholder-name">{`{{${placeholder.name}}}`}</span>
-                                            <span className={`status-badge ${placeholder.isMapped ? 'success' : 'warning'}`}>
-                                                {placeholder.isMapped ? 'Mapped' : 'Unmapped'}
-                                            </span>
-                                        </div>
-
-                                        <div className="mapping-control">
-                                            <Dropdown
-                                                value={mappings[placeholder.name] || ''}
-                                                onChange={(val) => mapPlaceholderToColumn(placeholder.name, String(val))}
-                                                options={[
-                                                    { label: 'Select Column...', value: '' },
-                                                    ...(excelData?.columns.map(col => ({
-                                                        label: col.name,
-                                                        value: col.name
-                                                    })) || [])
-                                                ]}
-                                            />
-                                        </div>
-                                    </div>
-                                ))
-                            )}
-
-                            <Button
-                                variant="secondary"
-                                size="small"
-                                className="w-full mt-2"
-                                onClick={() => import('../../store/canvasStore').then(({ useCanvasStore }) => scanForPlaceholders(useCanvasStore.getState().canvas?.getObjects() || []))}
-                                icon={<FaSync />}
-                            >
-                                Scan Canvas
-                            </Button>
-                        </div>
-                    </Accordion>
-
-                    {/* Columns */}
-                    <Accordion title="Columns">
-                        <div className="columns-list">
-                            {excelData?.columns.map((column, index) => (
-                                <div
-                                    key={index}
-                                    className="column-item"
-                                    draggable
-                                    onDragStart={(e) => {
-                                        e.dataTransfer.setData('application/x-canva-column', column.name);
-                                        e.dataTransfer.setData('application/x-canva-column-type', column.type);
-                                        e.dataTransfer.effectAllowed = 'copy';
-                                    }}
-                                    title="Drag to canvas to add placeholder"
-                                >
-                                    <div className="column-info">
-                                        <div className="column-name">{column.name}</div>
-                                        <div className="column-type">{column.type}</div>
-                                    </div>
-                                    <div className="column-sample">
-                                        {String(column.sampleValue)}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                        <div className="drag-hint">
-                            <small>💡 Drag columns to canvas to add placeholders</small>
-                        </div>
-                    </Accordion>
-
-                    {/* Filter */}
-                    <Accordion title="Filter Data">
-                        <div className="filter-section">
-                            <div className="form-group">
-                                <label>Column</label>
-                                <Dropdown
-                                    value={filterColumn}
-                                    onChange={(val) => setFilterColumn(String(val))}
-                                    options={
-                                        excelData?.columns.map(col => ({
-                                            label: col.name,
-                                            value: col.name,
-                                        })) || []
-                                    }
-                                />
-                            </div>
-
-                            <div className="form-group">
-                                <label>Operator</label>
-                                <Dropdown
-                                    value={filterOperator}
-                                    onChange={(val) => setFilterOperator(String(val))}
-                                    options={[
-                                        { label: 'Equals', value: 'equals' },
-                                        { label: 'Contains', value: 'contains' },
-                                        { label: 'Starts With', value: 'startsWith' },
-                                        { label: 'Ends With', value: 'endsWith' },
-                                    ]}
-                                />
-                            </div>
-
-                            <div className="form-group">
-                                <label>Value</label>
-                                <Input
-                                    type="text"
-                                    value={filterValue}
-                                    onChange={(e) => setFilterValue(e.target.value)}
-                                    placeholder="Enter filter value"
-                                />
-                            </div>
-
-                            <div className="filter-actions">
-                                <Button
-                                    variant="primary"
-                                    onClick={applyFilter}
-                                    disabled={!filterColumn}
-                                    className="w-full"
-                                    icon={<FaFilter />}
-                                >
-                                    Apply Filter
-                                </Button>
-
-                                <Button
-                                    variant="secondary"
-                                    onClick={clearFilter}
-                                    className="w-full"
-                                >
-                                    Clear Filter
-                                </Button>
-                            </div>
-
-                            {filteredRows.length !== excelData?.totalRows && (
-                                <div className="filter-info">
-                                    Showing {filteredRows.length} of {excelData?.totalRows} rows
-                                </div>
-                            )}
-                        </div>
-                    </Accordion>
-
-                    {/* Sort */}
-                    <Accordion title="Sort Data">
-                        <div className="sort-section">
-                            <div className="form-group">
-                                <label>Sort By</label>
-                                <Dropdown
-                                    value={sortColumn}
-                                    onChange={(val) => setSortColumn(String(val))}
-                                    options={
-                                        excelData?.columns.map(col => ({
-                                            label: col.name,
-                                            value: col.name,
-                                        })) || []
-                                    }
-                                />
-                            </div>
-
-                            <div className="form-group">
-                                <label>Order</label>
-                                <Dropdown
-                                    value={sortOrder}
-                                    onChange={(value) => setSortOrder(value as 'asc' | 'desc')}
-                                    options={[
-                                        { label: 'Ascending (A → Z)', value: 'asc' },
-                                        { label: 'Descending (Z → A)', value: 'desc' },
-                                    ]}
-                                />
                             </div>
 
                             <Button
                                 variant="primary"
-                                onClick={applySort}
-                                disabled={!sortColumn}
-                                className="w-full"
-                                icon={<FaSort />}
+                                className="w-full mb-4 bg-indigo-600 hover:bg-indigo-700 text-white shadow-md border-0 uppercase tracking-wide text-[11px]"
+                                onClick={handleBulkGenerate}
                             >
-                                Apply Sort
+                                <LayoutTemplate size={14} className="mr-2" />
+                                Bulk Generate
                             </Button>
+                        </>
+                    ) : (
+                        <div className="space-y-3">
+                            <button
+                                onClick={() => openModal('dataSourceConnection')}
+                                className="w-full flex items-center justify-center gap-2 bg-blue-500 text-white text-sm font-semibold py-2 rounded-lg hover:bg-blue-600 transition-all shadow-sm"
+                            >
+                                <PlusCircle size={18} />
+                                Connect Data Source
+                            </button>
+                            <p className="text-center text-[10px] text-slate-400">Supports .csv, .json, .xlsx</p>
                         </div>
-                    </Accordion>
+                    )}
+                </div>
 
-                    {/* Preview Row Selector */}
-                    <Accordion title="Preview">
-                        <div className="preview-section">
-                            <div className="form-group">
-                                <label>Preview with Row</label>
-                                <Input
-                                    type="number"
-                                    value={previewRowIndex + 1}
-                                    onChange={(e) => setPreviewRow(Number(e.target.value) - 1)}
-                                    min={1}
-                                    max={excelData?.totalRows || 1}
+                {/* Available Fields Section */}
+                <CollapsibleSection title="Available Fields" badge={fields.length} defaultOpen={true}>
+                    {fields.length > 0 ? (
+                        <>
+                            <div className="relative mb-3">
+                                <Search size={16} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                                <input
+                                    className="w-full pl-9 pr-4 py-1.5 text-xs border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-slate-50/50 text-slate-700 outline-none transition-all"
+                                    placeholder="Search fields..."
+                                    type="text"
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
                                 />
                             </div>
 
-                            <div className="preview-navigation">
-                                <Button
-                                    size="small"
-                                    onClick={() => setPreviewRow(Math.max(0, previewRowIndex - 1))}
-                                    disabled={previewRowIndex === 0}
-                                >
-                                    ← Previous
-                                </Button>
+                            <div className="space-y-1">
+                                {fields
+                                    .filter(f => f.name.toLowerCase().includes(searchQuery.toLowerCase()))
+                                    .map((field, idx) => (
+                                        <div
+                                            key={idx}
+                                            draggable
+                                            onDragStart={(e) => {
+                                                e.dataTransfer.setData('text/plain', `{{${field.name}}}`); // Drag text pattern
+                                                e.dataTransfer.setData('application/mailmerge-field', field.name);
+                                                e.dataTransfer.setData('application/mailmerge-field-type', field.type);
+                                                e.dataTransfer.effectAllowed = 'copy';
+                                            }}
+                                            className="group flex items-center gap-3 p-2 hover:bg-slate-50 rounded-lg cursor-grab active:cursor-grabbing border border-transparent hover:border-slate-100 transition-colors"
+                                        >
+                                            {FIELD_TYPE_ICONS[field.type] || <Type size={18} className="text-slate-400" />}
+                                            <div className="flex-1 min-w-0">
+                                                <div className="text-sm font-medium text-slate-700 truncate" title={field.name}>{field.name}</div>
+                                                <div className="text-[10px] text-slate-400 truncate">Ex: {field.sampleValues?.[0] || '-'}</div>
+                                            </div>
+                                        </div>
+                                    ))}
+                            </div>
+                        </>
+                    ) : (
+                        <div className="text-center py-6">
+                            <Database size={24} className="mx-auto text-slate-300 mb-2" />
+                            <p className="text-xs text-slate-400">Connect data to see fields</p>
+                        </div>
+                    )}
+                </CollapsibleSection>
 
-                                <span className="preview-counter">
-                                    Row {previewRowIndex + 1} of {excelData?.totalRows}
-                                </span>
+                {/* Mappings / Placeholders Section */}
+                <CollapsibleSection title="Detected Placeholders" badge={scannedPlaceholders.length} defaultOpen={false}>
+                    {scannedPlaceholders.length > 0 ? (
+                        <div className="space-y-2">
+                            <p className="text-[10px] text-slate-400 mb-2 italic">
+                                Fields are mapped automatically by name matching.
+                            </p>
+                            {scannedPlaceholders.map((ph, idx) => (
+                                <div key={idx} className="bg-slate-50 rounded-lg border border-slate-100 p-2 flex items-center justify-between">
+                                    <code className="text-[11px] font-mono font-bold text-slate-600 px-1.5 py-0.5 bg-slate-200/50 rounded">
+                                        {`{{${ph.name}}}`}
+                                    </code>
 
-                                <Button
-                                    size="small"
-                                    onClick={() =>
-                                        setPreviewRow(
-                                            Math.min((excelData?.totalRows || 1) - 1, previewRowIndex + 1)
-                                        )
-                                    }
-                                    disabled={previewRowIndex >= (excelData?.totalRows || 1) - 1}
-                                >
-                                    Next →
-                                </Button>
+                                    {ph.isMapped ? (
+                                        <div className="flex items-center gap-1.5 text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded text-[10px] font-medium border border-emerald-100">
+                                            <CheckCircle2 size={10} />
+                                            Mapped
+                                        </div>
+                                    ) : (
+                                        <div className="flex items-center gap-1.5 text-amber-600 bg-amber-50 px-2 py-0.5 rounded text-[10px] font-medium border border-amber-100">
+                                            <AlertCircle size={10} />
+                                            Missing
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+
+                            <button
+                                onClick={scanCanvas}
+                                className="w-full mt-2 py-1.5 text-xs text-blue-500 hover:bg-blue-50 rounded transition-colors flex items-center justify-center gap-1"
+                            >
+                                <RefreshCw size={12} /> Re-scan Canvas
+                            </button>
+                        </div>
+                    ) : (
+                        <div className="text-center py-4">
+                            <p className="text-xs text-slate-400 mb-2">No <code>{`{{tags}}`}</code> found on canvas.</p>
+                            <button
+                                onClick={scanCanvas}
+                                className="text-[10px] px-3 py-1 bg-slate-100 text-slate-600 rounded-full hover:bg-slate-200"
+                            >
+                                Scan Now
+                            </button>
+                        </div>
+                    )}
+                </CollapsibleSection>
+
+                {/* Filters */}
+                <CollapsibleSection title="Filter Data" icon={<Filter size={12} />} defaultOpen={false}>
+                    {dataSource ? (
+                        <div className="space-y-4">
+                            {/* Active Filters List */}
+                            {activeFilters.length > 0 && (
+                                <div className="space-y-1 mb-2">
+                                    {activeFilters.map(filter => (
+                                        <div key={filter.id} className="flex items-center justify-between bg-blue-50 border border-blue-100 rounded px-2 py-1.5">
+                                            <span className="text-[10px] text-blue-800 font-medium">
+                                                {filter.field} {filter.operator} "{filter.value}"
+                                            </span>
+                                            <button onClick={() => removeFilter(filter.id)} className="text-blue-400 hover:text-red-500">
+                                                <LogOut size={12} className="rotate-180" /> {/* Using LogOut as 'X'ish icon or use X */}
+                                            </button>
+                                        </div>
+                                    ))}
+                                    <button onClick={clearAllFilters} className="text-[10px] text-slate-400 underline hover:text-slate-600">
+                                        Clear all
+                                    </button>
+                                </div>
+                            )}
+
+                            {/* Add Filter */}
+                            <div className="bg-white border border-slate-200 rounded-lg p-2.5 shadow-sm">
+                                <h4 className="text-[11px] font-bold text-slate-700 mb-2 uppercase">Add Filter</h4>
+                                <div className="space-y-2">
+                                    <select
+                                        className="w-full text-xs p-1.5 border border-slate-200 rounded"
+                                        value={filterField}
+                                        onChange={(e) => setFilterField(e.target.value)}
+                                    >
+                                        <option value="">Select Field</option>
+                                        {fields.map(f => <option key={f.id} value={f.name}>{f.name}</option>)}
+                                    </select>
+                                    <div className="flex gap-2">
+                                        <select
+                                            className="w-1/3 text-xs p-1.5 border border-slate-200 rounded"
+                                            value={filterOperator}
+                                            onChange={(e) => setFilterOperator(e.target.value)}
+                                        >
+                                            <option value="contains">Contains</option>
+                                            <option value="equals">Equals</option>
+                                            <option value="startsWith">Starts</option>
+                                            <option value="greaterThan">&gt;</option>
+                                            <option value="lessThan">&lt;</option>
+                                        </select>
+                                        <input
+                                            className="w-2/3 text-xs p-1.5 border border-slate-200 rounded"
+                                            placeholder="Value"
+                                            value={filterValue}
+                                            onChange={(e) => setFilterValue(e.target.value)}
+                                        />
+                                    </div>
+                                    <button
+                                        onClick={handleApplyFilter}
+                                        disabled={!filterField || !filterValue}
+                                        className="w-full py-1.5 mt-1 text-xs bg-slate-800 text-white rounded hover:bg-slate-900 disabled:opacity-50"
+                                    >
+                                        Add Filter
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </Accordion>
-                </>
+                    ) : (
+                        <div className="text-center py-4 text-xs text-slate-400">No data connected</div>
+                    )}
+                </CollapsibleSection>
+            </div>
+
+            {/* Bottom Preview Section */}
+            {dataSource && (
+                <div className="border-t border-slate-200 bg-slate-50 p-4 shrink-0">
+                    <div className="flex flex-col gap-3">
+                        <div className="flex items-center justify-between px-1">
+                            <span className="text-[11px] font-bold text-slate-500 uppercase">Preview Data</span>
+                            <div className="flex items-center gap-1">
+                                <span className={`w-1.5 h-1.5 rounded-full ${dataSource ? 'bg-blue-500 animate-pulse' : 'bg-slate-300'}`}></span>
+                                <span className="text-[11px] font-bold text-blue-500 uppercase">Active</span>
+                            </div>
+                        </div>
+
+                        <div className="flex items-center justify-between bg-white border border-slate-200 rounded-lg px-2 py-1 shadow-sm">
+                            <button
+                                className="p-1 hover:bg-slate-100 rounded text-slate-400 disabled:opacity-30"
+                                onClick={() => setPreviewRecordIndex(Math.max(0, previewRecordIndex - 1))}
+                                disabled={previewRecordIndex === 0}
+                            >
+                                <ChevronLeft size={20} />
+                            </button>
+                            <div className="flex flex-col items-center">
+                                <span className="text-xs font-bold text-slate-800">
+                                    Row {previewRecordIndex + 1} of {filteredRows.length}
+                                </span>
+                                <span className="text-[10px] text-slate-400 font-medium truncate max-w-[120px]">
+                                    {filteredRows[previewRecordIndex] ? Object.values(filteredRows[previewRecordIndex])[0] : '-'}
+                                </span>
+                            </div>
+                            <button
+                                className="p-1 hover:bg-slate-100 rounded text-slate-400 disabled:opacity-30"
+                                onClick={() => setPreviewRecordIndex(Math.min(filteredRows.length - 1, previewRecordIndex + 1))}
+                                disabled={previewRecordIndex >= filteredRows.length - 1}
+                            >
+                                <ChevronRight size={20} />
+                            </button>
+                        </div>
+
+                        <Button
+                            variant="primary"
+                            className="w-full bg-slate-900 hover:bg-black text-white py-2.5 rounded-lg text-sm font-bold shadow-md transition-all border-0"
+                            onClick={() => openModal('dataPreview')} // Re-using DataPreview modal but ensures it uses mailMergeStore data?
+                        // Wait, DataPreviewModal implies it looks at useDataStore. 
+                        // I should verify DataPreviewModal.
+                        >
+                            <Eye size={16} className="mr-2" />
+                            View Full Table
+                        </Button>
+                    </div>
+                </div>
             )}
         </div>
     );

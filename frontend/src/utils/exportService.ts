@@ -1,6 +1,16 @@
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-import { Document, Packer, Paragraph, ImageRun, TextRun, AlignmentType } from 'docx';
+import {
+    Document,
+    Packer,
+    Paragraph,
+    ImageRun,
+    TextRun,
+    AlignmentType,
+    FrameAnchorType,
+    HorizontalPositionRelativeFrom,
+    VerticalPositionRelativeFrom
+} from 'docx';
 import { saveAs } from 'file-saver';
 import JSZip from 'jszip';
 import { fabric } from 'fabric';
@@ -16,6 +26,9 @@ export interface GeneratedFile {
     name: string;
     blob: Blob;
 }
+
+// Conversion factor: 1 CSS pixel = 15 Twips in Word
+const PX_TO_TWIPS = 15;
 
 /**
  * Renders a canvas element to an image data URL
@@ -81,7 +94,8 @@ export async function generateMultiPagePDF(
 
 /**
  * Generates a Word document with editable text elements extracted from canvas
- * Text objects become editable TextRuns, images are embedded as ImageRuns
+ * Text objects become editable TextRuns with absolute positioning via frames, 
+ * images are embedded with floating positioning.
  */
 export async function generateWord(
     fabricCanvas: fabric.Canvas,
@@ -92,18 +106,8 @@ export async function generateWord(
     const objects = fabricCanvas.getObjects();
     const docChildren: Paragraph[] = [];
 
-    // Sort objects by position (top to bottom, then left to right)
-    const sortedObjects = [...objects].sort((a, b) => {
-        const aTop = a.top || 0;
-        const bTop = b.top || 0;
-        if (Math.abs(aTop - bTop) < 20) {
-            // Same row, sort by left
-            return (a.left || 0) - (b.left || 0);
-        }
-        return aTop - bTop;
-    });
-
-    for (const obj of sortedObjects) {
+    // Process objects
+    for (const obj of objects) {
         // Handle text objects
         if (obj.type === 'i-text' || obj.type === 'textbox' || obj.type === 'text') {
             const textObj = obj as fabric.IText;
@@ -119,29 +123,30 @@ export async function generateWord(
             const isUnderline = textObj.underline === true;
             const textColor = textObj.fill?.toString() || '#000000';
 
-            // Convert hex color to RGB
-            const hexToRgb = (hex: string) => {
-                const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-                return result ? {
-                    r: parseInt(result[1], 16),
-                    g: parseInt(result[2], 16),
-                    b: parseInt(result[3], 16)
-                } : { r: 0, g: 0, b: 0 };
-            };
-
-            const rgb = hexToRgb(textColor);
-
             // Determine alignment
             let alignment: typeof AlignmentType.LEFT | typeof AlignmentType.CENTER | typeof AlignmentType.RIGHT | typeof AlignmentType.JUSTIFIED = AlignmentType.LEFT;
             if (textObj.textAlign === 'center') alignment = AlignmentType.CENTER;
             else if (textObj.textAlign === 'right') alignment = AlignmentType.RIGHT;
             else if (textObj.textAlign === 'justify') alignment = AlignmentType.JUSTIFIED;
 
-            // Create paragraph with styled text
+            // Absolute positioning using frames
+            // We use the object's top/left relative to the page
             docChildren.push(
                 new Paragraph({
+                    frame: {
+                        type: "absolute",
+                        position: {
+                            x: Math.round((obj.left || 0) * PX_TO_TWIPS),
+                            y: Math.round((obj.top || 0) * PX_TO_TWIPS),
+                        },
+                        width: Math.round((obj.width || 100) * (obj.scaleX || 1) * PX_TO_TWIPS),
+                        height: Math.round((obj.height || 20) * (obj.scaleY || 1) * PX_TO_TWIPS),
+                        anchor: {
+                            horizontal: FrameAnchorType.PAGE,
+                            vertical: FrameAnchorType.PAGE,
+                        },
+                    },
                     alignment,
-                    spacing: { after: 200 },
                     children: [
                         new TextRun({
                             text: text,
@@ -179,22 +184,27 @@ export async function generateWord(
                         bytes[i] = binaryString.charCodeAt(i);
                     }
 
-                    // Scale image for Word
-                    const maxWidth = 500;
-                    const scale = Math.min(1, maxWidth / tempCanvas.width);
-                    const scaledWidth = Math.round(tempCanvas.width * scale);
-                    const scaledHeight = Math.round(tempCanvas.height * scale);
+                    const objWidth = (imgObj.width || 0) * (imgObj.scaleX || 1);
+                    const objHeight = (imgObj.height || 0) * (imgObj.scaleY || 1);
 
                     docChildren.push(
                         new Paragraph({
-                            alignment: AlignmentType.CENTER,
-                            spacing: { after: 200 },
                             children: [
                                 new ImageRun({
                                     data: bytes,
                                     transformation: {
-                                        width: scaledWidth,
-                                        height: scaledHeight,
+                                        width: objWidth,
+                                        height: objHeight,
+                                    },
+                                    floating: {
+                                        horizontalPosition: {
+                                            relative: HorizontalPositionRelativeFrom.PAGE,
+                                            offset: Math.round((obj.left || 0) * PX_TO_TWIPS),
+                                        },
+                                        verticalPosition: {
+                                            relative: VerticalPositionRelativeFrom.PAGE,
+                                            offset: Math.round((obj.top || 0) * PX_TO_TWIPS),
+                                        },
                                     },
                                     type: 'png',
                                 }),
@@ -223,8 +233,14 @@ export async function generateWord(
                 properties: {
                     page: {
                         size: {
-                            width: Math.round(width * 15), // Convert to twips (approx)
-                            height: Math.round(height * 15),
+                            width: Math.round(width * PX_TO_TWIPS),
+                            height: Math.round(height * PX_TO_TWIPS),
+                        },
+                        margin: {
+                            top: 0,
+                            right: 0,
+                            bottom: 0,
+                            left: 0,
                         },
                     },
                 },

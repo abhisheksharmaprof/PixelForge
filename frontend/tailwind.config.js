@@ -7,9 +7,14 @@ export default {
     theme: {
         extend: {
             colors: {
-                // You can extend colors here if needed to match Stitch variables if you want to use them in tailwind config
-                // But for now, standard tailwind colors + CSS variables are fine.
-            }
+                "primary": "#2563eb",
+                "primary-hover": "#1d4ed8",
+                "background-light": "#f6f7f8",
+                "background-dark": "#101922",
+            },
+            fontFamily: {
+                "display": ["Inter", "sans-serif"]
+            },
         },
     },
     plugins: [],

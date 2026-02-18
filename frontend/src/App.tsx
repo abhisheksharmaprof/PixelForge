@@ -10,6 +10,13 @@ import { SpecialCharacterModal } from './components/Modals/SpecialCharacterModal
 import { TextStyleManagerModal } from './components/Modals/TextStyleManagerModal';
 import { MailMergeModal } from './components/Modals/MailMergeModal';
 import { TextEffectsLibraryModal } from './components/Modals/TextEffectsLibraryModal';
+import { DataSourceModal } from './components/Modals/DataSourceModal';
+import { DataFilterSortModal } from './components/Modals/DataFilterSortModal';
+import { BatchGenerationModal } from './components/Modals/BatchGenerationModal';
+import { ConditionBuilderModal } from './components/Modals/ConditionBuilderModal';
+import { FieldMappingModal } from './components/Modals/FieldMappingModal';
+import { ExportSettingsModal } from './components/Modals/ExportSettingsModal';
+import { ValidationReportModal } from './components/Modals/ValidationReportModal';
 import { StatusBar } from './components/Shared/StatusBar';
 
 // ... existing imports ...
@@ -26,6 +33,7 @@ import { useSelectionStore } from './store/selectionStore';
 import LoginScreen from './screens/auth/LoginScreen';
 import RegisterScreen from './screens/auth/RegisterScreen';
 import DashboardScreen from './screens/dashboard/DashboardScreen';
+import DataSourcesScreen from './screens/dashboard/DataSourcesScreen';
 import EditorScreen from './screens/editor/EditorScreen';
 import BulkGenerateScreen from './screens/generate/BulkGenerateScreen';
 
@@ -83,6 +91,7 @@ const App: React.FC = () => {
                         <Route path="/login" element={<LoginScreen />} />
                         <Route path="/register" element={<RegisterScreen />} />
                         <Route path="/dashboard" element={<DashboardScreen />} />
+                        <Route path="/data-sources" element={<DataSourcesScreen />} />
                         <Route path="/editor/:id?" element={<EditorScreen />} />
                         <Route path="/bulk-generate" element={<BulkGenerateScreen />} />
                     </Routes>
@@ -104,6 +113,13 @@ const App: React.FC = () => {
                     <TextStyleManagerModal />
                     <MailMergeModal />
                     <TextEffectsLibraryModal />
+                    <DataSourceModal />
+                    <DataFilterSortModal />
+                    <BatchGenerationModal />
+                    <ConditionBuilderModal />
+                    <FieldMappingModal />
+                    <ExportSettingsModal />
+                    <ValidationReportModal />
 
                     <StatusBar />
                 </div>

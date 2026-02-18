@@ -18,7 +18,11 @@ export const TextProperties: React.FC = () => {
     const { selectedObjects } = useSelectionStore();
 
     // Get current text object
-    const textObj = selectedObjects.length > 0 && (selectedObjects[0].type === 'textbox' || selectedObjects[0].type === 'text' || selectedObjects[0].type === 'i-text')
+    const textObj = selectedObjects.length > 0 &&
+        (selectedObjects[0].type === 'textbox' ||
+            selectedObjects[0].type === 'text' ||
+            selectedObjects[0].type === 'i-text' ||
+            (selectedObjects[0] as any).elementType === 'mailmerge-field')
         ? selectedObjects[0] as fabric.Textbox
         : null;
 
@@ -33,15 +37,27 @@ export const TextProperties: React.FC = () => {
     }, [canvas]);
 
     const updateProperty = (property: string, value: any) => {
-        if (!canvas || !textObj) return;
-        textObj.set({ [property]: value });
+        if (!canvas || selectedObjects.length === 0) return;
+
+        selectedObjects.forEach((obj: any) => {
+            if (obj.type === 'i-text' || obj.type === 'textbox' || obj.type === 'text' || obj.elementType === 'mailmerge-field') {
+                obj.set({ [property]: value });
+            }
+        });
+
         canvas.renderAll();
         setUpdateTrigger(prev => prev + 1);
     };
 
     const updateDataProperty = (key: string, value: any) => {
-        if (!canvas || !textObj) return;
-        textObj.set('data', { ...(textObj.data || {}), [key]: value });
+        if (!canvas || selectedObjects.length === 0) return;
+
+        selectedObjects.forEach((obj: any) => {
+            if (obj.type === 'i-text' || obj.type === 'textbox' || obj.type === 'text' || obj.elementType === 'mailmerge-field') {
+                obj.set('data', { ...(obj.data || {}), [key]: value });
+            }
+        });
+
         canvas.renderAll();
         setUpdateTrigger(prev => prev + 1);
     };
@@ -139,18 +155,31 @@ export const TextProperties: React.FC = () => {
                             value={(textObj.data && textObj.data.textTransform) || 'none'}
                             onChange={(e) => {
                                 const type = e.target.value;
-                                const originalText = (textObj.data && textObj.data.originalText) || textObj.text;
 
-                                let newText = originalText;
-                                if (type === 'uppercase') newText = originalText.toUpperCase();
-                                if (type === 'lowercase') newText = originalText.toLowerCase();
-                                if (type === 'capitalize') newText = originalText.replace(/\b\w/g, (l: string) => l.toUpperCase());
+                                if (!canvas || selectedObjects.length === 0) return;
 
-                                updateProperty('text', newText);
-                                updateDataProperty('textTransform', type);
-                                if (!textObj.data?.originalText) {
-                                    updateDataProperty('originalText', originalText);
-                                }
+                                selectedObjects.forEach((obj: any) => {
+                                    if (obj.type === 'i-text' || obj.type === 'textbox' || obj.type === 'text' || obj.elementType === 'mailmerge-field') {
+                                        // key fix: use the object's OWN original text, not the primary selection's
+                                        const originalText = (obj.data && obj.data.originalText) || obj.text;
+
+                                        let newText = originalText;
+                                        if (type === 'uppercase') newText = originalText.toUpperCase();
+                                        if (type === 'lowercase') newText = originalText.toLowerCase();
+                                        if (type === 'capitalize') newText = originalText.replace(/\b\w/g, (l: string) => l.toUpperCase());
+
+                                        obj.set('text', newText);
+                                        obj.set('data', { ...(obj.data || {}), textTransform: type });
+
+                                        // Store original text if not already stored
+                                        if (!obj.data?.originalText) {
+                                            obj.set('data', { ...(obj.data || {}), originalText: originalText });
+                                        }
+                                    }
+                                });
+
+                                canvas.renderAll();
+                                setUpdateTrigger(prev => prev + 1);
                             }}
                         >
                             <option value="none">None</option>

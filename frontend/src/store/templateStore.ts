@@ -38,6 +38,10 @@ interface TemplateState {
     addTextStyle: (style: TextStyle) => void;
     updateTextStyle: (id: string, updates: Partial<TextStyle>) => void;
     deleteTextStyle: (id: string) => void;
+
+    deleteTemplate: (id: string) => Promise<void>;
+    loadTemplate: (id: string) => Promise<void>;
+    updateCurrentTemplate: (updates: Partial<Template>) => void;
 }
 
 export const useTemplateStore = create<TemplateState>((set, get) => ({
@@ -146,5 +150,47 @@ export const useTemplateStore = create<TemplateState>((set, get) => ({
     })),
     deleteTextStyle: (id) => set((state) => ({
         textStyles: state.textStyles.filter(s => s.id !== id)
+    })),
+
+    deleteTemplate: async (id) => {
+        try {
+            set({ isLoading: true });
+            const response = await fetch(`http://localhost:3000/api/templates/${id}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                set((state) => ({
+                    savedTemplates: state.savedTemplates.filter(t => t.id !== id),
+                    isLoading: false
+                }));
+            } else {
+                console.error("Failed to delete template");
+                set({ isLoading: false });
+            }
+        } catch (error) {
+            console.error("Error deleting template", error);
+            set({ isLoading: false });
+        }
+    },
+
+    loadTemplate: async (id) => {
+        try {
+            set({ isLoading: true });
+            const response = await fetch(`http://localhost:3000/api/templates/${id}`);
+            if (response.ok) {
+                const template = await response.json();
+                set({ currentTemplate: template, isLoading: false });
+            } else {
+                console.error("Failed to load template");
+                set({ isLoading: false });
+            }
+        } catch (error) {
+            console.error("Error loading template", error);
+            set({ isLoading: false });
+        }
+    },
+    updateCurrentTemplate: (updates) => set((state) => ({
+        currentTemplate: state.currentTemplate ? { ...state.currentTemplate, ...updates } : null
     })),
 }));

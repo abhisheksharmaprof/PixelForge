@@ -1,0 +1,205 @@
+/* ── Mail Merge Contextual Ribbon ─────────────────────── */
+
+.mm-ribbon {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    height: 100%;
+}
+
+/* ── Groups ───────────────────────────────────────────── */
+
+.mm-ribbon-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.mm-ribbon-group-label {
+    font-size: 9px;
+    font-weight: 600;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.mm-ribbon-buttons {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.mm-ribbon-separator {
+    width: 1px;
+    height: 28px;
+    background: #e2e8f0;
+    margin: 0 4px;
+}
+
+/* ── Buttons ──────────────────────────────────────────── */
+
+.mm-ribbon-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    background: transparent;
+    color: #475569;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s;
+}
+
+.mm-ribbon-btn:hover {
+    background: #f1f5f9;
+    border-color: #e2e8f0;
+    color: #1e293b;
+}
+
+.mm-ribbon-btn.active {
+    background: #dbeafe;
+    border-color: #93c5fd;
+    color: #1d4ed8;
+}
+
+.mm-ribbon-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* ── Dropdown ─────────────────────────────────────────── */
+
+.mm-ribbon-dropdown {
+    position: relative;
+}
+
+.mm-ribbon-dropdown.success .mm-ribbon-btn {
+    background: #dcfce7;
+    color: #16a34a;
+    border-color: #bbf7d0;
+}
+
+.mm-ribbon-dropdown.success .mm-ribbon-btn:hover {
+    background: #bbf7d0;
+}
+
+.mm-ribbon-dropdown.primary .mm-ribbon-btn {
+    background: #dbeafe;
+    color: #2563eb;
+    border-color: #93c5fd;
+}
+
+.mm-ribbon-chevron {
+    transition: transform 0.15s;
+}
+
+.mm-ribbon-chevron.open {
+    transform: rotate(180deg);
+}
+
+.mm-ribbon-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    min-width: 180px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    z-index: 100;
+    padding: 4px;
+    animation: mmDropdown 0.12s ease-out;
+}
+
+@keyframes mmDropdown {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.mm-ribbon-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 6px 10px;
+    border: none;
+    border-radius: 5px;
+    background: transparent;
+    color: #334155;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.1s;
+    text-align: left;
+}
+
+.mm-ribbon-dropdown-item:hover {
+    background: #f1f5f9;
+}
+
+.mm-ribbon-dropdown-item:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.mm-ribbon-divider {
+    height: 1px;
+    background: #e2e8f0;
+    margin: 3px 8px;
+}
+
+/* ── Navigation controls ──────────────────────────────── */
+
+.mm-ribbon-nav {
+    display: flex;
+    align-items: center;
+    gap: 1px;
+    background: #f1f5f9;
+    border-radius: 6px;
+    padding: 2px;
+}
+
+.mm-ribbon-nav-btn {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 4px;
+    background: transparent;
+    color: #475569;
+    cursor: pointer;
+    transition: all 0.1s;
+}
+
+.mm-ribbon-nav-btn:hover {
+    background: #e2e8f0;
+    color: #1e293b;
+}
+
+.mm-ribbon-nav-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.mm-ribbon-counter {
+    font-size: 10px;
+    font-weight: 600;
+    color: #334155;
+    padding: 0 6px;
+    min-width: 40px;
+    text-align: center;
+}

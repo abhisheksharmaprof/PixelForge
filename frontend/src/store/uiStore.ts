@@ -60,8 +60,6 @@ interface UIState {
     // Save Status
     isSaving: boolean;
     lastSaved: Date | null;
-    isSaving: boolean;
-    lastSaved: Date | null;
     setIsSaving: (saving: boolean) => void;
 
     // Clipboard

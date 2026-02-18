@@ -38,7 +38,7 @@ interface WatermarkState {
 
 interface CanvasState {
     canvas: fabric.Canvas | null;
-    setCanvas: (canvas: fabric.Canvas) => void;
+    setCanvas: (canvas: fabric.Canvas | null) => void;
     canvasSize: { width: number; height: number };
     setCanvasSize: (size: { width: number; height: number }) => void;
 

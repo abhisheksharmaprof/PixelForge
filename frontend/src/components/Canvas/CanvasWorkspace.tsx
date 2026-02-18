@@ -28,14 +28,16 @@ import { useCanvasStore } from '../../store/canvasStore';
 import { useSelectionStore } from '../../store/selectionStore';
 import { useUIStore } from '../../store/uiStore';
 import { useHistoryStore } from '../../store/historyStore';
-import { useDataStore } from '../../store/dataStore';
+import { useMailMergeStore } from '../../store/mailMergeStore';
 import { CanvasGrid } from './CanvasGrid';
 import { CanvasGuides } from './CanvasGuides';
+import { FabricTable } from './objects/FabricTable';
 import './CanvasWorkspace.css';
 
 export const CanvasWorkspace: React.FC = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
+    const resizingStateRef = useRef<{ table: FabricTable, type: 'row' | 'col', index: number, startVal: number, startMouse: number } | null>(null);
 
     const {
         canvas,
@@ -54,15 +56,19 @@ export const CanvasWorkspace: React.FC = () => {
     } = useCanvasStore();
 
     const {
-        scanForPlaceholders,
-        mapPlaceholderToColumn,
-        excelData,
-        mappings,
+        dataSource,
+        fields,
+        filteredRows,
+        previewRecordIndex,
         isPreviewMode,
-        previewRowIndex,
-        setPreviewMode,
-        setPreviewRow
-    } = useDataStore();
+    } = useMailMergeStore();
+
+    // We'll maintain a local mappings for legacy support or unified handling
+    const mappings = React.useMemo(() => {
+        const m: Record<string, string> = {};
+        fields.forEach(f => m[f.name] = f.name);
+        return m;
+    }, [fields]);
 
     const { setSelection } = useSelectionStore();
     const { addToHistory } = useHistoryStore();
@@ -101,13 +107,14 @@ export const CanvasWorkspace: React.FC = () => {
         window.canvas = fabricCanvas; // Required for drop handler to avoid stale closure
 
         return () => {
+            setCanvas(null);
             fabricCanvas.dispose();
         };
     }, []);
 
     // Update canvas size
     useEffect(() => {
-        if (!canvas) return;
+        if (!canvas || (canvas as any).disposed) return;
         canvas.setDimensions({
             width: canvasSize.width,
             height: canvasSize.height,
@@ -117,7 +124,7 @@ export const CanvasWorkspace: React.FC = () => {
 
     // Update background color
     useEffect(() => {
-        if (!canvas) return;
+        if (!canvas || (canvas as any).disposed) return;
         canvas.setBackgroundColor(backgroundColor, () => {
             canvas.renderAll();
         });
@@ -125,7 +132,7 @@ export const CanvasWorkspace: React.FC = () => {
 
     // Update background image
     useEffect(() => {
-        if (!canvas) return;
+        if (!canvas || (canvas as any).disposed) return;
 
         if (backgroundImage) {
             fabric.Image.fromURL(backgroundImage, (img) => {
@@ -156,11 +163,21 @@ export const CanvasWorkspace: React.FC = () => {
         if (!canvas) return;
 
         const handleSelection = (e: fabric.IEvent) => {
-            const selected = canvas.getActiveObjects();
-            setSelection(selected);
+            const selected = (e as any).selected || canvas.getActiveObjects();
+            console.log('[DEBUG handleSelection] selected count:', selected?.length, 'types:', selected?.map((o: any) => `${o.type}/${o.elementType}/${o.constructor?.name}`));
+            if (selected && selected.length > 0) {
+                setSelection([...selected] as fabric.Object[]);
+                useUIStore.getState().setRightPanelOpen(true);
+            }
         };
 
         const handleSelectionCleared = () => {
+            // Check if any table on canvas is mid-update — if so, ignore this event
+            const objects = canvas.getObjects();
+            const anyUpdating = objects.some((obj: any) => obj._isUpdating === true);
+            console.log('[DEBUG handleSelectionCleared] anyUpdating:', anyUpdating);
+            if (anyUpdating) return; // Skip — table is rebuilding internally
+
             setSelection([]);
         };
 
@@ -187,12 +204,35 @@ export const CanvasWorkspace: React.FC = () => {
                         canvas.requestRenderAll();
                         textTarget.__clickCount = 0; // Reset
                     }
-                } else {
-                    // New click sequence
-                    textTarget.__lastClickTime = now;
-                    textTarget.__clickCount = 1;
                 }
-                textTarget.__lastClickTime = now;
+            }
+
+            // Table cell selection
+            if (target && ((target as any).elementType === 'table' || (target as any).type === 'table')) {
+                const table = target as FabricTable;
+                const pointer = canvas.getPointer(opt.e);
+                const tableMatrix = table.calcTransformMatrix();
+                const point = new fabric.Point(pointer.x, pointer.y);
+                const localPoint = fabric.util.transformPoint(point, fabric.util.invertTransform(tableMatrix));
+
+                const cell = table.getCellAt(localPoint.x, localPoint.y);
+                if (cell) {
+                    if ((opt.e as MouseEvent).shiftKey && table.activeCell) {
+                        table.selectionRange = {
+                            startRow: table.activeCell.row,
+                            startCol: table.activeCell.col,
+                            endRow: cell.row,
+                            endCol: cell.col
+                        };
+                        table.updateLayout();
+                    } else {
+                        table.setActiveCell(cell.row, cell.col);
+                    }
+                    // Explicitly re-set selection after internal table rebuild
+                    setSelection([table]);
+                    useUIStore.getState().setRightPanelOpen(true);
+                    canvas.requestRenderAll();
+                }
             }
 
 
@@ -322,11 +362,24 @@ export const CanvasWorkspace: React.FC = () => {
                     );
                 }
 
-                if ((target as any).elementType === 'table') {
+                if ((target as any).elementType === 'table' || target.type === 'table') {
+                    const table = target as FabricTable;
                     items.push(
                         { label: 'Table Properties', action: () => useUIStore.getState().setRightPanelOpen(true) },
                         { separator: true }
                     );
+
+                    if (table.selectionRange && (table.selectionRange.startRow !== table.selectionRange.endRow || table.selectionRange.startCol !== table.selectionRange.endCol)) {
+                        items.push({ label: 'Merge Cells', action: () => table.mergeSelectedCells() });
+                    }
+
+                    if (table.activeCell) {
+                        const cell = table.cells[table.activeCell.row][table.activeCell.col];
+                        if (cell.rowSpan > 1 || cell.colSpan > 1) {
+                            items.push({ label: 'Unmerge Cells', action: () => table.unmergeCells(table.activeCell!.row, table.activeCell!.col) });
+                        }
+                    }
+                    items.push({ separator: true });
                 }
 
                 if (target.type === 'textbox' || target.type === 'text' || target.type === 'i-text') {
@@ -440,6 +493,25 @@ export const CanvasWorkspace: React.FC = () => {
                 });
                 canvas.requestRenderAll();
             }
+
+            // Mail Merge Tooltip
+            // @ts-ignore
+            if (target && target.isMailMerge) {
+                // @ts-ignore
+                const binding = target.fieldBinding;
+                // @ts-ignore
+                const type = target.elementType === 'mailmerge-image-placeholder' ? 'Image' : 'Text';
+
+                const mouseEvent = e.e as MouseEvent;
+                if (mouseEvent) {
+                    setInteractionTooltip({
+                        visible: true,
+                        left: mouseEvent.clientX,
+                        top: mouseEvent.clientY - 20,
+                        text: `${type} Field: {{${binding}}}`
+                    });
+                }
+            }
         };
 
         const handleMouseOut = (e: fabric.IEvent) => {
@@ -466,6 +538,7 @@ export const CanvasWorkspace: React.FC = () => {
 
                 canvas.requestRenderAll();
             }
+            setInteractionTooltip(null);
         };
 
         const handleDoubleClick = (e: fabric.IEvent) => {
@@ -473,20 +546,98 @@ export const CanvasWorkspace: React.FC = () => {
             if (target && (target.type === 'i-text' || target.type === 'textbox')) {
                 const textObj = target as fabric.IText;
                 textObj.enterEditing();
-                // Select word under cursor is default Fabric behavior for double click usually
-                // But we can force it if needed, though 'enterEditing' usually puts cursor at click.
-                // To selecting word we might need getSelectionStartFromPointer logic if standard behavior fails
-                // For now, assume standard behavior is close enough to requirement.
+                canvas.requestRenderAll();
+            } else if (target && ((target as any).elementType === 'table' || target.type === 'table')) {
+                const table = target as FabricTable;
+                const pointer = canvas.getPointer(e.e);
+                const tableMatrix = table.calcTransformMatrix();
+                const point = new fabric.Point(pointer.x, pointer.y);
+                const localPoint = fabric.util.transformPoint(point, fabric.util.invertTransform(tableMatrix));
+
+                const cell = table.getCellAt(localPoint.x, localPoint.y);
+                if (cell) {
+                    table.enterCellEditing(cell.row, cell.col);
+                }
+            }
+        };
+
+        const handleMouseMove = (e: fabric.IEvent) => {
+            // Handle Resizing
+            if (resizingStateRef.current) {
+                const { table, type, index, startVal, startMouse } = resizingStateRef.current;
+                const pointer = canvas.getPointer(e.e);
+
+                if (type === 'col') {
+                    const scaleX = table.scaleX || 1;
+                    const delta = (pointer.x - startMouse) / scaleX;
+                    table.resizeColumn(index, startVal + delta);
+                } else {
+                    const scaleY = table.scaleY || 1;
+                    const delta = (pointer.y - startMouse) / scaleY;
+                    table.resizeRow(index, startVal + delta);
+                }
+                canvas.requestRenderAll();
+                return;
+            }
+
+            // Cursor updates
+            const target = e.target;
+            if (target && ((target as any).elementType === 'table' || target.type === 'table')) {
+                const table = target as FabricTable;
+                const pointer = canvas.getPointer(e.e);
+                const tableMatrix = table.calcTransformMatrix();
+                const point = new fabric.Point(pointer.x, pointer.y);
+                const localPoint = fabric.util.transformPoint(point, fabric.util.invertTransform(tableMatrix));
+
+                const divider = table.getDividerAt(localPoint.x, localPoint.y);
+                if (divider) {
+                    canvas.defaultCursor = divider.type === 'col' ? 'col-resize' : 'row-resize';
+                    canvas.hoverCursor = divider.type === 'col' ? 'col-resize' : 'row-resize';
+                } else {
+                    canvas.defaultCursor = 'default';
+                    canvas.hoverCursor = 'move';
+                }
+            } else {
+                canvas.defaultCursor = 'default';
+            }
+        };
+
+        const handleMouseDownGeneric = (e: fabric.IEvent) => {
+            const target = e.target;
+            if (target && ((target as any).elementType === 'table' || target.type === 'table')) {
+                const table = target as FabricTable;
+                const pointer = canvas.getPointer(e.e);
+                const tableMatrix = table.calcTransformMatrix();
+                const point = new fabric.Point(pointer.x, pointer.y);
+                const localPoint = fabric.util.transformPoint(point, fabric.util.invertTransform(tableMatrix));
+
+                const divider = table.getDividerAt(localPoint.x, localPoint.y);
+                if (divider) {
+                    // Start resizing
+                    resizingStateRef.current = {
+                        table,
+                        type: divider.type,
+                        index: divider.index,
+                        startVal: divider.type === 'col' ? table.columnWidths[divider.index] : table.rowHeights[divider.index],
+                        startMouse: divider.type === 'col' ? pointer.x : pointer.y
+                    };
+                    table.lockMovementX = true;
+                    table.lockMovementY = true;
+                }
+            }
+        }
+
+        const handleMouseUpGeneric = () => {
+            if (resizingStateRef.current) {
+                const { table } = resizingStateRef.current;
+                table.lockMovementX = false;
+                table.lockMovementY = false;
+                resizingStateRef.current = null;
+                canvas.defaultCursor = 'default';
                 canvas.requestRenderAll();
             }
         };
 
-        canvas.on('selection:created', handleSelection);
-        canvas.on('selection:updated', handleSelection);
-        canvas.on('selection:cleared', handleSelectionCleared);
-        canvas.on('mouse:down', handleMouseDown);
-        canvas.on('mouse:over', handleMouseOver);
-        canvas.on('mouse:out', handleMouseOut);
         canvas.on('mouse:dblclick', handleDoubleClick);
 
         return () => {
@@ -494,11 +645,14 @@ export const CanvasWorkspace: React.FC = () => {
             canvas.off('selection:updated', handleSelection);
             canvas.off('selection:cleared', handleSelectionCleared);
             canvas.off('mouse:down', handleMouseDown);
+            canvas.off('mouse:down', handleMouseDownGeneric);
+            canvas.off('mouse:move', handleMouseMove);
+            canvas.off('mouse:up', handleMouseUpGeneric);
             canvas.off('mouse:over', handleMouseOver);
             canvas.off('mouse:out', handleMouseOut);
             canvas.off('mouse:dblclick', handleDoubleClick);
         };
-    }, [canvas]);
+    }, [canvas, setSelection, zoom]);
 
     // Object modification events (for history)
     useEffect(() => {
@@ -614,11 +768,11 @@ export const CanvasWorkspace: React.FC = () => {
                 });
 
                 ctx.stroke();
-                ctx.restore();
             }
         };
 
         canvas.on('after:render', handleAfterRender);
+
         return () => {
             canvas.off('after:render', handleAfterRender);
         };
@@ -818,6 +972,61 @@ export const CanvasWorkspace: React.FC = () => {
         // ... (existing watermark logic)
     }, [canvas, watermark]);
 
+    // Preview Mode Logic
+    useEffect(() => {
+        if (!canvas) return;
+
+        if (isPreviewMode) {
+            const rowData = (filteredRows && filteredRows.length > 0) ? filteredRows[previewRecordIndex] || {} : {};
+
+            canvas.getObjects().forEach((obj: any) => {
+                // Process text objects
+                if (obj.type === 'i-text' || obj.type === 'textbox' || obj.type === 'text') {
+                    const currentText = obj.text || '';
+
+                    // Initialize originalText if not present and text looks like a placeholder
+                    // We check for {{ to ensure we don't accidentally capture non-placeholder text as "original" 
+                    // unless we are already in a state where we might have mixed content.
+                    // Ideally, we capture it if it has {{ OR if we previously marked it.
+                    if (!obj.originalText && currentText.includes('{{')) {
+                        obj.originalText = currentText;
+                    }
+
+                    // If we have an original text (placeholder), try to replace it
+                    if (obj.originalText) {
+                        const newText = obj.originalText.replace(/\{\{([^}]+)\}\}/g, (match: string, placeholderName: string) => {
+                            const columnName = mappings[placeholderName];
+                            // If we have a mapping and data for it
+                            if (columnName && rowData[columnName] !== undefined) {
+                                return String(rowData[columnName]);
+                            }
+                            // Fallback: keep placeholder
+                            return match;
+                        });
+
+                        if (obj.text !== newText) {
+                            obj.set('text', newText);
+                        }
+                    }
+                }
+            });
+            canvas.requestRenderAll();
+        } else {
+            // Exit Preview Mode: Restore original text
+            let needsRender = false;
+            canvas.getObjects().forEach((obj: any) => {
+                if (obj.originalText) {
+                    obj.set('text', obj.originalText);
+                    delete obj.originalText;
+                    needsRender = true;
+                }
+            });
+            if (needsRender) {
+                canvas.requestRenderAll();
+            }
+        }
+    }, [canvas, isPreviewMode, previewRecordIndex, filteredRows, mappings]);
+
     // ... (existing preview logic) ...
 
     return (
@@ -849,7 +1058,7 @@ export const CanvasWorkspace: React.FC = () => {
                             jsonData = e.dataTransfer.getData('text/plain');
                         }
 
-                        if (jsonData) {
+                        if (jsonData && jsonData.trim().startsWith('{"')) {
                             try {
                                 const item = JSON.parse(jsonData);
                                 if (item.type === 'text') {
@@ -891,71 +1100,110 @@ export const CanvasWorkspace: React.FC = () => {
                                     useHistoryStore.getState().addToHistory('Added text', dropCanvas.toJSON());
                                     return;
                                 }
+
+                                if (item.type === 'table') {
+                                    const table = new FabricTable({
+                                        rows: item.rows,
+                                        columns: item.cols,
+                                        ...item.options,
+                                        left: x,
+                                        top: y,
+                                        originX: 'center',
+                                        originY: 'center',
+                                    });
+
+                                    dropCanvas.add(table);
+                                    dropCanvas.setActiveObject(table);
+                                    dropCanvas.requestRenderAll();
+
+                                    // Explicitly set selection so the properties panel opens
+                                    setSelection([table]);
+                                    useUIStore.getState().setRightPanelOpen(true);
+
+                                    // History
+                                    useHistoryStore.getState().addToHistory('Added table', dropCanvas.toJSON());
+                                    return;
+                                }
                             } catch (err) {
                                 console.error('Failed to parse dropped JSON', err);
                             }
                         }
 
-                        // 2. Handle Data Column Drops (Existing Logic)
+                        // 1.5 Handle Mail Merge Field Drops
+                        const mailMergeField = e.dataTransfer.getData('application/mailmerge-field');
+                        const mailMergeType = e.dataTransfer.getData('application/mailmerge-field-type');
+
+                        if (mailMergeField) {
+                            if (mailMergeType === 'image') {
+                                // Create violet image placeholder
+                                const placeholderSvg = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+                                        <rect fill="#ede9fe" width="200" height="200" stroke="#8b5cf6" stroke-width="2" />
+                                        <text x="100" y="100" font-family="Arial" font-size="24" fill="#7c3aed" text-anchor="middle" dominant-baseline="middle">📷</text>
+                                        <text x="100" y="140" font-family="Arial" font-size="14" fill="#6d28d9" text-anchor="middle" font-weight="bold">{{${mailMergeField}}}</text>
+                                    </svg>
+                                `)}`;
+
+                                fabric.Image.fromURL(placeholderSvg, (img) => {
+                                    img.set({
+                                        left: x,
+                                        top: y,
+                                        // @ts-ignore
+                                        elementType: 'mailmerge-image-placeholder',
+                                        fieldBinding: mailMergeField,
+                                        isMailMerge: true,
+                                    });
+                                    dropCanvas.add(img);
+                                    dropCanvas.setActiveObject(img);
+                                    dropCanvas.renderAll();
+                                });
+                            } else {
+                                const text = new fabric.IText(`{{${mailMergeField}}}`, {
+                                    left: x,
+                                    top: y,
+                                    fontSize: 24,
+                                    fill: '#5b21b6', // Violet-800
+                                    backgroundColor: '#ede9fe', // Violet-100
+                                    fontFamily: 'Arial',
+                                    padding: 8,
+                                    // Custom properties for mail merge
+                                    // @ts-ignore
+                                    elementType: 'mailmerge-field',
+                                    fieldBinding: mailMergeField,
+                                    isMailMerge: true,
+                                });
+
+                                dropCanvas.add(text);
+                                text.bringToFront();
+                                dropCanvas.setActiveObject(text);
+                                dropCanvas.renderAll();
+                            }
+                            return;
+                        }
+
+                        // 2. Handle Data Column Drops (Unified Logic)
                         const columnName = e.dataTransfer.getData('application/x-canva-column');
                         const columnType = e.dataTransfer.getData('application/x-canva-column-type') || 'string';
 
-                        if (!columnName) return;
-
-                        // Check if this is an image/URL column - create image placeholder
-                        const isImageColumn = columnType === 'url' ||
-                            columnType === 'image' ||
-                            columnName.toLowerCase().includes('image') ||
-                            columnName.toLowerCase().includes('photo') ||
-                            columnName.toLowerCase().includes('logo') ||
-                            columnName.toLowerCase().includes('picture');
-
-                        if (isImageColumn) {
-                            // Create image placeholder with placeholder image
-                            const placeholderSvg = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
-                                <svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" viewBox="0 0 150 150">
-                                    <rect fill="#E5E7EB" width="150" height="150"/>
-                                    <text x="75" y="70" font-family="Arial" font-size="12" fill="#6B7280" text-anchor="middle">{{${columnName.trim()}}}</text>
-                                    <text x="75" y="90" font-family="Arial" font-size="10" fill="#9CA3AF" text-anchor="middle">Image Placeholder</text>
-                                </svg>
-                            `)}`;
-
-                            fabric.Image.fromURL(placeholderSvg, (img) => {
-                                img.set({
-                                    left: x,
-                                    top: y,
-                                    isPlaceholder: true,
-                                    placeholderName: columnName.trim(),
-                                    placeholderType: 'image',
-                                } as any);
-
-                                dropCanvas.add(img);
-                                dropCanvas.setActiveObject(img);
-                                dropCanvas.renderAll();
-
-                                // Scan and map
-                                scanForPlaceholders(dropCanvas.getObjects());
-                                mapPlaceholderToColumn(columnName.trim(), columnName.trim());
-                            });
-                        } else {
-                            // Create text placeholder
+                        if (columnName) {
+                            // Fallback for legacy drag data if any, converting to mail merge format
                             const text = new fabric.IText(`{{${columnName.trim()}}}`, {
                                 left: x,
                                 top: y,
                                 fontSize: 24,
-                                fill: '#000000',
+                                fill: '#5b21b6',
+                                backgroundColor: '#ede9fe',
                                 fontFamily: 'Arial',
+                                padding: 8,
+                                // @ts-ignore
+                                elementType: 'mailmerge-field',
+                                fieldBinding: columnName.trim(),
+                                isMailMerge: true,
                             });
 
                             dropCanvas.add(text);
                             dropCanvas.setActiveObject(text);
                             dropCanvas.renderAll();
-
-                            // Scan FIRST to register the placeholder object
-                            scanForPlaceholders(dropCanvas.getObjects());
-
-                            // Then Map it
-                            mapPlaceholderToColumn(columnName.trim(), columnName.trim());
                         }
                     }}
                 >
@@ -1025,7 +1273,7 @@ export const CanvasWorkspace: React.FC = () => {
                             <input
                                 type="checkbox"
                                 checked={isPreviewMode}
-                                onChange={(e) => setPreviewMode(e.target.checked)}
+                                onChange={() => useMailMergeStore.getState().togglePreviewMode()}
                                 style={{ accentColor: '#00C4CC' }}
                             />
                             <span>Preview Data</span>
@@ -1034,18 +1282,18 @@ export const CanvasWorkspace: React.FC = () => {
                         {isPreviewMode && (
                             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', borderLeft: '1px solid #555', paddingLeft: '10px', marginLeft: '5px' }}>
                                 <button
-                                    onClick={() => setPreviewRow(Math.max(0, previewRowIndex - 1))}
-                                    disabled={previewRowIndex <= 0}
+                                    onClick={() => useMailMergeStore.getState().setPreviewRecordIndex(previewRecordIndex - 1)}
+                                    disabled={previewRecordIndex <= 0}
                                     style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer', fontSize: '16px' }}
                                 >
                                     ◀
                                 </button>
                                 <span style={{ color: 'white', fontSize: '12px', minWidth: '60px', textAlign: 'center' }}>
-                                    Row {previewRowIndex + 1}
+                                    Row {previewRecordIndex + 1}
                                 </span>
                                 <button
-                                    onClick={() => setPreviewRow(Math.min((excelData?.rows.length || 1) - 1, previewRowIndex + 1))}
-                                    disabled={previewRowIndex >= (excelData?.rows.length || 0) - 1}
+                                    onClick={() => useMailMergeStore.getState().setPreviewRecordIndex(previewRecordIndex + 1)}
+                                    disabled={previewRecordIndex >= (filteredRows?.length || 0) - 1}
                                     style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer', fontSize: '16px' }}
                                 >
                                     ▶

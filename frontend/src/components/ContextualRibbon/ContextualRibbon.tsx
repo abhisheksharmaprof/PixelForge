@@ -3,6 +3,8 @@ import { useSelectionStore } from '../../store/selectionStore';
 import { TextRibbon } from './TextRibbon';
 import { ImageRibbon } from './ImageRibbon';
 import { BackgroundRibbon } from './BackgroundRibbon';
+import { MailMergeRibbon } from './MailMergeRibbon';
+import { TableRibbon } from './TableRibbon';
 
 export const ContextualRibbon: React.FC = () => {
     const { selectedObjects } = useSelectionStore();
@@ -25,6 +27,15 @@ export const ContextualRibbon: React.FC = () => {
             break;
         case 'image':
             content = <ImageRibbon />;
+            break;
+        case 'mailmerge':
+        case 'mailmerge-field':
+        case 'mailmerge-image':
+        case 'mailmerge-condition':
+            content = <MailMergeRibbon />;
+            break;
+        case 'table':
+            content = <TableRibbon />;
             break;
         default:
             content = (

@@ -10,6 +10,8 @@ import {
     Link,
     FolderOpen,
     Palette,
+    Mail,
+    Grid,
 } from 'lucide-react';
 import { TextTab } from './TextTab';
 import { ElementsTab } from './ElementsTab';
@@ -20,6 +22,8 @@ import { DataTab } from './DataTab';
 import { DataMappingTab } from './DataMappingTab';
 import { TemplatesTab } from './TemplatesTab';
 import { BackgroundTab } from './BackgroundTab';
+import { MailMergeTab } from './MailMergeTab';
+import { TableTemplatesPanel } from './TableTemplatesPanel';
 import clsx from 'clsx';
 
 export const LeftSidebar: React.FC = () => {
@@ -27,6 +31,7 @@ export const LeftSidebar: React.FC = () => {
 
     const tabs = [
         { id: 'templates', icon: FolderOpen, label: 'Templates' },
+        { id: 'tables', icon: Grid, label: 'Tables' },
         { id: 'text', icon: Type, label: 'Text' },
         { id: 'elements', icon: Shapes, label: 'Elements' },
         { id: 'background', icon: Palette, label: 'Background' },
@@ -35,11 +40,13 @@ export const LeftSidebar: React.FC = () => {
         { id: 'qr', icon: QrCode, label: 'QR Codes' },
         { id: 'data', icon: Database, label: 'Data' },
         { id: 'mapping', icon: Link, label: 'Mapping' },
+        { id: 'mailmerge', icon: Mail, label: 'Mail Merge' },
     ];
 
     const renderContent = () => {
         switch (activeTab) {
             case 'templates': return <TemplatesTab />;
+            case 'tables': return <TableTemplatesPanel />;
             case 'text': return <TextTab />;
             case 'elements': return <ElementsTab />;
             case 'background': return <BackgroundTab />;
@@ -48,6 +55,7 @@ export const LeftSidebar: React.FC = () => {
             case 'qr': return <QRCodeBarcodeTab />;
             case 'data': return <DataTab />;
             case 'mapping': return <DataMappingTab />;
+            case 'mailmerge': return <MailMergeTab />;
             default: return <TemplatesTab />;
         }
     };

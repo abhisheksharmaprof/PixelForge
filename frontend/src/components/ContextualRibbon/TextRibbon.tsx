@@ -75,7 +75,7 @@ export const TextRibbon: React.FC = () => {
     const handleBackgroundColorChange = (color: string) => applyTextProperty('backgroundColor', color);
     const setTextAlign = (align: string) => applyTextProperty('textAlign', align);
     const handleLineHeightChange = (lineHeight: number) => applyTextProperty('lineHeight', lineHeight);
-    const handleLetterSpacingChange = (spacing: number) => applyTextProperty('charSpacing', spacing * 10);
+    const handleLetterSpacingChange = (spacing: number) => applyTextProperty('charSpacing', spacing);
 
     const applyTextTransform = (transform: string) => {
         if (!canvas || selectedObjects.length === 0) return;
@@ -298,10 +298,10 @@ export const TextRibbon: React.FC = () => {
                     {/* Letter Spacing */}
                     <StitchSlider
                         label="Spacing"
-                        min={-5}
-                        max={10}
-                        step={0.5}
-                        value={textProperties.charSpacing / 10}
+                        min={-50}
+                        max={200}
+                        step={1}
+                        value={textProperties.charSpacing}
                         onChange={(v) => handleLetterSpacingChange(v)}
                     />
                 </div>
