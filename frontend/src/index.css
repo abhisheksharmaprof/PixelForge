@@ -1,25 +1,54 @@
+@import './styles/stitch-theme.css';
+@import './styles/stitch-components.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Visual Feedback Cursors */
+.cursor-not-allowed {
+    cursor: not-allowed !important;
+}
+
+.cursor-locked {
+    cursor: no-drop !important;
+}
+
+/* Ensure focus visibility */
+:focus-visible {
+    outline: 2px solid #3B82F6;
+    outline-offset: 2px;
+}
+
+/* Visual Feedback Cursors */
+.cursor-not-allowed {
+    cursor: not-allowed !important;
+}
+
+.cursor-locked {
+    cursor: no-drop !important;
+}
+
+/* Ensure focus visibility */
+:focus-visible {
+    outline: 2px solid #3B82F6;
+    outline-offset: 2px;
+}
+
 /* Global Styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-        sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    font-family: 'Inter', sans-serif;
+    color: var(--stitch-text-primary);
     overflow: hidden;
+    /* App-like feel */
 }
 
-code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-        monospace;
+/* Utils */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
 }
 
-#root {
-    width: 100vw;
-    height: 100vh;
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }

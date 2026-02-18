@@ -1,30 +1,41 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { MainLayout } from './components/Layout/MainLayout';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ErrorBoundary } from './components/Shared/ErrorBoundary';
 import { NotificationSystem } from './components/Shared/NotificationSystem';
 import { KeyboardShortcutsModal } from './components/Shared/KeyboardShortcutsModal';
+import { AdvancedTextPropertiesModal } from './components/Modals/AdvancedTextPropertiesModal';
 import { KeyboardShortcutsManager } from './utils/keyboardShortcuts';
+import { FindReplaceModal } from './components/Modals/FindReplaceModal';
+import { SpecialCharacterModal } from './components/Modals/SpecialCharacterModal';
+import { TextStyleManagerModal } from './components/Modals/TextStyleManagerModal';
+import { MailMergeModal } from './components/Modals/MailMergeModal';
+import { TextEffectsLibraryModal } from './components/Modals/TextEffectsLibraryModal';
+import { StatusBar } from './components/Shared/StatusBar';
+
+// ... existing imports ...
+
+
 import { useCanvasStore } from './store/canvasStore';
 import { useTemplateStore } from './store/templateStore';
 import { useHistoryStore } from './store/historyStore';
 import { useUIStore } from './store/uiStore';
 import { useSelectionStore } from './store/selectionStore';
-import './styles/globals.css';
-import './styles/variables.css';
+// Styles are imported via index.css in main.tsx
+
+// Screens
+import LoginScreen from './screens/auth/LoginScreen';
+import RegisterScreen from './screens/auth/RegisterScreen';
+import DashboardScreen from './screens/dashboard/DashboardScreen';
+import EditorScreen from './screens/editor/EditorScreen';
+import BulkGenerateScreen from './screens/generate/BulkGenerateScreen';
 
 const App: React.FC = () => {
     const canvas = useCanvasStore((s) => s.canvas);
-    const canvasStore = useCanvasStore.getState();
-    const templateStore = useTemplateStore.getState();
-    const historyStore = useHistoryStore.getState();
-    const uiStore = useUIStore.getState();
-    const selectionStore = useSelectionStore.getState();
-
     const { activeModal, closeModal } = useUIStore();
     const keyboardManagerRef = useRef<KeyboardShortcutsManager | null>(null);
     const [shortcuts, setShortcuts] = useState<Record<string, any>>({});
 
-    // Initialize keyboard shortcuts when canvas is ready
+    // Initialize keyboard shortcuts when canvas is ready (Global listener)
     useEffect(() => {
         if (canvas && !keyboardManagerRef.current) {
             const manager = new KeyboardShortcutsManager(canvas, {
@@ -51,7 +62,6 @@ const App: React.FC = () => {
     useEffect(() => {
         const handleBeforeUnload = (e: BeforeUnloadEvent) => {
             const currentTemplate = useTemplateStore.getState().currentTemplate;
-            // Check if there are objects on canvas
             const hasContent = canvas && canvas.getObjects().length > 0;
             if (hasContent && !currentTemplate?.id) {
                 e.preventDefault();
@@ -66,19 +76,38 @@ const App: React.FC = () => {
 
     return (
         <ErrorBoundary>
-            <div className="app">
-                <MainLayout />
+            <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+                <div className="app font-sans text-slate-900">
+                    <Routes>
+                        <Route path="/" element={<Navigate to="/login" replace />} />
+                        <Route path="/login" element={<LoginScreen />} />
+                        <Route path="/register" element={<RegisterScreen />} />
+                        <Route path="/dashboard" element={<DashboardScreen />} />
+                        <Route path="/editor/:id?" element={<EditorScreen />} />
+                        <Route path="/bulk-generate" element={<BulkGenerateScreen />} />
+                    </Routes>
 
-                {/* Notification System */}
-                <NotificationSystem />
+                    {/* Notification System - Global Overlay */}
+                    <NotificationSystem />
 
-                {/* Keyboard Shortcuts Modal */}
-                <KeyboardShortcutsModal
-                    isOpen={activeModal === 'keyboardShortcuts'}
-                    onClose={closeModal}
-                    shortcuts={shortcuts}
-                />
-            </div>
+                    {/* Keyboard Shortcuts Modal - Global Overlay */}
+                    <KeyboardShortcutsModal
+                        isOpen={activeModal === 'keyboardShortcuts'}
+                        onClose={closeModal}
+                        shortcuts={shortcuts}
+                    />
+
+                    {/* Advanced Text Properties Modal */}
+                    <AdvancedTextPropertiesModal />
+                    <FindReplaceModal />
+                    <SpecialCharacterModal />
+                    <TextStyleManagerModal />
+                    <MailMergeModal />
+                    <TextEffectsLibraryModal />
+
+                    <StatusBar />
+                </div>
+            </Router>
         </ErrorBoundary>
     );
 };

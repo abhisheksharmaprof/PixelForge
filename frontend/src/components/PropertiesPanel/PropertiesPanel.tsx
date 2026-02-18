@@ -4,7 +4,7 @@ import { TextProperties } from './TextProperties';
 import { ImageProperties } from './ImageProperties';
 import { QRCodeBarcodeProperties } from './QRCodeBarcodeProperties';
 import { BackgroundProperties } from './BackgroundProperties';
-import './PropertiesPanel.css';
+// CSS removed
 
 export const PropertiesPanel: React.FC = () => {
     const { selectedObjects } = useSelectionStore();
@@ -12,7 +12,7 @@ export const PropertiesPanel: React.FC = () => {
     // When no element is selected, show background properties
     if (selectedObjects.length === 0) {
         return (
-            <div className="properties-panel">
+            <div className="h-full flex flex-col bg-[var(--stitch-surface)] text-[var(--stitch-text-primary)] border-l border-[var(--stitch-border)]">
                 <BackgroundProperties />
             </div>
         );
@@ -33,12 +33,16 @@ export const PropertiesPanel: React.FC = () => {
             case 'barcode':
                 return <QRCodeBarcodeProperties />;
             default:
-                return <div className="panel-placeholder">No properties available for this element</div>;
+                return (
+                    <div className="flex items-center justify-center h-full p-8 text-[var(--stitch-text-tertiary)] italic text-sm">
+                        No properties available for this element
+                    </div>
+                );
         }
     };
 
     return (
-        <div className="properties-panel">
+        <div className="h-full flex flex-col bg-[var(--stitch-surface)] text-[var(--stitch-text-primary)] border-l border-[var(--stitch-border)] overflow-hidden">
             {renderContent()}
         </div>
     );

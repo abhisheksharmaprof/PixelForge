@@ -1,0 +1,123 @@
+:root {
+    /* Brand Colors - Indigo/Violet Primary */
+    --stitch-primary: #6366f1;
+    /* Indigo 500 */
+    --stitch-primary-hover: #4f46e5;
+    /* Indigo 600 */
+    --stitch-primary-light: #e0e7ff;
+    /* Indigo 100 */
+    --stitch-primary-dark: #4338ca;
+    /* Indigo 700 */
+
+    --stitch-secondary: #ec4899;
+    /* Pink 500 */
+    --stitch-accent: #8b5cf6;
+    /* Violet 500 */
+
+    /* Semantic - Light Mode Defaults */
+    --stitch-background: #f8fafc;
+    /* Slate 50 - App Background */
+    --stitch-surface-primary: #ffffff;
+    /* Panels, Cards */
+    --stitch-surface-secondary: #f1f5f9;
+    /* Slate 100 - Hovers, Inputs */
+    --stitch-surface-tertiary: #e2e8f0;
+    /* Slate 200 - Borders */
+
+    --stitch-text-primary: #0f172a;
+    /* Slate 900 */
+    --stitch-text-secondary: #475569;
+    /* Slate 600 */
+    --stitch-text-tertiary: #94a3b8;
+    /* Slate 400 */
+
+    --stitch-border: #cbd5e1;
+    /* Slate 300 */
+    --stitch-divider: #e2e8f0;
+    /* Slate 200 */
+
+    --stitch-canvas-workspace: #f1f5f9;
+    /* Slate 50/100 mix - Light/Clean void */
+
+    /* Status Colors */
+    --stitch-success: #10b981;
+    --stitch-warning: #f59e0b;
+    --stitch-error: #ef4444;
+    --stitch-info: #3b82f6;
+
+    /* Spacing & Layout */
+    --stitch-header-height: 64px;
+    --stitch-sidebar-width: 72px;
+    --stitch-sidebar-expanded: 320px;
+    --stitch-panel-width: 300px;
+
+    /* Geometry */
+    --stitch-radius-sm: 0.25rem;
+    --stitch-radius-md: 0.5rem;
+    --stitch-radius-lg: 0.75rem;
+    --stitch-radius-xl: 1rem;
+    --stitch-radius-full: 9999px;
+
+    /* Shadows */
+    --stitch-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --stitch-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --stitch-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --stitch-shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+    /* Transitions */
+    --stitch-transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dark Mode Overrides */
+.dark {
+    --stitch-background: #020617;
+    /* Slate 950 */
+    --stitch-surface-primary: #0f172a;
+    /* Slate 900 */
+    --stitch-surface-secondary: #1e293b;
+    /* Slate 800 */
+    --stitch-surface-tertiary: #334155;
+    /* Slate 700 */
+
+    --stitch-text-primary: #f8fafc;
+    /* Slate 50 */
+    --stitch-text-secondary: #94a3b8;
+    /* Slate 400 */
+    --stitch-text-tertiary: #64748b;
+    /* Slate 500 */
+
+    --stitch-border: #1e293b;
+    /* Slate 800 */
+    --stitch-divider: #1e293b;
+    /* Slate 800 */
+
+    --stitch-canvas-workspace: #0f172a;
+    /* Slate 900 - Darker void */
+}
+
+body {
+    background-color: var(--stitch-background);
+    color: var(--stitch-text-primary);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--stitch-text-tertiary);
+    border-radius: var(--stitch-radius-full);
+    opacity: 0.3;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--stitch-text-secondary);
+}

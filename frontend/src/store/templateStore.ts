@@ -12,6 +12,12 @@ export interface Template {
     tags: string[];
 }
 
+export interface TextStyle {
+    id: string;
+    name: string;
+    properties: Record<string, any>;
+}
+
 interface TemplateState {
     currentTemplate: Template | null;
     savedTemplates: Template[];
@@ -26,6 +32,12 @@ interface TemplateState {
     importTemplate: (data: any) => Promise<void>;
     loadTemplates: () => Promise<void>;
     getTemplateById: (id: string) => Template | undefined;
+
+    // Styles
+    textStyles: TextStyle[];
+    addTextStyle: (style: TextStyle) => void;
+    updateTextStyle: (id: string, updates: Partial<TextStyle>) => void;
+    deleteTextStyle: (id: string) => void;
 }
 
 export const useTemplateStore = create<TemplateState>((set, get) => ({
@@ -119,5 +131,20 @@ export const useTemplateStore = create<TemplateState>((set, get) => ({
 
     getTemplateById: (id) => {
         return get().savedTemplates.find(t => t.id === id);
-    }
+    },
+
+    // Text Styles Logic (Simplified for now)
+    textStyles: [
+        { id: 'h1', name: 'Heading 1', properties: { fontSize: 32, fontWeight: 'bold', fontFamily: 'Inter' } },
+        { id: 'h2', name: 'Heading 2', properties: { fontSize: 24, fontWeight: 'bold', fontFamily: 'Inter' } },
+        { id: 'body', name: 'Body', properties: { fontSize: 16, fontWeight: 'normal', fontFamily: 'Inter' } },
+        { id: 'caption', name: 'Caption', properties: { fontSize: 12, fontWeight: 'normal', fontFamily: 'Inter', fill: '#666' } },
+    ],
+    addTextStyle: (style) => set((state) => ({ textStyles: [...state.textStyles, style] })),
+    updateTextStyle: (id, updates) => set((state) => ({
+        textStyles: state.textStyles.map(s => s.id === id ? { ...s, ...updates } : s)
+    })),
+    deleteTextStyle: (id) => set((state) => ({
+        textStyles: state.textStyles.filter(s => s.id !== id)
+    })),
 }));

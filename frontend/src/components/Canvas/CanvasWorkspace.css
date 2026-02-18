@@ -1,65 +1,42 @@
-/* CanvasWorkspace.css - Clean Canvas Without Rulers */
+/* CanvasWorkspace.css - Embedded Version */
 
 .canvas-workspace {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    background-color: #3a3a5a;
+    /* Adapts to parent container */
     position: relative;
-    overflow: hidden;
+    width: fit-content;
+    height: fit-content;
+    margin: 0 auto;
 }
 
-/* Canvas Scroll Area - Full Space */
+/* Remove internal scrolling, rely on parent */
 .canvas-scroll-area {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: auto;
-    padding: 40px;
+    overflow: visible;
+    padding: 0;
 }
 
 .canvas-container {
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    /* Stronger visible shadow */
     position: relative;
     background-color: white;
     transform-origin: center center;
-    flex-shrink: 0;
+    transition: box-shadow 0.2s;
 }
 
 .margin-indicator {
     position: absolute;
-    border: 1px dashed rgba(0, 196, 204, 0.3);
+    border: 1px dashed rgba(99, 102, 241, 0.3);
     pointer-events: none;
     z-index: 10;
 }
 
-/* Scrollbar styling */
+/* Scrollbar styles no longer needed here as parent scrolls */
 .canvas-scroll-area::-webkit-scrollbar {
-    width: 12px;
-    height: 12px;
-}
-
-.canvas-scroll-area::-webkit-scrollbar-track {
-    background: #2a2a4a;
-}
-
-.canvas-scroll-area::-webkit-scrollbar-thumb {
-    background: #4a4a6a;
-    border-radius: 6px;
-    border: 2px solid #2a2a4a;
-}
-
-.canvas-scroll-area::-webkit-scrollbar-thumb:hover {
-    background: #00C4CC;
-}
-
-.canvas-scroll-area::-webkit-scrollbar-corner {
-    background: #2a2a4a;
+    display: none;
 }
 
 /* Canvas info message */

@@ -1,30 +1,39 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { fabric } from 'fabric';
 import { useCanvasStore } from '../../store/canvasStore';
 import { useSelectionStore } from '../../store/selectionStore';
 import { useDataStore } from '../../store/dataStore';
 import { ElementFactory } from '../../utils/elementFactory';
-import { ColorPicker } from '../Shared/ColorPicker';
-import { Input } from '../Shared/Input';
-import { Slider } from '../Shared/Slider';
-import { Dropdown } from '../Shared/Dropdown';
-import { Accordion } from '../Shared/Accordion';
-import { Button } from '../Shared/Button';
-import './ImageProperties.css';
+import { StitchAccordion } from '../common/StitchAccordion';
+import { StitchSlider } from '../common/StitchSlider';
+import { StitchColorPicker } from '../common/StitchColorPicker';
+import {
+    Move, Maximize, RotateCw, FlipHorizontal, FlipVertical,
+    Layers, Sun, Image as ImageIcon, Download, Upload,
+    Wand2, Trash2
+} from 'lucide-react';
+import clsx from 'clsx';
+// CSS removed
 
 export const ImageProperties: React.FC = () => {
     const { canvas } = useCanvasStore();
     const { selectedObjects } = useSelectionStore();
     const { excelData } = useDataStore();
-
-    if (selectedObjects.length === 0 || selectedObjects[0].type !== 'image') {
-        return <div className="image-properties">Select an image</div>;
-    }
-
-    const imgObj = selectedObjects[0] as fabric.Image;
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     // State to force re-render when object on canvas changes
     const [_, setTick] = useState(0);
+
+    if (selectedObjects.length === 0 || selectedObjects[0].type !== 'image') {
+        return (
+            <div className="flex flex-col items-center justify-center p-8 text-[var(--stitch-text-tertiary)] gap-2">
+                <ImageIcon size={32} strokeWidth={1.5} />
+                <p className="text-sm">Select an image to edit</p>
+            </div>
+        );
+    }
+
+    const imgObj = selectedObjects[0] as fabric.Image;
 
     // Update property
     const updateProperty = (property: string, value: any) => {
@@ -160,7 +169,7 @@ export const ImageProperties: React.FC = () => {
             case 'invert':
                 filters = [new fabric.Image.filters.Invert()];
                 break;
-            case 'shaepen': // Typo in original but keeping for consistency if needed, fixed here
+            case 'sharpen':
                 filters = [
                     new fabric.Image.filters.Convolute({
                         matrix: [0, -1, 0, -1, 5, -1, 0, -1, 0],
@@ -182,113 +191,180 @@ export const ImageProperties: React.FC = () => {
     };
 
     const filterPresets = [
-        { name: 'None', value: 'none' },
-        { name: 'Vintage', value: 'vintage' },
-        { name: 'B&W', value: 'blackwhite' },
-        { name: 'Cold', value: 'cold' },
-        { name: 'Warm', value: 'warm' },
-        { name: 'Dramatic', value: 'dramatic' },
-        { name: 'Soft', value: 'soft' },
-        { name: 'Sharpen', value: 'sharpen' }, // Fixed value
-        { name: 'Invert', value: 'invert' },
+        { name: 'None', value: 'none', bg: '#ffffff' },
+        { name: 'Vintage', value: 'vintage', bg: '#d4c4a8' }, // Sepia-ish
+        { name: 'B&W', value: 'blackwhite', bg: '#888888' },
+        { name: 'Cold', value: 'cold', bg: '#a8c4d4' },
+        { name: 'Warm', value: 'warm', bg: '#d4a8a8' },
+        { name: 'Dramatic', value: 'dramatic', bg: '#444444' },
+        { name: 'Soft', value: 'soft', bg: '#f0f0f0' },
+        { name: 'Sharpen', value: 'sharpen', bg: '#cccccc' },
+        { name: 'Invert', value: 'invert', bg: '#000000' },
     ];
 
     return (
-        <div className="image-properties properties-panel-content">
-
+        <div className="flex flex-col h-full overflow-y-auto">
             {/* Header */}
-            <div className="property-header">
-                <h3>Image Properties</h3>
-                <div className="image-dimensions">
+            <div className="flex items-center justify-between p-4 border-b border-[var(--stitch-border)]">
+                <h3 className="text-sm font-semibold text-[var(--stitch-text-primary)]">Image</h3>
+                <div className="text-xs text-[var(--stitch-text-tertiary)]">
                     {Math.round(imgObj.width || 0)} × {Math.round(imgObj.height || 0)} px
                 </div>
             </div>
 
             {/* 1. Transform */}
-            <Accordion title="Transform" defaultOpen>
-                <div className="property-group">
-                    <label>Position</label>
-                    <div className="two-column-input">
-                        <Input type="number" label="X" value={Math.round(imgObj.left || 0)} onChange={(v) => updateProperty('left', Number(v))} />
-                        <Input type="number" label="Y" value={Math.round(imgObj.top || 0)} onChange={(v) => updateProperty('top', Number(v))} />
+            <StitchAccordion title="Transform" icon={<Move size={16} />} defaultOpen>
+                <div className="space-y-4">
+                    <div className="space-y-2">
+                        <label className="text-xs font-medium text-[var(--stitch-text-secondary)]">Position</label>
+                        <div className="flex gap-2">
+                            <div className="flex-1 flex items-center bg-white border border-[var(--stitch-border)] rounded-md px-2 shadow-sm">
+                                <span className="text-xs text-[var(--stitch-text-muted)] mr-2 font-medium">X</span>
+                                <input
+                                    type="number"
+                                    className="w-full py-1.5 bg-transparent text-sm text-[var(--stitch-text-primary)] focus:outline-none"
+                                    value={Math.round(imgObj.left || 0)}
+                                    onChange={(e) => updateProperty('left', Number(e.target.value))}
+                                />
+                            </div>
+                            <div className="flex-1 flex items-center bg-white border border-[var(--stitch-border)] rounded-md px-2 shadow-sm">
+                                <span className="text-xs text-[var(--stitch-text-muted)] mr-2 font-medium">Y</span>
+                                <input
+                                    type="number"
+                                    className="w-full py-1.5 bg-transparent text-sm text-[var(--stitch-text-primary)] focus:outline-none"
+                                    value={Math.round(imgObj.top || 0)}
+                                    onChange={(e) => updateProperty('top', Number(e.target.value))}
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="text-xs font-medium text-[var(--stitch-text-secondary)]">Size</label>
+                        <div className="flex gap-2">
+                            <div className="flex-1 flex items-center bg-white border border-[var(--stitch-border)] rounded-md px-2 shadow-sm">
+                                <span className="text-xs text-[var(--stitch-text-muted)] mr-2 font-medium">W</span>
+                                <input
+                                    type="number"
+                                    className="w-full py-1.5 bg-transparent text-sm text-[var(--stitch-text-primary)] focus:outline-none"
+                                    value={Math.round((imgObj.width || 0) * (imgObj.scaleX || 1))}
+                                    onChange={(e) => {
+                                        const scale = Number(e.target.value) / (imgObj.width || 1);
+                                        updateProperty('scaleX', scale);
+                                        if ((imgObj as any).lockAspectRatio) updateProperty('scaleY', scale);
+                                    }}
+                                />
+                            </div>
+                            <div className="flex-1 flex items-center bg-white border border-[var(--stitch-border)] rounded-md px-2 shadow-sm">
+                                <span className="text-xs text-[var(--stitch-text-muted)] mr-2 font-medium">H</span>
+                                <input
+                                    type="number"
+                                    className="w-full py-1.5 bg-transparent text-sm text-[var(--stitch-text-primary)] focus:outline-none"
+                                    value={Math.round((imgObj.height || 0) * (imgObj.scaleY || 1))}
+                                    onChange={(e) => {
+                                        const scale = Number(e.target.value) / (imgObj.height || 1);
+                                        updateProperty('scaleY', scale);
+                                        if ((imgObj as any).lockAspectRatio) updateProperty('scaleX', scale);
+                                    }}
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <StitchSlider
+                        label={`Rotation: ${Math.round(imgObj.angle || 0)}°`}
+                        min={-180}
+                        max={180}
+                        value={imgObj.angle || 0}
+                        onChange={(v) => updateProperty('angle', v)}
+                    />
+
+                    <div className="space-y-2">
+                        <label className="text-xs font-medium text-[var(--stitch-text-secondary)]">Flip</label>
+                        <div className="flex gap-2">
+                            <button
+                                className={clsx(
+                                    "flex-1 flex items-center justify-center gap-2 py-2 rounded-md transition-colors text-sm font-medium",
+                                    imgObj.flipX
+                                        ? "bg-[var(--stitch-primary-light)] text-[var(--stitch-primary)] border border-[var(--stitch-primary)]"
+                                        : "bg-[var(--stitch-background)] text-[var(--stitch-text-primary)] border border-[var(--stitch-border)] hover:bg-[var(--stitch-surface-hover)]"
+                                )}
+                                onClick={() => updateProperty('flipX', !imgObj.flipX)}
+                            >
+                                <FlipHorizontal size={16} /> Horizontal
+                            </button>
+                            <button
+                                className={clsx(
+                                    "flex-1 flex items-center justify-center gap-2 py-2 rounded-md transition-colors text-sm font-medium",
+                                    imgObj.flipY
+                                        ? "bg-[var(--stitch-primary-light)] text-[var(--stitch-primary)] border border-[var(--stitch-primary)]"
+                                        : "bg-[var(--stitch-background)] text-[var(--stitch-text-primary)] border border-[var(--stitch-border)] hover:bg-[var(--stitch-surface-hover)]"
+                                )}
+                                onClick={() => updateProperty('flipY', !imgObj.flipY)}
+                            >
+                                <FlipVertical size={16} /> Vertical
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <div className="property-group">
-                    <label>Size</label>
-                    <div className="two-column-input">
-                        <Input
-                            type="number" label="W"
-                            value={Math.round((imgObj.width || 0) * (imgObj.scaleX || 1))}
-                            onChange={(v) => {
-                                const scale = Number(v) / (imgObj.width || 1);
-                                updateProperty('scaleX', scale);
-                                if ((imgObj as any).lockAspectRatio) updateProperty('scaleY', scale);
-                            }}
-                        />
-                        <Input
-                            type="number" label="H"
-                            value={Math.round((imgObj.height || 0) * (imgObj.scaleY || 1))}
-                            onChange={(v) => {
-                                const scale = Number(v) / (imgObj.height || 1);
-                                updateProperty('scaleY', scale);
-                                if ((imgObj as any).lockAspectRatio) updateProperty('scaleX', scale);
-                            }}
-                        />
-                    </div>
-                </div>
-                <div className="property-group">
-                    <label>Rotation</label>
-                    <div className="input-with-slider">
-                        <Slider min={-180} max={180} value={imgObj.angle || 0} onChange={(v) => updateProperty('angle', v)} />
-                        <Input type="number" value={Math.round(imgObj.angle || 0)} onChange={(v) => updateProperty('angle', Number(v))} min={-180} max={180} suffix="°" />
-                    </div>
-                </div>
-                <div className="property-group">
-                    <label>Flip</label>
-                    <div className="button-group">
-                        <Button variant={imgObj.flipX ? 'primary' : 'outline'} onClick={() => updateProperty('flipX', !imgObj.flipX)} fullWidth>Horizontal</Button>
-                        <Button variant={imgObj.flipY ? 'primary' : 'outline'} onClick={() => updateProperty('flipY', !imgObj.flipY)} fullWidth>Vertical</Button>
-                    </div>
-                </div>
-            </Accordion>
+            </StitchAccordion>
 
             {/* 2. Appearance */}
-            <Accordion title="Appearance">
-                <div className="property-group">
-                    <label>Opacity</label>
-                    <div className="input-with-slider">
-                        <Slider min={0} max={100} value={Math.round((imgObj.opacity || 1) * 100)} onChange={(v) => updateProperty('opacity', v / 100)} />
-                        <Input type="number" value={Math.round((imgObj.opacity || 1) * 100)} onChange={(v) => updateProperty('opacity', Number(v) / 100)} min={0} max={100} suffix="%" />
-                    </div>
-                </div>
-                <div className="property-group">
-                    <label>Blend Mode</label>
-                    <Dropdown
-                        value={(imgObj.globalCompositeOperation as string) || 'source-over'}
-                        onChange={(val) => updateProperty('globalCompositeOperation', val)}
-                        options={[
-                            { label: 'Normal', value: 'source-over' },
-                            { label: 'Multiply', value: 'multiply' },
-                            { label: 'Screen', value: 'screen' },
-                            { label: 'Overlay', value: 'overlay' },
-                            { label: 'Darken', value: 'darken' },
-                            { label: 'Lighten', value: 'lighten' },
-                            { label: 'Color Dodge', value: 'color-dodge' },
-                            { label: 'Color Burn', value: 'color-burn' },
-                        ]}
+            <StitchAccordion title="Appearance" icon={<Layers size={16} />}>
+                <div className="space-y-4">
+                    <StitchSlider
+                        label={`Opacity: ${Math.round((imgObj.opacity || 1) * 100)}%`}
+                        min={0}
+                        max={100}
+                        value={(imgObj.opacity || 1) * 100}
+                        onChange={(v) => updateProperty('opacity', v / 100)}
                     />
-                </div>
-                <div className="property-group">
-                    <label>Border</label>
-                    <div className="two-column-input">
-                        <ColorPicker color={imgObj.stroke as string || '#000000'} onChange={(c) => updateProperty('stroke', c)} label="Color" />
-                        <Input type="number" label="Width" value={imgObj.strokeWidth || 0} onChange={(v) => updateProperty('strokeWidth', Number(v))} min={0} />
+
+                    <div className="space-y-2">
+                        <label className="text-xs font-medium text-[var(--stitch-text-secondary)]">Blend Mode</label>
+                        <select
+                            className="w-full p-2 bg-[var(--stitch-background)] border border-[var(--stitch-border)] rounded-md text-sm text-[var(--stitch-text-primary)] focus:border-[var(--stitch-primary)] focus:outline-none"
+                            value={(imgObj.globalCompositeOperation as string) || 'source-over'}
+                            onChange={(e) => updateProperty('globalCompositeOperation', e.target.value)}
+                        >
+                            <option value="source-over">Normal</option>
+                            <option value="multiply">Multiply</option>
+                            <option value="screen">Screen</option>
+                            <option value="overlay">Overlay</option>
+                            <option value="darken">Darken</option>
+                            <option value="lighten">Lighten</option>
+                            <option value="color-dodge">Color Dodge</option>
+                            <option value="color-burn">Color Burn</option>
+                        </select>
                     </div>
-                </div>
-                <div className="property-group">
-                    <label>Corner Radius</label>
-                    <div className="input-with-slider">
-                        <Slider min={0} max={100} value={(imgObj.clipPath as any)?.rx || 0} onChange={(v) => {
+
+                    <div className="space-y-2">
+                        <label className="text-xs font-medium text-[var(--stitch-text-secondary)]">Border</label>
+                        <div className="flex gap-2">
+                            <div className="flex-1">
+                                <StitchColorPicker
+                                    color={imgObj.stroke as string || '#000000'}
+                                    onChange={(c) => updateProperty('stroke', c)}
+                                />
+                            </div>
+                            <div className="w-24">
+                                <StitchSlider
+                                    label="Width"
+                                    min={0}
+                                    max={20}
+                                    value={imgObj.strokeWidth || 0}
+                                    onChange={(v) => updateProperty('strokeWidth', v)}
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <StitchSlider
+                        label="Corner Radius"
+                        min={0}
+                        max={100}
+                        value={(imgObj.clipPath as any)?.rx || 0}
+                        onChange={(v) => {
                             if (v === 0) { imgObj.clipPath = undefined; }
                             else {
                                 const clipPath = new fabric.Rect({
@@ -301,152 +377,163 @@ export const ImageProperties: React.FC = () => {
                             }
                             canvas?.renderAll();
                             setTick(t => t + 1);
-                        }} />
-                        <Input type="number" value={(imgObj.clipPath as any)?.rx || 0} onChange={() => { }} />
+                        }}
+                    />
+
+                    <div className="flex items-center justify-between">
+                        <label className="flex items-center gap-2 text-sm text-[var(--stitch-text-primary)] cursor-pointer">
+                            <input
+                                type="checkbox"
+                                checked={!!imgObj.shadow}
+                                onChange={(e) => {
+                                    updateProperty('shadow', e.target.checked ? new fabric.Shadow({ color: 'rgba(0,0,0,0.3)', blur: 10, offsetX: 5, offsetY: 5 }) : null);
+                                }}
+                                className="w-4 h-4 rounded border-gray-300 text-[var(--stitch-primary)]"
+                            />
+                            Enable Shadow
+                        </label>
                     </div>
+
+                    {imgObj.shadow && (
+                        <StitchSlider
+                            label="Shadow Blur"
+                            min={0}
+                            max={50}
+                            value={(imgObj.shadow as fabric.Shadow).blur || 0}
+                            onChange={(v) => {
+                                (imgObj.shadow as fabric.Shadow).blur = v;
+                                updateProperty('shadow', imgObj.shadow);
+                            }}
+                        />
+                    )}
                 </div>
-                <div className="property-group">
-                    <label className="checkbox-label">
-                        <input type="checkbox" checked={!!imgObj.shadow} onChange={(e) => {
-                            updateProperty('shadow', e.target.checked ? new fabric.Shadow({ color: 'rgba(0,0,0,0.3)', blur: 10, offsetX: 5, offsetY: 5 }) : null);
-                        }} />
-                        Enable Shadow
-                    </label>
-                </div>
-                {imgObj.shadow && (
-                    <div className="property-group">
-                        <label>Shadow Blur</label>
-                        <Slider min={0} max={50} value={(imgObj.shadow as fabric.Shadow).blur || 0} onChange={(v) => {
-                            (imgObj.shadow as fabric.Shadow).blur = v;
-                            updateProperty('shadow', imgObj.shadow);
-                        }} />
-                    </div>
-                )}
-            </Accordion>
+            </StitchAccordion>
 
             {/* 3. Effects */}
-            <Accordion title="Effects">
-                <div className="property-section-label">Adjustments</div>
-                {['Brightness', 'Contrast', 'Saturation', 'HueRotation', 'Blur'].map((effect) => (
-                    <div className="property-group" key={effect}>
-                        <label>{effect === 'HueRotation' ? 'Hue' : effect}</label>
-                        <div className="input-with-slider">
-                            <Slider
+            <StitchAccordion title="Effects" icon={<Wand2 size={16} />}>
+                <div className="space-y-6">
+                    <div className="space-y-4">
+                        <label className="text-xs font-semibold text-[var(--stitch-text-primary)] uppercase tracking-wider">Adjustments</label>
+                        {['Brightness', 'Contrast', 'Saturation', 'HueRotation', 'Blur'].map((effect) => (
+                            <StitchSlider
+                                key={effect}
+                                label={effect === 'HueRotation' ? 'Hue' : effect}
                                 min={effect === 'Blur' ? 0 : (effect === 'HueRotation' ? 0 : -100)}
                                 max={effect === 'Blur' ? 100 : (effect === 'HueRotation' ? 360 : 100)}
                                 value={getFilterValue(effect)}
                                 onChange={(v) => updateFilter(effect, v)}
                             />
+                        ))}
+                    </div>
+
+                    <div className="border-t border-[var(--stitch-border)] pt-4 space-y-3">
+                        <label className="text-xs font-semibold text-[var(--stitch-text-primary)] uppercase tracking-wider">Presets</label>
+                        <div className="grid grid-cols-4 gap-2">
+                            {filterPresets.map((preset) => (
+                                <button
+                                    key={preset.value}
+                                    className={clsx(
+                                        "flex flex-col items-center gap-1 p-1 rounded-md transition-colors",
+                                        (imgObj as any).filterPreset === preset.value
+                                            ? "bg-[var(--stitch-primary-light)] ring-1 ring-[var(--stitch-primary)]"
+                                            : "hover:bg-[var(--stitch-surface-hover)]"
+                                    )}
+                                    onClick={() => applyFilterPreset(preset.value)}
+                                >
+                                    <div
+                                        className="w-full aspect-square rounded border border-[var(--stitch-border)]"
+                                        style={{ backgroundColor: preset.bg }}
+                                    />
+                                    <span className="text-[10px] text-[var(--stitch-text-secondary)]">{preset.name}</span>
+                                </button>
+                            ))}
                         </div>
                     </div>
-                ))}
-
-                <div className="property-separator" style={{ margin: '16px 0', borderTop: '1px solid var(--border-color)' }} />
-
-                <div className="property-section-label">Filters</div>
-                <div className="filter-presets-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px' }}>
-                    {filterPresets.map((preset) => {
-                        let filterStyle = {};
-                        switch (preset.value) {
-                            case 'vintage': filterStyle = { filter: 'sepia(1) contrast(0.9) brightness(1.1)', background: '#d4c4a8' }; break;
-                            case 'blackwhite': filterStyle = { filter: 'grayscale(1) contrast(1.2)', background: '#888' }; break;
-                            case 'cold': filterStyle = { filter: 'hue-rotate(180deg) saturate(0.2)', background: '#a8c4d4' }; break;
-                            case 'warm': filterStyle = { filter: 'sepia(0.3) saturate(1.3)', background: '#d4a8a8' }; break;
-                            case 'dramatic': filterStyle = { filter: 'contrast(1.5) saturate(1.2)', background: '#444' }; break;
-                            case 'soft': filterStyle = { filter: 'brightness(1.1) blur(0.5px)', background: '#f0f0f0' }; break;
-                            case 'sharpen': filterStyle = { background: '#ccc' }; break;
-                            case 'invert': filterStyle = { filter: 'invert(1)', background: '#000' }; break;
-                            default: filterStyle = { background: '#fff' }; break;
-                        }
-
-                        return (
-                            <button
-                                key={preset.value}
-                                className={`filter-preset-button ${(imgObj as any).filterPreset === preset.value ? 'active' : ''}`}
-                                onClick={() => applyFilterPreset(preset.value)}
-                                style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', background: 'none', border: '1px solid transparent', cursor: 'pointer', padding: '4px' }}
-                            >
-                                <div className="preset-preview" style={{ width: '100%', aspectRatio: '1', borderRadius: '4px', marginBottom: '4px', border: '1px solid #ddd', ...filterStyle }}></div>
-                                <span style={{ fontSize: '10px' }}>{preset.name}</span>
-                            </button>
-                        )
-                    })}
                 </div>
-            </Accordion>
+            </StitchAccordion>
 
             {/* 4. Replace & Source */}
-            <Accordion title="Source & Replace">
-                <div className="property-group">
-                    <Button variant="outline" fullWidth onClick={() => {
-                        const input = document.createElement('input');
-                        input.type = 'file';
-                        input.accept = 'image/*';
-                        input.onchange = (e) => {
-                            const file = (e.target as HTMLInputElement).files?.[0];
-                            if (!file) return;
-                            const reader = new FileReader();
-                            reader.onload = (ev) => {
-                                fabric.Image.fromURL(ev.target?.result as string, (newImg) => {
-                                    imgObj.setElement(newImg.getElement());
-                                    imgObj.set({ width: newImg.width, height: newImg.height });
-                                    if (canvas) ElementFactory.scaleImageToFit(imgObj, canvas.getWidth(), canvas.getHeight());
-                                    canvas?.renderAll();
-                                    setTick(t => t + 1);
-                                });
+            <StitchAccordion title="Source & Replace" icon={<ImageIcon size={16} />}>
+                <div className="space-y-4">
+                    <button
+                        className="w-full flex items-center justify-center gap-2 py-2 px-4 bg-[var(--stitch-background)] border border-[var(--stitch-border)] rounded-lg text-sm font-medium text-[var(--stitch-text-primary)] hover:border-[var(--stitch-primary)] hover:text-[var(--stitch-primary)] transition-colors"
+                        onClick={() => {
+                            const input = document.createElement('input');
+                            input.type = 'file';
+                            input.accept = 'image/*';
+                            input.onchange = (e) => {
+                                const file = (e.target as HTMLInputElement).files?.[0];
+                                if (!file) return;
+                                const reader = new FileReader();
+                                reader.onload = (ev) => {
+                                    fabric.Image.fromURL(ev.target?.result as string, (newImg) => {
+                                        imgObj.setElement(newImg.getElement());
+                                        imgObj.set({ width: newImg.width, height: newImg.height });
+                                        if (canvas) ElementFactory.scaleImageToFit(imgObj, canvas.getWidth(), canvas.getHeight());
+                                        canvas?.renderAll();
+                                        setTick(t => t + 1);
+                                    });
+                                };
+                                reader.readAsDataURL(file);
                             };
-                            reader.readAsDataURL(file);
-                        };
-                        input.click();
-                    }}>
-                        Replace Image
-                    </Button>
-                </div>
-                {/* Dynamic Data Mapping */}
-                <div className="property-group">
-                    <label className="checkbox-label">
-                        <input type="checkbox" checked={(imgObj as any).isDynamic || false} onChange={(e) => {
-                            (imgObj as any).isDynamic = e.target.checked;
-                            setTick(t => t + 1);
-                        }} />
-                        Dynamic (Data Source)
-                    </label>
-                </div>
-                {(imgObj as any).isDynamic && excelData && (
-                    <div className="property-group">
-                        <Dropdown
-                            value={(imgObj as any).dynamicColumnMapping || ''}
-                            onChange={(v) => { (imgObj as any).dynamicColumnMapping = v; }}
-                            options={excelData.columns.map(c => ({ label: c.name, value: c.name }))}
-                        />
+                            input.click();
+                        }}
+                    >
+                        <Upload size={14} /> Replace Image
+                    </button>
+
+                    <div className="space-y-2">
+                        <label className="flex items-center gap-2 text-sm text-[var(--stitch-text-primary)] cursor-pointer">
+                            <input
+                                type="checkbox"
+                                checked={(imgObj as any).isDynamic || false}
+                                onChange={(e) => {
+                                    (imgObj as any).isDynamic = e.target.checked;
+                                    setTick(t => t + 1);
+                                }}
+                                className="w-4 h-4 rounded border-gray-300 text-[var(--stitch-primary)]"
+                            />
+                            Dynamic (Data Source)
+                        </label>
                     </div>
-                )}
-            </Accordion>
+
+                    {(imgObj as any).isDynamic && excelData && (
+                        <div className="space-y-2">
+                            <label className="text-xs font-medium text-[var(--stitch-text-secondary)]">Data Column</label>
+                            <select
+                                className="w-full p-2 bg-[var(--stitch-background)] border border-[var(--stitch-border)] rounded-md text-sm text-[var(--stitch-text-primary)] focus:border-[var(--stitch-primary)] focus:outline-none"
+                                value={(imgObj as any).dynamicColumnMapping || ''}
+                                onChange={(e) => { (imgObj as any).dynamicColumnMapping = e.target.value; }}
+                            >
+                                <option value="">Select Column...</option>
+                                {excelData.columns.map(c => (
+                                    <option key={c.name} value={c.name}>{c.name}</option>
+                                ))}
+                            </select>
+                        </div>
+                    )}
+                </div>
+            </StitchAccordion>
 
             {/* 5. Export */}
-            <Accordion title="Export">
-                <div className="property-group">
-                    <label>Format</label>
-                    <Dropdown
-                        value="png"
-                        onChange={() => { }}
-                        options={[{ label: 'PNG', value: 'png' }, { label: 'JPG', value: 'jpg' }, { label: 'SVG', value: 'svg' }]}
-                    />
+            <StitchAccordion title="Export" icon={<Download size={16} />}>
+                <div className="space-y-4">
+                    <button
+                        className="w-full flex items-center justify-center gap-2 py-2 px-4 bg-[var(--stitch-primary)] text-white rounded-lg text-sm font-medium hover:bg-[var(--stitch-primary-hover)] transition-colors shadow-sm"
+                        onClick={() => {
+                            const dataURL = imgObj.toDataURL({ format: 'png', multiplier: 2 });
+                            const link = document.createElement('a');
+                            link.download = `image-${Date.now()}.png`;
+                            link.href = dataURL;
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                        }}
+                    >
+                        <Download size={14} /> Download Image
+                    </button>
                 </div>
-                <div className="property-group">
-                    <Button variant="primary" fullWidth onClick={() => {
-                        const dataURL = imgObj.toDataURL({ format: 'png', multiplier: 2 });
-                        const link = document.createElement('a');
-                        link.download = 'image.png';
-                        link.href = dataURL;
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
-                    }}>
-                        Download Image
-                    </Button>
-                </div>
-            </Accordion>
-
+            </StitchAccordion>
         </div>
     );
 };

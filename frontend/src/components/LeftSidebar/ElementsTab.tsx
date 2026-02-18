@@ -1,166 +1,181 @@
 import React from 'react';
 import { useCanvasStore } from '../../store/canvasStore';
 import { fabric } from 'fabric';
-import { FaSquare, FaCircle, FaPlay, FaStar, FaMinus, FaArrowRight } from 'react-icons/fa';
-import './ElementsTab.css';
+import {
+    Square, Circle, Triangle, Star, Minus, ArrowRight, MousePointerClick,
+    Hexagon, Diamond, Heart, PlayCircle, Zap, BoxSelect, CircleDashed, Search, ChevronDown, Image as ImageIcon
+} from 'lucide-react';
 
 export const ElementsTab: React.FC = () => {
     const { canvas } = useCanvasStore();
 
-    const addRectangle = () => {
+    // Helper to add shape
+    const addShape = (shapeType: 'rect' | 'circle' | 'triangle' | 'polygon', options: any) => {
         if (!canvas) return;
-        const rect = new fabric.Rect({
+        let shape;
+
+        const defaultOptions = {
             left: 100,
             top: 100,
-            width: 150,
-            height: 100,
-            fill: '#00C4CC',
-            stroke: '#0f3460',
+            fill: '#6366f1', // Primary
+            stroke: '#1e293b', // Slate 800
             strokeWidth: 2,
-            rx: 8,
-            ry: 8,
-        });
-        canvas.add(rect);
-        canvas.setActiveObject(rect);
-        canvas.renderAll();
+            ...options
+        };
+
+        switch (shapeType) {
+            case 'rect':
+                shape = new fabric.Rect({ ...defaultOptions, width: 100, height: 100, rx: 8, ry: 8 });
+                break;
+            case 'circle':
+                shape = new fabric.Circle({ ...defaultOptions, radius: 50 });
+                break;
+            case 'triangle':
+                shape = new fabric.Triangle({ ...defaultOptions, width: 100, height: 100 });
+                break;
+            case 'polygon': // For custom shapes like stars
+                // Handled in specific functions usually
+                break;
+        }
+
+        if (shape) {
+            canvas.add(shape);
+            canvas.setActiveObject(shape);
+            canvas.renderAll();
+        }
     };
 
-    const addCircle = () => {
+    const addPolygon = (points: any[], options: any) => {
         if (!canvas) return;
-        const circle = new fabric.Circle({
+        const shape = new fabric.Polygon(points, {
             left: 100,
             top: 100,
-            radius: 60,
-            fill: '#7D2AE8',
-            stroke: '#0f3460',
+            fill: '#f59e0b',
+            stroke: '#1e293b',
             strokeWidth: 2,
+            ...options
         });
-        canvas.add(circle);
-        canvas.setActiveObject(circle);
+        canvas.add(shape);
+        canvas.setActiveObject(shape);
         canvas.renderAll();
-    };
+    }
 
-    const addTriangle = () => {
-        if (!canvas) return;
-        const triangle = new fabric.Triangle({
-            left: 100,
-            top: 100,
-            width: 100,
-            height: 100,
-            fill: '#FF6B6B',
-            stroke: '#0f3460',
-            strokeWidth: 2,
-        });
-        canvas.add(triangle);
-        canvas.setActiveObject(triangle);
-        canvas.renderAll();
-    };
+    // --- Shapes ---
 
-    const addLine = () => {
+    const addHollowRect = () => addShape('rect', { fill: 'transparent', strokeWidth: 4 });
+    const addHollowCircle = () => addShape('circle', { fill: 'transparent', strokeWidth: 4 });
+    const addHollowTriangle = () => addShape('triangle', { fill: 'transparent', strokeWidth: 4 });
+
+    const addDashedCircle = () => addShape('circle', {
+        fill: 'transparent',
+        strokeWidth: 3,
+        strokeDashArray: [10, 10]
+    });
+
+    // --- Lines ---
+
+    const addLine = (dashed = false) => {
         if (!canvas) return;
         const line = new fabric.Line([50, 50, 200, 50], {
             left: 100,
             top: 100,
-            stroke: '#333333',
-            strokeWidth: 3,
+            stroke: '#334155',
+            strokeWidth: 4,
+            strokeLineCap: 'round',
+            strokeDashArray: dashed ? [10, 10] : undefined
         });
         canvas.add(line);
         canvas.setActiveObject(line);
         canvas.renderAll();
     };
 
-    const addStar = () => {
-        if (!canvas) return;
-        const points = [];
-        const outerRadius = 50;
-        const innerRadius = 25;
-        for (let i = 0; i < 10; i++) {
-            const radius = i % 2 === 0 ? outerRadius : innerRadius;
-            const angle = (Math.PI / 5) * i - Math.PI / 2;
-            points.push({
-                x: Math.cos(angle) * radius,
-                y: Math.sin(angle) * radius
-            });
-        }
-        const star = new fabric.Polygon(points, {
-            left: 100,
-            top: 100,
-            fill: '#FFD93D',
-            stroke: '#0f3460',
-            strokeWidth: 2,
-        });
-        canvas.add(star);
-        canvas.setActiveObject(star);
-        canvas.renderAll();
-    };
-
     const addArrow = () => {
         if (!canvas) return;
-        const arrow = new fabric.Polygon([
-            { x: 0, y: 10 },
-            { x: 60, y: 10 },
-            { x: 60, y: 0 },
-            { x: 80, y: 15 },
-            { x: 60, y: 30 },
-            { x: 60, y: 20 },
-            { x: 0, y: 20 }
-        ], {
+        // Simplified arrow using Path for better scaling
+        const path = new fabric.Path('M 0 0 L 100 0 L 100 -10 L 120 10 L 100 30 L 100 20 L 0 20 Z', {
             left: 100,
             top: 100,
-            fill: '#4ECDC4',
-            stroke: '#0f3460',
+            fill: '#10b981',
+            stroke: '#065f46',
             strokeWidth: 1,
+            scaleX: 0.8,
+            scaleY: 0.8
         });
-        canvas.add(arrow);
-        canvas.setActiveObject(arrow);
+        canvas.add(path);
+        canvas.setActiveObject(path);
         canvas.renderAll();
     };
 
+    const categories = [
+        { label: 'Shapes', icon: Hexagon, color: 'bg-teal-100 text-teal-600' },
+        { label: 'Graphics', icon: Circle, color: 'bg-yellow-100 text-yellow-600' }, // Placeholder icon
+        { label: 'Animations', icon: PlayCircle, color: 'bg-lime-100 text-lime-600' },
+        { label: 'Photos', icon: ImageIcon, color: 'bg-blue-100 text-blue-600' },
+        { label: 'Videos', icon: PlayCircle, color: 'bg-purple-100 text-purple-600' },
+        { label: 'Audio', icon: Zap, color: 'bg-pink-100 text-pink-600' }, // Placeholder icon
+    ];
+
     return (
-        <div className="elements-tab sidebar-tab-content">
-            <div className="sidebar-header">
-                <h3>Elements</h3>
-            </div>
+        <div className="flex flex-col h-full bg-white p-4">
+            <h3 className="text-sm font-semibold text-slate-700 mb-4">Elements</h3>
 
-            <div className="element-section">
-                <h4>Shapes</h4>
-                <div className="elements-grid">
-                    <button className="element-btn" onClick={addRectangle} title="Rectangle">
-                        <FaSquare />
-                        <span>Rectangle</span>
-                    </button>
-                    <button className="element-btn" onClick={addCircle} title="Circle">
-                        <FaCircle />
-                        <span>Circle</span>
-                    </button>
-                    <button className="element-btn" onClick={addTriangle} title="Triangle">
-                        <FaPlay />
-                        <span>Triangle</span>
-                    </button>
-                    <button className="element-btn" onClick={addStar} title="Star">
-                        <FaStar />
-                        <span>Star</span>
-                    </button>
-                </div>
-            </div>
+            <div className="grid grid-cols-3 gap-3">
+                <button
+                    onClick={() => addShape('rect', { fill: '#3b82f6' })}
+                    className="aspect-square flex flex-col items-center justify-center bg-slate-100 hover:bg-slate-200 rounded-md transition-colors text-slate-600"
+                    title="Square"
+                >
+                    <Square size={24} />
+                    <span className="text-[10px] mt-1">Square</span>
+                </button>
 
-            <div className="element-section">
-                <h4>Lines & Arrows</h4>
-                <div className="elements-grid">
-                    <button className="element-btn" onClick={addLine} title="Line">
-                        <FaMinus />
-                        <span>Line</span>
-                    </button>
-                    <button className="element-btn" onClick={addArrow} title="Arrow">
-                        <FaArrowRight />
-                        <span>Arrow</span>
-                    </button>
-                </div>
-            </div>
+                <button
+                    onClick={() => addShape('circle', { fill: '#ef4444' })}
+                    className="aspect-square flex flex-col items-center justify-center bg-slate-100 hover:bg-slate-200 rounded-md transition-colors text-slate-600"
+                    title="Circle"
+                >
+                    <Circle size={24} />
+                    <span className="text-[10px] mt-1">Circle</span>
+                </button>
 
-            <div className="elements-tip">
-                <p>💡 Click any element to add it to your canvas.</p>
+                <button
+                    onClick={() => addShape('triangle', { fill: '#10b981' })}
+                    className="aspect-square flex flex-col items-center justify-center bg-slate-100 hover:bg-slate-200 rounded-md transition-colors text-slate-600"
+                    title="Triangle"
+                >
+                    <Triangle size={24} />
+                    <span className="text-[10px] mt-1">Triangle</span>
+                </button>
+
+                <button
+                    onClick={() => addLine(false)}
+                    className="aspect-square flex flex-col items-center justify-center bg-slate-100 hover:bg-slate-200 rounded-md transition-colors text-slate-600"
+                    title="Line"
+                >
+                    <Minus size={24} />
+                    <span className="text-[10px] mt-1">Line</span>
+                </button>
+
+                <button
+                    onClick={addArrow}
+                    className="aspect-square flex flex-col items-center justify-center bg-slate-100 hover:bg-slate-200 rounded-md transition-colors text-slate-600"
+                    title="Arrow"
+                >
+                    <ArrowRight size={24} />
+                    <span className="text-[10px] mt-1">Arrow</span>
+                </button>
             </div>
         </div>
     );
 };
+
+// Simplified Element Button for the grid
+const ElementBtn: React.FC<{ icon: any, label: string, onClick: () => void, color?: string }> = ({ icon: Icon, label, onClick, color }) => (
+    <button
+        onClick={onClick}
+        className="flex flex-col items-center justify-center p-2 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-all duration-200 group aspect-square"
+        title={label || 'Element'}
+    >
+        <Icon size={24} className="group-hover:scale-110 transition-transform" style={{ color: color || '#64748b' }} fill={color ? "currentColor" : "none"} />
+    </button>
+);

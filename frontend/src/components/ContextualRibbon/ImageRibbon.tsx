@@ -3,26 +3,14 @@ import { fabric } from 'fabric';
 import { useCanvasStore } from '../../store/canvasStore';
 import { useSelectionStore } from '../../store/selectionStore';
 import { ElementFactory } from '../../utils/elementFactory';
-import { Button } from '../Shared/Button';
+import { StitchButton } from '../common/StitchButton';
+import { StitchSlider } from '../common/StitchSlider';
 import {
-    FaImage,
-    FaCrop,
-    FaArrowsAltH,
-    FaArrowsAltV,
-    FaRedo,
-    FaUndo,
-    FaFilter,
-    FaAdjust,
-    FaTrash,
-    FaCopy,
-    FaLock,
-    FaUnlock,
-    FaSync,
-    FaSun,
-    FaMoon,
-    FaTint,
-} from 'react-icons/fa';
-import './ImageRibbon.css';
+    Image as ImageIcon, Crop, MoveHorizontal, MoveVertical, RotateCcw, RotateCw,
+    Filter, Sliders, Trash2, Copy, Lock, Unlock, RefreshCw, Sun, Moon, Droplet,
+    ChevronDown
+} from 'lucide-react';
+import clsx from 'clsx';
 
 export const ImageRibbon: React.FC = () => {
     const { canvas } = useCanvasStore();
@@ -71,7 +59,7 @@ export const ImageRibbon: React.FC = () => {
                 const imgObj = getImg();
                 if (!imgObj) return;
                 imgObj.setSrc(ev.target?.result as string, () => {
-                    ElementFactory.scaleImageToFit(imgObj, canvas.getWidth(), canvas.getHeight());
+                    if (canvas) ElementFactory.scaleImageToFit(imgObj, canvas.getWidth(), canvas.getHeight());
                     imgObj.setCoords();
                     canvas.requestRenderAll();
                 }, { crossOrigin: 'anonymous' });
@@ -185,13 +173,8 @@ export const ImageRibbon: React.FC = () => {
         if (!img || !canvas) return;
 
         // CRITICAL: Disable WebGL filtering to prevent image clipping
-        // This forces fabric.js to use canvas2d backend which is more reliable
         (fabric as any).filterBackend = new fabric.Canvas2dFilterBackend();
-
-        // Also set large texture size as fallback
         (fabric as any).textureSize = 8192;
-
-        // Disable object caching
         img.objectCaching = false;
 
         // Store all current properties
@@ -227,15 +210,10 @@ export const ImageRibbon: React.FC = () => {
                 img.filters.push(new fabric.Image.filters.Sepia());
                 img.filters.push(new fabric.Image.filters.Brightness({ brightness: -0.1 }));
                 break;
-            case 'none':
-            default:
-                break;
+            // 'none' case is handled by clearing filters above
         }
 
-        // Apply filters
         img.applyFilters();
-
-        // Restore all properties
         img.set(savedProps);
         img.setCoords();
 
@@ -268,12 +246,10 @@ export const ImageRibbon: React.FC = () => {
     const applyAdjustments = (img: fabric.Image, b: number, c: number, s: number) => {
         if (!canvas) return;
 
-        // CRITICAL: Disable WebGL filtering to prevent image clipping
         (fabric as any).filterBackend = new fabric.Canvas2dFilterBackend();
         (fabric as any).textureSize = 8192;
         img.objectCaching = false;
 
-        // Store current properties
         const savedProps = {
             left: img.left,
             top: img.top,
@@ -284,25 +260,14 @@ export const ImageRibbon: React.FC = () => {
             originY: img.originY,
         };
 
-        // Initialize and clear filters
         if (!img.filters) img.filters = [];
         img.filters = [];
 
-        // Add adjustment filters
-        if (b !== 0) {
-            img.filters.push(new fabric.Image.filters.Brightness({ brightness: b / 100 }));
-        }
-        if (c !== 0) {
-            img.filters.push(new fabric.Image.filters.Contrast({ contrast: c / 100 }));
-        }
-        if (s !== 0) {
-            img.filters.push(new fabric.Image.filters.Saturation({ saturation: s / 100 }));
-        }
+        if (b !== 0) img.filters.push(new fabric.Image.filters.Brightness({ brightness: b / 100 }));
+        if (c !== 0) img.filters.push(new fabric.Image.filters.Contrast({ contrast: c / 100 }));
+        if (s !== 0) img.filters.push(new fabric.Image.filters.Saturation({ saturation: s / 100 }));
 
-        // Apply filters
         img.applyFilters();
-
-        // Restore properties
         img.set(savedProps);
         img.setCoords();
 
@@ -310,152 +275,126 @@ export const ImageRibbon: React.FC = () => {
     };
 
     return (
-        <div className="image-ribbon contextual-ribbon">
+        <div className="flex items-center gap-4 px-4 h-full w-full">
             {/* Replace */}
-            <div className="ribbon-group">
-                <Button size="small" onClick={handleReplace} title="Replace Image">
-                    <FaImage /> Replace
-                </Button>
+            <div className="flex items-center">
+                <StitchButton size="sm" variant="ghost" onClick={handleReplace} title="Replace Image">
+                    <ImageIcon size={14} className="mr-2" /> Replace
+                </StitchButton>
             </div>
 
-            <div className="ribbon-separator" />
+            <div className="w-px h-6 bg-[var(--stitch-border)]" />
 
-            {/* Flip & Rotate - Direct Buttons */}
-            <div className="ribbon-group">
-                <Button size="small" onClick={handleFlipHorizontal} title="Flip Horizontal">
-                    <FaArrowsAltH />
-                </Button>
-                <Button size="small" onClick={handleFlipVertical} title="Flip Vertical">
-                    <FaArrowsAltV />
-                </Button>
-                <Button size="small" onClick={handleRotate90CCW} title="Rotate 90° CCW">
-                    <FaUndo />
-                </Button>
-                <Button size="small" onClick={handleRotate90CW} title="Rotate 90° CW">
-                    <FaRedo />
-                </Button>
+            {/* Flip & Rotate */}
+            <div className="flex items-center gap-1">
+                <StitchButton size="sm" variant="ghost" onClick={handleFlipHorizontal} title="Flip Horizontal">
+                    <MoveHorizontal size={14} />
+                </StitchButton>
+                <StitchButton size="sm" variant="ghost" onClick={handleFlipVertical} title="Flip Vertical">
+                    <MoveVertical size={14} />
+                </StitchButton>
+                <StitchButton size="sm" variant="ghost" onClick={handleRotate90CCW} title="Rotate 90° CCW">
+                    <RotateCcw size={14} />
+                </StitchButton>
+                <StitchButton size="sm" variant="ghost" onClick={handleRotate90CW} title="Rotate 90° CW">
+                    <RotateCw size={14} />
+                </StitchButton>
             </div>
 
-            <div className="ribbon-separator" />
+            <div className="w-px h-6 bg-[var(--stitch-border)]" />
 
             {/* Opacity */}
-            <div className="ribbon-group opacity-control">
-                <span className="opacity-label">Opacity</span>
-                <input
-                    type="range"
+            <div className="w-32 flex items-center gap-2">
+                <span className="text-[10px] text-[var(--stitch-text-tertiary)] uppercase font-semibold">Opacity</span>
+                <StitchSlider
                     min={0}
                     max={100}
                     value={opacity}
-                    onChange={(e) => handleOpacity(Number(e.target.value))}
-                    style={{ '--value': `${opacity}%` } as React.CSSProperties}
+                    onChange={handleOpacity}
                 />
-                <span className="opacity-value">{opacity}%</span>
             </div>
 
-            <div className="ribbon-separator" />
+            <div className="w-px h-6 bg-[var(--stitch-border)]" />
 
             {/* Filters Dropdown */}
-            <div className="ribbon-group dropdown-container">
-                <Button
-                    size="small"
+            <div className="relative">
+                <StitchButton
+                    size="sm"
+                    variant={showFilters ? 'primary' : 'ghost'}
                     onClick={() => { setShowFilters(!showFilters); setShowAdjust(false); }}
-                    className={showFilters ? 'active' : ''}
                 >
-                    <FaFilter /> Filters
-                </Button>
+                    <Filter size={14} className="mr-2" /> Filters
+                </StitchButton>
                 {showFilters && (
-                    <div className="ribbon-dropdown">
-                        <button onClick={() => applyFilter('none')}>None</button>
-                        <button onClick={() => applyFilter('grayscale')}>Grayscale</button>
-                        <button onClick={() => applyFilter('sepia')}>Sepia</button>
-                        <button onClick={() => applyFilter('invert')}>Invert</button>
-                        <button onClick={() => applyFilter('blur')}>Blur</button>
-                        <button onClick={() => applyFilter('vintage')}>Vintage</button>
+                    <div className="absolute top-full left-0 mt-2 min-w-[160px] bg-[var(--stitch-surface-elevated)] border border-[var(--stitch-border)] rounded-md shadow-xl z-50 py-1">
+                        <button className="w-full text-left px-4 py-2 hover:bg-[var(--stitch-surface-hover)] text-sm text-[var(--stitch-text-primary)]" onClick={() => applyFilter('none')}>None</button>
+                        <button className="w-full text-left px-4 py-2 hover:bg-[var(--stitch-surface-hover)] text-sm text-[var(--stitch-text-primary)]" onClick={() => applyFilter('grayscale')}>Grayscale</button>
+                        <button className="w-full text-left px-4 py-2 hover:bg-[var(--stitch-surface-hover)] text-sm text-[var(--stitch-text-primary)]" onClick={() => applyFilter('sepia')}>Sepia</button>
+                        <button className="w-full text-left px-4 py-2 hover:bg-[var(--stitch-surface-hover)] text-sm text-[var(--stitch-text-primary)]" onClick={() => applyFilter('invert')}>Invert</button>
+                        <button className="w-full text-left px-4 py-2 hover:bg-[var(--stitch-surface-hover)] text-sm text-[var(--stitch-text-primary)]" onClick={() => applyFilter('blur')}>Blur</button>
+                        <button className="w-full text-left px-4 py-2 hover:bg-[var(--stitch-surface-hover)] text-sm text-[var(--stitch-text-primary)]" onClick={() => applyFilter('vintage')}>Vintage</button>
                     </div>
                 )}
             </div>
 
             {/* Adjust Dropdown */}
-            <div className="ribbon-group dropdown-container">
-                <Button
-                    size="small"
+            <div className="relative">
+                <StitchButton
+                    size="sm"
+                    variant={showAdjust ? 'primary' : 'ghost'}
                     onClick={() => { setShowAdjust(!showAdjust); setShowFilters(false); }}
-                    className={showAdjust ? 'active' : ''}
                 >
-                    <FaAdjust /> Adjust
-                </Button>
+                    <Sliders size={14} className="mr-2" /> Adjust
+                </StitchButton>
                 {showAdjust && (
-                    <div className="ribbon-dropdown adjust-panel">
-                        <div className="adjust-row">
-                            <FaSun />
-                            <span>Brightness</span>
-                            <input
-                                type="range"
-                                min={-100}
-                                max={100}
-                                value={brightness}
-                                onChange={(e) => handleBrightness(Number(e.target.value))}
-                            />
-                            <span className="adjust-value">{brightness}</span>
+                    <div className="absolute top-full left-0 mt-2 w-[280px] bg-[var(--stitch-surface-elevated)] border border-[var(--stitch-border)] rounded-md shadow-xl z-50 p-4 space-y-4">
+                        <div className="space-y-1">
+                            <div className="flex items-center justify-between text-xs text-[var(--stitch-text-secondary)]">
+                                <span className="flex items-center gap-1"><Sun size={10} /> Brightness</span>
+                                <span>{brightness}</span>
+                            </div>
+                            <StitchSlider min={-100} max={100} value={brightness} onChange={handleBrightness} />
                         </div>
-                        <div className="adjust-row">
-                            <FaMoon />
-                            <span>Contrast</span>
-                            <input
-                                type="range"
-                                min={-100}
-                                max={100}
-                                value={contrast}
-                                onChange={(e) => handleContrast(Number(e.target.value))}
-                            />
-                            <span className="adjust-value">{contrast}</span>
+                        <div className="space-y-1">
+                            <div className="flex items-center justify-between text-xs text-[var(--stitch-text-secondary)]">
+                                <span className="flex items-center gap-1"><Moon size={10} /> Contrast</span>
+                                <span>{contrast}</span>
+                            </div>
+                            <StitchSlider min={-100} max={100} value={contrast} onChange={handleContrast} />
                         </div>
-                        <div className="adjust-row">
-                            <FaTint />
-                            <span>Saturation</span>
-                            <input
-                                type="range"
-                                min={-100}
-                                max={100}
-                                value={saturation}
-                                onChange={(e) => handleSaturation(Number(e.target.value))}
-                            />
-                            <span className="adjust-value">{saturation}</span>
+                        <div className="space-y-1">
+                            <div className="flex items-center justify-between text-xs text-[var(--stitch-text-secondary)]">
+                                <span className="flex items-center gap-1"><Droplet size={10} /> Saturation</span>
+                                <span>{saturation}</span>
+                            </div>
+                            <StitchSlider min={-100} max={100} value={saturation} onChange={handleSaturation} />
                         </div>
                     </div>
                 )}
             </div>
 
-            <div className="ribbon-separator" />
+            <div className="w-px h-6 bg-[var(--stitch-border)]" />
 
             {/* Actions */}
-            <div className="ribbon-group">
-                <Button size="small" onClick={handleReset} title="Reset All">
-                    <FaSync />
-                </Button>
-                <Button size="small" onClick={handleDuplicate} title="Duplicate">
-                    <FaCopy />
-                </Button>
-                {/* Lock/Unlock with visible text */}
-                <Button
-                    size="small"
+            <div className="flex items-center gap-1">
+                <StitchButton size="sm" variant="ghost" onClick={handleReset} title="Reset All">
+                    <RefreshCw size={14} />
+                </StitchButton>
+                <StitchButton size="sm" variant="ghost" onClick={handleDuplicate} title="Duplicate">
+                    <Copy size={14} />
+                </StitchButton>
+                <StitchButton
+                    size="sm"
+                    variant={isLocked ? 'secondary' : 'ghost'}
                     onClick={handleLock}
                     title={isLocked ? "Unlock" : "Lock"}
-                    className={isLocked ? 'locked-btn' : ''}
+                    className={isLocked ? '!text-red-400 !bg-red-900/10' : ''}
                 >
-                    {isLocked ? (
-                        <>
-                            <FaUnlock /> Unlock
-                        </>
-                    ) : (
-                        <>
-                            <FaLock /> Lock
-                        </>
-                    )}
-                </Button>
-                <Button size="small" onClick={handleDelete} title="Delete" variant="danger">
-                    <FaTrash />
-                </Button>
+                    {isLocked ? <Unlock size={14} /> : <Lock size={14} />}
+                </StitchButton>
+                <StitchButton size="sm" variant="ghost" onClick={handleDelete} title="Delete" className="hover:text-red-400 hover:bg-red-900/10">
+                    <Trash2 size={14} />
+                </StitchButton>
             </div>
         </div>
     );

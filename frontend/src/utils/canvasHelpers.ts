@@ -229,7 +229,22 @@ export class CanvasHelpers {
         });
 
         // Serialize
-        const json = canvas.toJSON();
+        const json = canvas.toJSON([
+            'id',
+            'data',
+            'originalText',
+            'name',
+            'description',
+            'lockMovementX',
+            'lockMovementY',
+            'lockRotation',
+            'lockScalingX',
+            'lockScalingY',
+            'selectable',
+            'evented',
+            'hoverCursor',
+            'moveCursor'
+        ]);
 
         // Restore preview values
         modifiedObjects.forEach(({ obj, originalText }) => {

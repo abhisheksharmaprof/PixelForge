@@ -32,6 +32,8 @@ interface UIState {
     setFullscreenMode: (fullscreen: boolean) => void;
     toggleFullscreen: () => void;
     toggleBottomPanel: () => void;
+    toggleLeftSidebar: () => void;
+    toggleRightPanel: () => void;
 
     // Context Menu State
     contextMenu: {
@@ -54,6 +56,17 @@ interface UIState {
     addNotification: (notification: Omit<Notification, 'id'>) => void;
     removeNotification: (id: string) => void;
     clearNotifications: () => void;
+
+    // Save Status
+    isSaving: boolean;
+    lastSaved: Date | null;
+    isSaving: boolean;
+    lastSaved: Date | null;
+    setIsSaving: (saving: boolean) => void;
+
+    // Clipboard
+    clipboard: any | null; // fabric.Object
+    setClipboard: (obj: any | null) => void;
 }
 
 export const useUIStore = create<UIState>((set) => ({
@@ -79,6 +92,8 @@ export const useUIStore = create<UIState>((set) => ({
     setFullscreenMode: (fullscreen) => set({ fullscreenMode: fullscreen }),
     toggleFullscreen: () => set((state) => ({ fullscreenMode: !state.fullscreenMode })),
     toggleBottomPanel: () => set((state) => ({ bottomPanelOpen: !state.bottomPanelOpen })),
+    toggleLeftSidebar: () => set((state) => ({ leftSidebarOpen: !state.leftSidebarOpen })),
+    toggleRightPanel: () => set((state) => ({ rightPanelOpen: !state.rightPanelOpen })),
 
     // Context Menu
     contextMenu: { visible: false, x: 0, y: 0, items: [] },
@@ -110,5 +125,14 @@ export const useUIStore = create<UIState>((set) => ({
         notifications: state.notifications.filter(n => n.id !== id)
     })),
     clearNotifications: () => set({ notifications: [] }),
+
+    // Save Status
+    isSaving: false,
+    lastSaved: null,
+    setIsSaving: (saving) => set({ isSaving: saving, lastSaved: saving ? null : new Date() }),
+
+    // Clipboard
+    clipboard: null,
+    setClipboard: (obj) => set({ clipboard: obj }),
 }));
 

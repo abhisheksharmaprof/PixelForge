@@ -1,7 +1,8 @@
 import React from 'react';
 import { useCanvasStore } from '../../store/canvasStore';
-import { FaPalette, FaTint, FaImage, FaLock, FaLockOpen, FaUndo, FaStamp } from 'react-icons/fa';
-import './BackgroundRibbon.css';
+import { StitchColorPicker } from '../common/StitchColorPicker';
+import { StitchButton } from '../common/StitchButton';
+import { Palette, Droplet, Image as ImageIcon, Lock, Unlock, Eraser, Stamp } from 'lucide-react';
 
 export const BackgroundRibbon: React.FC = () => {
     const {
@@ -34,89 +35,88 @@ export const BackgroundRibbon: React.FC = () => {
     };
 
     return (
-        <div className="contextual-ribbon background-ribbon">
+        <div className="flex items-center gap-4 px-4 h-full w-full">
             {/* Background Type */}
-            <div className="ribbon-group">
-                <button
-                    className={`ribbon-btn ${backgroundType === 'solid' ? 'active' : ''}`}
+            <div className="flex items-center gap-1">
+                <StitchButton
+                    size="sm"
+                    variant={backgroundType === 'solid' ? 'primary' : 'ghost'}
                     onClick={() => setBackgroundType('solid')}
+                    disabled={backgroundLocked}
                     title="Solid Color"
-                    disabled={backgroundLocked}
                 >
-                    <FaPalette />
-                    <span>Solid</span>
-                </button>
-                <button
-                    className={`ribbon-btn ${backgroundType === 'gradient' ? 'active' : ''}`}
+                    <Palette size={14} className="mr-2" /> Solid
+                </StitchButton>
+                <StitchButton
+                    size="sm"
+                    variant={backgroundType === 'gradient' ? 'primary' : 'ghost'}
                     onClick={() => setBackgroundType('gradient')}
+                    disabled={backgroundLocked}
                     title="Gradient"
-                    disabled={backgroundLocked}
                 >
-                    <FaTint />
-                    <span>Gradient</span>
-                </button>
-                <button
-                    className={`ribbon-btn ${backgroundType === 'image' ? 'active' : ''}`}
+                    <Droplet size={14} className="mr-2" /> Gradient
+                </StitchButton>
+                <StitchButton
+                    size="sm"
+                    variant={backgroundType === 'image' ? 'primary' : 'ghost'}
                     onClick={() => setBackgroundType('image')}
-                    title="Image"
                     disabled={backgroundLocked}
+                    title="Image"
                 >
-                    <FaImage />
-                    <span>Image</span>
-                </button>
+                    <ImageIcon size={14} className="mr-2" /> Image
+                </StitchButton>
             </div>
 
-            <div className="ribbon-divider"></div>
+            <div className="w-px h-6 bg-[var(--stitch-border)]" />
 
             {/* Quick Color */}
             {backgroundType === 'solid' && (
-                <div className="ribbon-group">
-                    <label className="ribbon-label">Color</label>
-                    <input
-                        type="color"
-                        value={backgroundColor}
-                        onChange={(e) => handleColorChange(e.target.value)}
-                        className="ribbon-color-picker"
-                        disabled={backgroundLocked}
+                <div className="flex items-center gap-2">
+                    <span className="text-[10px] text-[var(--stitch-text-tertiary)] uppercase font-semibold">Color</span>
+                    <StitchColorPicker
+                        color={backgroundColor}
+                        onChange={handleColorChange}
                     />
                 </div>
             )}
 
-            <div className="ribbon-divider"></div>
+            {backgroundType === 'solid' && <div className="w-px h-6 bg-[var(--stitch-border)]" />}
 
             {/* Watermark Toggle */}
-            <div className="ribbon-group">
-                <button
-                    className={`ribbon-btn ${watermark.enabled ? 'active' : ''}`}
+            <div className="flex items-center">
+                <StitchButton
+                    size="sm"
+                    variant={watermark.enabled ? 'primary' : 'ghost'}
                     onClick={() => setWatermark({ enabled: !watermark.enabled })}
                     title="Toggle Watermark"
                 >
-                    <FaStamp />
-                    <span>Watermark</span>
-                </button>
+                    <Stamp size={14} className="mr-2" /> Watermark
+                </StitchButton>
             </div>
 
-            <div className="ribbon-divider"></div>
+            <div className="w-px h-6 bg-[var(--stitch-border)]" />
 
             {/* Lock and Reset */}
-            <div className="ribbon-group">
-                <button
-                    className={`ribbon-btn ${backgroundLocked ? 'locked' : ''}`}
+            <div className="flex items-center gap-1 relative">
+                <StitchButton
+                    size="sm"
+                    variant={backgroundLocked ? 'secondary' : 'ghost'}
                     onClick={() => setBackgroundLocked(!backgroundLocked)}
                     title={backgroundLocked ? 'Unlock Background' : 'Lock Background'}
+                    className={backgroundLocked ? '!text-red-400 !bg-red-900/10' : ''}
                 >
-                    {backgroundLocked ? <FaLock /> : <FaLockOpen />}
-                    <span>{backgroundLocked ? 'Locked' : 'Lock'}</span>
-                </button>
-                <button
-                    className="ribbon-btn"
+                    {backgroundLocked ? <Lock size={14} className="mr-2" /> : <Unlock size={14} className="mr-2" />}
+                    {backgroundLocked ? 'Locked' : 'Lock'}
+                </StitchButton>
+                <StitchButton
+                    size="sm"
+                    variant="ghost"
                     onClick={handleClear}
                     title="Clear Background"
                     disabled={backgroundLocked}
                 >
-                    <FaUndo />
-                    <span>Clear</span>
-                </button>
+                    <Eraser size={14} className="mr-2" /> Clear
+                </StitchButton>
             </div>
         </div>
     );

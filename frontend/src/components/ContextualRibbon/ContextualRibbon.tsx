@@ -3,7 +3,6 @@ import { useSelectionStore } from '../../store/selectionStore';
 import { TextRibbon } from './TextRibbon';
 import { ImageRibbon } from './ImageRibbon';
 import { BackgroundRibbon } from './BackgroundRibbon';
-import './ContextualRibbon.css';
 
 export const ContextualRibbon: React.FC = () => {
     const { selectedObjects } = useSelectionStore();
@@ -16,22 +15,32 @@ export const ContextualRibbon: React.FC = () => {
     const activeObject = selectedObjects[0];
     const type = (activeObject as any).elementType || activeObject.type;
 
+    let content = null;
+
     switch (type) {
         case 'text':
         case 'i-text':
         case 'textbox':
-            return <TextRibbon />;
+            content = <TextRibbon />;
+            break;
         case 'image':
-            return <ImageRibbon />;
+            content = <ImageRibbon />;
+            break;
         default:
-            return (
-                <div className="contextual-ribbon default">
-                    <div className="ribbon-info">
-                        {selectedObjects.length > 1
-                            ? `${selectedObjects.length} items selected`
-                            : `${type || 'Element'} selected`}
-                    </div>
+            content = (
+                <div className="flex items-center text-sm text-[var(--stitch-text-secondary)] px-2">
+                    {selectedObjects.length > 1
+                        ? `${selectedObjects.length} items selected`
+                        : `${type || 'Element'} selected`}
                 </div>
             );
+            break;
     }
+
+    // Container is now handled by the parent layout in EditorScreen
+    return (
+        <div className="flex items-center h-full gap-2 w-full">
+            {content}
+        </div>
+    );
 };

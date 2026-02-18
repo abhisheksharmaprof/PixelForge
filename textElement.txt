@@ -1,0 +1,4448 @@
+
+
+## 1. LEFT SIDE PANEL STRUCTURE
+
+### Text Elements Library Organization
+
+The left panel organizes text elements into a hierarchical, searchable structure with visual previews and intelligent categorization.
+
+#### **Panel Header**
+- **Search Bar**: Full-text search across all text element types, names, and tags
+- **Filter Dropdown**: Categories (All, Basic Text, Headings, Lists, Artistic, Dynamic)
+- **Sort Options**: Recently Used, Alphabetical, Most Popular
+- **View Toggle**: Grid view (larger previews) vs. List view (compact)
+
+#### **Quick Access Section (Always Visible)**
+- **Recently Used**: Last 5 text element types used, auto-updating
+- **Favorites**: User-starred text elements for quick access
+- **Current Document Styles**: Text styles already in use on the current canvas
+
+---
+
+### **Category 1: Basic Text Elements**
+
+#### **1.1 Body Text**
+- **Icon Design**: "T" in regular weight, simple sans-serif style
+- **Default Properties**: 
+  - Font: System default (Arial/Helvetica)
+  - Size: 16px
+  - Color: #000000
+  - Line height: 1.5
+  - Alignment: Left
+  - Max width: 600px
+- **Typical Use Cases**: Paragraphs, descriptions, general content
+- **Preview**: Shows "Body Text" in actual rendering
+- **Drag Behavior**: Creates a text box 300px wide at drop location, immediately enters edit mode
+- **Initialization**: Cursor blinks, ready for typing
+
+#### **1.2 Heading 1**
+- **Icon Design**: Large "H1" with bold weight
+- **Default Properties**:
+  - Font: System default bold
+  - Size: 48px
+  - Weight: 700 (Bold)
+  - Color: #000000
+  - Line height: 1.2
+  - Letter spacing: -0.5px
+  - Alignment: Left
+- **Typical Use Cases**: Main titles, document headlines
+- **Preview**: "Heading 1" rendered at scale
+- **Drag Behavior**: Single-line text, auto-width up to canvas boundary
+- **Initialization**: Full text selected for immediate replacement
+
+#### **1.3 Heading 2**
+- **Icon Design**: "H2" medium bold
+- **Default Properties**:
+  - Font: System default bold
+  - Size: 36px
+  - Weight: 700
+  - Color: #000000
+  - Line height: 1.25
+  - Letter spacing: -0.25px
+- **Typical Use Cases**: Section titles, subheadings
+- **Preview**: "Heading 2" rendered
+- **Drag Behavior**: Single-line, auto-width
+- **Initialization**: Text selected
+
+#### **1.4 Heading 3**
+- **Icon Design**: "H3" moderate weight
+- **Default Properties**:
+  - Size: 28px
+  - Weight: 600 (Semibold)
+  - Line height: 1.3
+- **Typical Use Cases**: Subsection titles
+- **Preview**: Rendered preview
+- **Drag Behavior**: Single-line
+- **Initialization**: Text selected
+
+#### **1.5 Heading 4, 5, 6**
+- **Icon Design**: "H4", "H5", "H6" progressively smaller
+- **Default Properties**: Decreasing sizes (24px, 20px, 18px) with adjusted weights
+- **Typical Use Cases**: Nested section hierarchies
+- **Preview**: Individual previews for each
+- **Drag Behavior**: Single-line
+- **Initialization**: Text selected
+
+#### **1.6 Caption**
+- **Icon Design**: Small "Tt" with underline
+- **Default Properties**:
+  - Size: 12px
+  - Weight: 400
+  - Color: #666666
+  - Style: Italic optional
+  - Line height: 1.4
+- **Typical Use Cases**: Image captions, footnotes, small annotations
+- **Preview**: "Caption text" in gray italic
+- **Drag Behavior**: Small text box, 200px wide
+- **Initialization**: Edit mode active
+
+#### **1.7 Subtitle**
+- **Icon Design**: "T" with secondary bar underneath
+- **Default Properties**:
+  - Size: 24px
+  - Weight: 300 (Light)
+  - Color: #555555
+  - Line height: 1.4
+- **Typical Use Cases**: Supporting text under headlines
+- **Preview**: "Subtitle" in lighter weight
+- **Drag Behavior**: Auto-width line
+- **Initialization**: Text selected
+
+---
+
+### **Category 2: List Elements**
+
+#### **2.1 Bulleted List**
+- **Icon Design**: Three stacked lines with bullet points
+- **Default Properties**:
+  - Bullet style: Solid circle (•)
+  - Indent: 20px
+  - Bullet-text gap: 10px
+  - Line height: 1.6
+  - Vertical spacing: 8px between items
+- **Typical Use Cases**: Unordered information, feature lists
+- **Preview**: Three bullet points with "Item" text
+- **Drag Behavior**: Creates text box with first bullet already inserted
+- **Initialization**: Cursor after first bullet, ready to type
+
+#### **2.2 Numbered List**
+- **Icon Design**: Three lines with "1. 2. 3." prefixes
+- **Default Properties**:
+  - Number style: 1. 2. 3. (Arabic numerals with period)
+  - Indent: 20px
+  - Auto-numbering: Enabled
+  - Start number: 1
+- **Typical Use Cases**: Sequential steps, ordered information
+- **Preview**: Shows "1. 2. 3." with text
+- **Drag Behavior**: Creates text box with "1." inserted
+- **Initialization**: Cursor ready for first item
+
+#### **2.3 Checklist**
+- **Icon Design**: Three lines with checkbox squares
+- **Default Properties**:
+  - Checkbox style: Empty square
+  - Checkbox size: 18px
+  - Interactive: Optional (can toggle checked state)
+  - Indent: 25px
+- **Typical Use Cases**: To-do lists, requirements
+- **Preview**: Shows unchecked boxes
+- **Drag Behavior**: Creates first checkbox item
+- **Initialization**: Cursor after checkbox
+
+#### **2.4 Lettered List**
+- **Icon Design**: Lines with "A. B. C."
+- **Default Properties**:
+  - Letter style: A. B. C. (uppercase with period)
+  - Auto-lettering: Enabled
+  - Alternatives: a. b. c. or (A) (B) (C)
+- **Typical Use Cases**: Sub-lists, legal documents
+- **Preview**: Shows lettered sequence
+- **Drag Behavior**: First letter inserted
+- **Initialization**: Ready to type
+
+#### **2.5 Roman Numeral List**
+- **Icon Design**: "I. II. III."
+- **Default Properties**:
+  - Style: Uppercase Roman (I, II, III)
+  - Auto-numbering: Enabled
+  - Alternative: Lowercase (i, ii, iii)
+- **Typical Use Cases**: Formal documents, outlines
+- **Preview**: Roman numerals shown
+- **Drag Behavior**: "I." inserted
+- **Initialization**: Cursor ready
+
+---
+
+### **Category 3: Quote and Special Text**
+
+#### **3.1 Block Quote**
+- **Icon Design**: Large quotation marks with indented text lines
+- **Default Properties**:
+  - Left border: 4px solid #CCCCCC
+  - Left padding: 20px
+  - Font style: Italic
+  - Color: #555555
+  - Background: #F9F9F9 (optional)
+  - Max width: 600px
+- **Typical Use Cases**: Testimonials, cited text, emphasized quotes
+- **Preview**: Styled quote block
+- **Drag Behavior**: Creates formatted quote box
+- **Initialization**: Italic text, cursor ready
+- **Special Feature**: Opening quotation mark auto-inserted
+
+#### **3.2 Pull Quote**
+- **Icon Design**: Large centered "T" with quote marks
+- **Default Properties**:
+  - Size: 32px
+  - Weight: 600
+  - Alignment: Center
+  - Color: Primary brand color
+  - Quotation marks: Decorative large glyphs
+  - Max width: 400px
+- **Typical Use Cases**: Magazine-style callouts, emphasis
+- **Preview**: Large centered quote
+- **Drag Behavior**: Creates centered quote
+- **Initialization**: Text selected
+
+#### **3.3 Code Block**
+- **Icon Design**: "<>" symbols in monospace
+- **Default Properties**:
+  - Font: Monospace (Courier New, Monaco, Consolas)
+  - Size: 14px
+  - Background: #F5F5F5
+  - Border: 1px solid #DDDDDD
+  - Padding: 15px
+  - Tab width: 4 spaces
+  - Line numbers: Optional
+  - Syntax highlighting: Optional (if language specified)
+- **Typical Use Cases**: Code samples, technical documentation
+- **Preview**: Code-styled text
+- **Drag Behavior**: Creates code block with monospace
+- **Initialization**: Preserves whitespace, ready to type
+- **Special Feature**: Tab key inserts spaces instead of navigating
+
+#### **3.4 Inline Code**
+- **Icon Design**: Small "<>" in monospace
+- **Default Properties**:
+  - Font: Monospace
+  - Size: 0.9em (relative to surrounding text)
+  - Background: #F0F0F0
+  - Padding: 2px 4px
+  - Border radius: 3px
+- **Typical Use Cases**: Variable names, command references within text
+- **Preview**: Inline code styling
+- **Drag Behavior**: Creates inline span
+- **Initialization**: Ready for code text
+
+---
+
+### **Category 4: Artistic and Decorative Text**
+
+#### **4.1 Artistic Text (Single Line)**
+- **Icon Design**: Stylized "T" with gradient or effect
+- **Default Properties**:
+  - Size: 72px
+  - Weight: 800 (Extra Bold)
+  - Effects: Shadow, outline, or gradient ready to apply
+  - Transform: Individual letter manipulation enabled
+  - Auto-size: Width and height adjust to content
+- **Typical Use Cases**: Logos, headlines with effects, decorative titles
+- **Preview**: Bold artistic text with subtle effect
+- **Drag Behavior**: Creates text that doesn't wrap
+- **Initialization**: Text selected, effects panel auto-opens
+- **Special Features**: 
+  - Can convert to outlines/paths
+  - Per-character styling available
+  - Advanced effects like 3D, shadow, glow
+
+#### **4.2 Text on Path (Curved Text)**
+- **Icon Design**: "TEXT" following a curved arc
+- **Default Properties**:
+  - Path: Circular arc, 180° by default
+  - Text alignment: Center on path
+  - Baseline offset: 0px
+  - Path visible: No (guides only)
+  - Spacing: Auto
+- **Typical Use Cases**: Circular badges, logos, decorative layouts
+- **Preview**: Text following curve
+- **Drag Behavior**: Creates default arc path with text
+- **Initialization**: Text selected, path control handles visible
+- **Special Features**:
+  - Path shape editable (circle, wave, custom bezier)
+  - Text can be flipped to inside/outside of path
+  - Spacing between characters adjustable
+  - Path can be drawn first, then text applied
+
+#### **4.3 Vertical Text**
+- **Icon Design**: "T" rotated 90° with vertical character arrangement
+- **Default Properties**:
+  - Orientation: Top-to-bottom
+  - Writing mode: Vertical-rl (right-to-left) or vertical-lr
+  - Character rotation: Upright (not rotated with text)
+  - Size: 24px
+- **Typical Use Cases**: Asian language layouts, creative designs, spine text
+- **Preview**: Vertically stacked text
+- **Drag Behavior**: Creates vertical text box
+- **Initialization**: Cursor at top, types downward
+- **Special Features**:
+  - Can toggle between rotated horizontal and true vertical
+  - Character orientation independently controllable
+
+#### **4.4 Outlined Text**
+- **Icon Design**: Hollow letter outlines
+- **Default Properties**:
+  - Fill: None (transparent)
+  - Stroke: 2px solid black
+  - Size: 64px
+  - Weight: Bold (for better outlines)
+- **Typical Use Cases**: Decorative headlines, overlays on images
+- **Preview**: Outline-only text
+- **Drag Behavior**: Creates outlined text
+- **Initialization**: Text selected
+- **Special Features**: Independent stroke and fill color control
+
+#### **4.5 Text with Shadow**
+- **Icon Design**: "T" with drop shadow
+- **Default Properties**:
+  - Shadow offset: X: 2px, Y: 2px
+  - Shadow blur: 4px
+  - Shadow color: rgba(0,0,0,0.3)
+  - Shadow spread: 0px
+- **Typical Use Cases**: Headers with depth, text over images
+- **Preview**: Text with shadow effect
+- **Drag Behavior**: Creates text with shadow applied
+- **Initialization**: Shadow editable in effects panel
+
+#### **4.6 Gradient Text**
+- **Icon Design**: "T" filled with color gradient
+- **Default Properties**:
+  - Gradient type: Linear
+  - Angle: 90° (top to bottom)
+  - Colors: #FF6B6B to #4ECDC4 (example vibrant gradient)
+  - Stops: 2 (start and end)
+- **Typical Use Cases**: Modern headlines, brand text, eye-catching titles
+- **Preview**: Gradient-filled text
+- **Drag Behavior**: Creates text with gradient
+- **Initialization**: Gradient editor accessible
+- **Special Features**:
+  - Radial and angular gradients available
+  - Multiple color stops
+  - Gradient angle and position adjustable
+
+---
+
+### **Category 5: Dynamic and Variable Text**
+
+#### **5.1 Date/Time Variable**
+- **Icon Design**: Calendar icon with "T"
+- **Default Properties**:
+  - Format: MM/DD/YYYY (locale-specific)
+  - Source: Current date
+  - Auto-update: Yes
+  - Time zone: User's local
+- **Typical Use Cases**: Certificates, reports, dated documents
+- **Preview**: Shows current date
+- **Drag Behavior**: Inserts dynamic date field
+- **Initialization**: Format selector appears
+- **Special Features**:
+  - Multiple format options (long date, short date, custom)
+  - Can freeze to specific date
+  - Time inclusion optional
+
+#### **5.2 Page Number**
+- **Icon Design**: "#" symbol in frame
+- **Default Properties**:
+  - Format: Arabic numerals
+  - Position: Auto (respects insertion point)
+  - Starting number: 1
+  - Total pages: Optional ("Page X of Y")
+- **Typical Use Cases**: Multi-page documents, reports
+- **Preview**: "1" or "Page 1"
+- **Drag Behavior**: Inserts page number field
+- **Initialization**: Format options shown
+- **Special Features**:
+  - Roman numerals option
+  - Custom prefix/suffix
+  - Section-based numbering
+
+#### **5.3 Mail Merge Field**
+- **Icon Design**: "{{  }}" with field symbol
+- **Default Properties**:
+  - Field name: Placeholder
+  - Data source: Not connected
+  - Default value: "[Field Name]"
+  - Format: Plain text
+- **Typical Use Cases**: Personalized documents, bulk generation
+- **Preview**: Shows field name in brackets
+- **Drag Behavior**: Inserts merge field
+- **Initialization**: Field mapping dialog opens
+- **Special Features**:
+  - Data source connection
+  - Conditional formatting
+  - Fallback values
+
+#### **5.4 Auto-Number Field**
+- **Icon Design**: "1→2→3" with arrow
+- **Default Properties**:
+  - Starting value: 1
+  - Increment: 1
+  - Format: 1, 2, 3...
+  - Scope: Document-wide or section-specific
+- **Typical Use Cases**: Figure numbers, table references, sequential IDs
+- **Preview**: Current number in sequence
+- **Drag Behavior**: Inserts auto-number
+- **Initialization**: Configuration panel appears
+- **Special Features**:
+  - Multiple independent sequences
+  - Reference linking
+  - Custom formats with prefix/suffix
+
+#### **5.5 Formula/Calculated Field**
+- **Icon Design**: "Σ" (sigma) with "T"
+- **Default Properties**:
+  - Formula: Empty/custom
+  - Format: Number (2 decimals)
+  - Source: Other fields/variables
+  - Update: Auto on change
+- **Typical Use Cases**: Invoices, reports with calculations
+- **Preview**: "0.00" or calculated result
+- **Drag Behavior**: Opens formula editor
+- **Initialization**: Formula input active
+- **Special Features**:
+  - Mathematical operations
+  - Reference to other fields
+  - Conditional logic
+
+---
+
+### **Panel Footer Controls**
+- **Add Custom Text Style**: Button to save current formatting as reusable style
+- **Import Text Styles**: Load styles from other documents or templates
+- **Reset to Defaults**: Clear customizations, return to factory text elements
+
+---
+
+## 2. RIGHT SIDE PANEL PROPERTIES ORGANIZATION
+
+When any text element is selected, the right panel displays all editable properties organized into collapsible sections. Properties progress from basic (most frequently used) to advanced.
+
+### **Section 1: Content (Always Expanded by Default)**
+
+#### **Text Content Field**
+- **Control Type**: Multi-line textarea (for multi-line text) or single-line input (for headings)
+- **Functionality**: Direct text editing alternative to canvas editing
+- **Features**:
+  - Character count display (live)
+  - Word count display
+  - "Edit on Canvas" button to jump to inline editing
+  - Spell check toggle
+  - Find & replace button (opens modal)
+- **Validation**: No character limit unless specified by element type
+- **Dependencies**: Changes reflect immediately on canvas
+
+#### **Text Style Preset Dropdown**
+- **Control Type**: Dropdown menu with visual previews
+- **Options**: All saved text styles + "Create New Style" option
+- **Preview**: Each option shows font, size, and color preview
+- **Functionality**: Apply predefined style bundle
+- **Special**: "Update Style" button appears if current selection differs from saved style
+
+---
+
+### **Section 2: Typography (Collapsed by Default)**
+
+#### **Font Family**
+- **Control Type**: Searchable dropdown with font previews
+- **Organization**:
+  - Recently Used (top section)
+  - System Fonts
+  - Google Fonts (with search)
+  - Uploaded Custom Fonts
+  - Font categories: Serif, Sans-serif, Monospace, Handwriting, Display
+- **Preview**: Each font name rendered in its own typeface
+- **Default**: Arial/Helvetica (system default)
+- **Dependencies**: Affects available weights and styles
+- **Features**:
+  - Favorite fonts (star icon)
+  - Filter by language support
+  - Preview text customization
+- **Keyboard**: Up/down arrows to navigate, Enter to select
+
+#### **Font Size**
+- **Control Type**: Numeric input with slider (dual control)
+- **Input Field**: Direct number entry
+- **Slider**: 6px to 400px range
+- **Default**: Varies by element type (16px for body, 48px for H1)
+- **Unit**: px (pixels) - dropdown allows pt, em, rem
+- **Increment**: 1px with arrows, 0.1px with shift+arrow
+- **Validation**: 1px minimum, 1000px maximum
+- **Quick Sizes**: Buttons for common sizes (12, 14, 16, 18, 24, 36, 48, 72)
+- **Keyboard Shortcut**: Cmd/Ctrl + Shift + > to increase, < to decrease
+- **Dependencies**: Affects text box auto-sizing
+- **Visual Feedback**: Live preview on canvas while dragging slider
+
+#### **Font Weight**
+- **Control Type**: Dropdown or segmented slider (depending on font support)
+- **Options**: Thin (100), Extra Light (200), Light (300), Regular (400), Medium (500), Semi-Bold (600), Bold (700), Extra Bold (800), Black (900)
+- **Display**: Only shows weights available for selected font
+- **Default**: 400 (Regular) for body, 700 (Bold) for headings
+- **Keyboard Shortcut**: Cmd/Ctrl + B toggles bold (switches between 400 and 700)
+- **Fallback**: If selected weight unavailable, uses nearest available
+
+#### **Font Style**
+- **Control Type**: Toggle buttons in horizontal group
+- **Options**:
+  - **Italic** (I icon) - Toggle button
+  - **Underline** (U icon) - Toggle button with dropdown for style (single, double, dotted, dashed)
+  - **Strikethrough** (S icon) - Toggle button
+  - **Superscript** (x² icon) - Radio with subscript (mutually exclusive)
+  - **Subscript** (x₂ icon) - Radio with superscript
+  - **Small Caps** (TT icon) - Toggle button
+- **Default**: All off
+- **Keyboard Shortcuts**:
+  - Cmd/Ctrl + I: Italic
+  - Cmd/Ctrl + U: Underline
+  - Cmd/Ctrl + Shift + X: Strikethrough
+- **Dependencies**: Some effects incompatible with certain fonts
+
+#### **Text Transform**
+- **Control Type**: Dropdown
+- **Options**:
+  - None (original case)
+  - UPPERCASE
+  - lowercase
+  - Capitalize Each Word
+  - sWaP cAsE
+- **Default**: None
+- **Function**: Transforms display without changing actual text content
+- **Reversible**: Original text preserved
+
+#### **Letter Spacing (Tracking)**
+- **Control Type**: Numeric input + slider
+- **Range**: -200px to 200px
+- **Default**: 0px
+- **Unit**: px or em (toggleable)
+- **Precision**: 0.1px increments
+- **Visual**: Slider with detents at 0 (default)
+- **Common Presets**: Tight (-0.5px), Normal (0), Loose (0.5px), Very Loose (2px)
+- **Use Case**: Tightening for headlines, loosening for all-caps text
+
+#### **Line Height (Leading)**
+- **Control Type**: Numeric input + slider
+- **Range**: 0.5 to 5.0 (multiplier) or absolute pixel values
+- **Default**: 1.5 for body, 1.2 for headings
+- **Unit**: Relative (1.5) or absolute (24px) - toggleable
+- **Display**: Shows both multiplier and resulting pixel height
+- **Visual**: Live preview of line spacing on canvas
+- **Recommendation Indicator**: Green highlight when in optimal range (1.4-1.6 for body text)
+
+#### **Paragraph Spacing**
+- **Control Type**: Two numeric inputs (before and after)
+- **Before Paragraph**: 0-100px, default 0px
+- **After Paragraph**: 0-100px, default varies (16px for body)
+- **Unit**: px
+- **Quick Presets**: None, Tight (8px), Normal (16px), Loose (24px)
+- **Visual**: Shows spacing guides on canvas when selected
+
+---
+
+### **Section 3: Alignment and Position**
+
+#### **Horizontal Alignment**
+- **Control Type**: Four icon buttons in horizontal group
+- **Options**:
+  - Align Left (⫰ icon)
+  - Align Center (≡ icon centered)
+  - Align Right (⫸ icon)
+  - Justify (≡ icon spread)
+- **Default**: Left for LTR languages, Right for RTL
+- **Keyboard Shortcuts**:
+  - Cmd/Ctrl + Shift + L: Left
+  - Cmd/Ctrl + Shift + E: Center (E for equidistant)
+  - Cmd/Ctrl + Shift + R: Right
+  - Cmd/Ctrl + Shift + J: Justify
+- **Toggle Behavior**: Clicking active alignment has no effect
+- **Visual**: Text realigns immediately on canvas
+
+#### **Vertical Alignment** (for text boxes with fixed height)
+- **Control Type**: Three icon buttons
+- **Options**:
+  - Top (⫯ icon)
+  - Middle (≡ icon with center highlight)
+  - Bottom (⫱ icon)
+- **Default**: Top
+- **Availability**: Only enabled for text boxes with defined height (not auto-height)
+- **Use Case**: Centering text in fixed containers
+
+#### **Text Direction**
+- **Control Type**: Dropdown
+- **Options**:
+  - Left-to-Right (LTR)
+  - Right-to-Left (RTL)
+  - Vertical Right-to-Left
+  - Vertical Left-to-Right
+- **Default**: Based on document language setting
+- **Effect**: Changes reading direction and alignment defaults
+- **Dependencies**: Affects cursor movement and selection behavior
+
+#### **Indentation**
+- **Control Type**: Three numeric inputs
+- **Fields**:
+  - **Left Indent**: 0-500px, default 0
+  - **Right Indent**: 0-500px, default 0
+  - **First Line Indent**: -500 to 500px, default 0 (negative for hanging indent)
+- **Unit**: px (can switch to % of text box width)
+- **Visual**: Ruler appears on canvas showing indent markers (draggable)
+- **Presets**: Standard (0), Paragraph (20px first line), Hanging (-20px first line, 20px left)
+
+#### **Text Box Dimensions**
+- **Control Type**: Numeric inputs with lock aspect ratio toggle
+- **Fields**:
+  - **Width**: Auto or 1-10000px
+  - **Height**: Auto or 1-10000px
+  - **Lock icon**: Maintains aspect ratio when enabled
+- **Default**: Auto for both (expands with content)
+- **Auto Behaviors**:
+  - Auto Width: Expands horizontally, no wrapping (for single-line text)
+  - Auto Height: Wraps text, expands vertically
+  - Fixed Width + Auto Height: Most common for paragraphs
+- **Units**: px, %, vh/vw (viewport units)
+- **Constraints**: Respect canvas boundaries with warning if oversized
+
+#### **Position (X, Y Coordinates)**
+- **Control Type**: Two numeric inputs
+- **X Position**: 0 to canvas width
+- **Y Position**: 0 to canvas height
+- **Origin Point Selector**: 9-point grid showing which corner/edge/center is being positioned
+- **Unit**: px by default, mm/cm/in for print documents
+- **Precision**: 0.1px with decimal entry
+- **Keyboard**: Arrow keys nudge by 1px, Shift+arrow by 10px
+- **Smart Guides**: Enable snapping to guides, other elements, canvas edges
+
+---
+
+### **Section 4: Color and Effects**
+
+#### **Text Color**
+- **Control Type**: Color picker with multiple input methods
+- **Interface**:
+  - **Swatch**: Click to open full picker
+  - **Hex Input**: #000000 format
+  - **RGB Inputs**: 0-255 for each channel
+  - **HSL Inputs**: Alternative color model
+  - **Opacity Slider**: 0-100%
+- **Default**: #000000 (black)
+- **Features**:
+  - **Eyedropper Tool**: Sample color from anywhere on screen
+  - **Recent Colors**: Last 10 used colors
+  - **Document Colors**: Colors currently used in document
+  - **Saved Swatches**: User-saved color palette
+  - **Gradient Option**: Opens gradient editor for gradient text fills
+- **Accessibility**: Color contrast checker against background (WCAG AA/AAA indicators)
+- **Keyboard**: Tab through recent colors, Enter to select
+
+#### **Background Color** (text box fill)
+- **Control Type**: Color picker (identical to text color)
+- **Default**: None (transparent)
+- **Special Option**: "None" checkbox for transparent background
+- **Opacity**: Independent opacity control
+- **Use Case**: Highlighting text, creating text blocks with background
+
+#### **Stroke (Outline)**
+- **Control Type**: Expandable subsection
+- **Enable Toggle**: Checkbox to enable stroke
+- **Stroke Color**: Full color picker
+- **Stroke Width**: 0.1-50px slider + input
+- **Stroke Position**: 
+  - Outside (default)
+  - Center
+  - Inside
+- **Stroke Style**:
+  - Solid (default)
+  - Dashed (customizable dash pattern)
+  - Dotted
+- **Default**: Off (no stroke)
+- **Use Case**: Outlined text effects, emphasis
+
+#### **Shadow**
+- **Control Type**: Expandable subsection with enable toggle
+- **Properties**:
+  - **Offset X**: -100 to 100px, default 2px
+  - **Offset Y**: -100 to 100px, default 2px
+  - **Blur Radius**: 0-50px, default 4px
+  - **Spread**: -50 to 50px, default 0px
+  - **Color**: Full color picker with opacity
+  - **Shadow Type**: Drop shadow vs. Inner shadow toggle
+- **Presets**: Subtle, Medium, Dramatic (one-click application)
+- **Default**: Off
+- **Visual**: Live preview on canvas while adjusting
+- **Multiple Shadows**: "+" button to add additional shadow layers
+
+#### **Text Effects** (Advanced)
+- **Control Type**: Expandable section with effect library
+- **Available Effects**:
+  - **3D Extrusion**: Depth, angle, lighting
+  - **Neon Glow**: Glow color, intensity, spread
+  - **Emboss**: Depth, direction
+  - **Outline**: Multiple outline layers
+  - **Pattern Fill**: Texture/pattern overlay
+  - **Gradient Fill**: Full gradient editor
+- **Apply**: Dropdown or modal for complex effects
+- **Stack**: Multiple effects can be layered
+- **Order**: Drag to reorder effect layers
+- **Default**: None
+
+---
+
+### **Section 5: List Properties** (only visible for list elements)
+
+#### **List Type**
+- **Control Type**: Dropdown with visual previews
+- **Options**:
+  - Bulleted (various bullet styles)
+  - Numbered (various number formats)
+  - Lettered
+  - Roman numerals
+  - Custom character
+  - Checklist
+- **Default**: Based on element type selected from left panel
+- **Change**: Converts existing list to new type
+
+#### **Bullet/Number Style**
+- **Control Type**: Visual style picker
+- **For Bullets**:
+  - Solid circle •
+  - Empty circle ○
+  - Solid square ▪
+  - Empty square □
+  - Diamond ◆
+  - Arrow →
+  - Checkmark ✓
+  - Custom character (text input)
+  - Custom image (upload small icon)
+- **For Numbers**:
+  - 1. 2. 3.
+  - 1) 2) 3)
+  - (1) (2) (3)
+  - 01. 02. 03. (zero-padded)
+- **For Letters**:
+  - A. B. C.
+  - a. b. c.
+  - (A) (B) (C)
+  - (a) (b) (c)
+- **Size**: Bullet/number size relative to text (50-150%, default 100%)
+- **Color**: Independent color from text (inherits by default)
+
+#### **List Indentation**
+- **Control Type**: Numeric input
+- **Hanging Indent**: Distance from bullet to text start
+- **Default**: 20px
+- **Range**: 0-200px
+- **Nested List Indent**: Additional indent per level (default 30px)
+
+#### **List Spacing**
+- **Control Type**: Numeric input
+- **Between Items**: Vertical space between list items
+- **Default**: 8px
+- **Range**: 0-50px
+- **Before List**: Space before first item
+- **After List**: Space after last item
+
+#### **Start Number** (for numbered lists)
+- **Control Type**: Numeric input
+- **Default**: 1
+- **Range**: Any integer (including negative)
+- **Use Case**: Continuing lists, custom sequences
+
+#### **Nested List Behavior**
+- **Control Type**: Checkbox options
+- **Auto-Indent on Tab**: Increase indent level with Tab key
+- **Auto-Dedent on Shift+Tab**: Decrease indent level
+- **Auto-Number Nested**: Automatically switch to different number style for sub-levels
+- **Default Nesting Pattern**: Define primary, secondary, tertiary list styles
+
+---
+
+### **Section 6: Advanced Typography**
+
+#### **OpenType Features** (if font supports)
+- **Control Type**: Checklist of available features
+- **Common Features**:
+  - Ligatures (Standard, Discretionary, Contextual)
+  - Stylistic Alternates (multiple sets)
+  - Swashes
+  - Fractions (diagonal vs. stacked)
+  - Ordinals (1st, 2nd, 3rd)
+  - Small Caps (true small caps vs. generated)
+  - Tabular/Proportional Numbers
+  - Slashed Zero
+- **Availability**: Dynamically shown based on selected font
+- **Preview**: Shows before/after for each feature
+- **Default**: Standard ligatures on, others off
+
+#### **Hyphenation**
+- **Control Type**: Toggle + advanced options
+- **Enable Hyphenation**: Checkbox
+- **Language**: Dropdown for hyphenation dictionary
+- **Hyphenation Zone**: Min space before hyphenating
+- **Min Letters Before**: Minimum characters before hyphen (default 2)
+- **Min Letters After**: Minimum characters after hyphen (default 3)
+- **Max Consecutive Hyphens**: Limit stacking (default 2)
+- **Default**: Off for headings, optional for body
+
+#### **Kerning**
+- **Control Type**: Dropdown
+- **Options**:
+  - Metrics (use font's built-in kerning)
+  - Optical (algorithm-generated)
+  - Manual (custom adjustments)
+  - None
+- **Default**: Metrics
+- **Manual Kerning**: Click between characters to adjust spacing (appears as numeric input)
+
+#### **Baseline Shift**
+- **Control Type**: Numeric input + slider
+- **Range**: -100 to 100px
+- **Default**: 0px
+- **Use Case**: Fine-tuning vertical position of selected characters
+- **Affects**: Character-level vertical offset without changing line height
+
+#### **Character Rotation**
+- **Control Type**: Numeric input (degrees)
+- **Range**: 0-360°
+- **Default**: 0°
+- **Use Case**: Rotating individual characters within text
+- **Visual**: Rotation handle on selected character
+
+---
+
+### **Section 7: Text Box Behavior**
+
+#### **Overflow Handling**
+- **Control Type**: Dropdown
+- **Options**:
+  - **Visible**: Text extends beyond box (no clipping)
+  - **Hidden**: Clip text at box boundary
+  - **Scroll**: Add scrollbar (for interactive exports)
+  - **Auto-Expand**: Resize box to fit content
+  - **Link to Next Box**: Thread text to another text box (for magazine layouts)
+- **Default**: Auto-Expand for most text types
+- **Visual Indicator**: Red "+" icon when text overflows in Hidden mode
+
+#### **Text Wrap** (for other elements)
+- **Control Type**: Toggle + options
+- **Enable Wrap Around**: Makes other elements flow around this text
+- **Wrap Type**:
+  - Tight (follows text outline)
+  - Square (rectangular boundary)
+  - None (overlap allowed)
+- **Margin**: Space between text and wrapped elements (0-50px)
+
+#### **Padding** (internal text box spacing)
+- **Control Type**: Four-sided numeric input (unified or individual)
+- **Sides**: Top, Right, Bottom, Left
+- **Default**: 0px for artistic text, 10px for text boxes
+- **Range**: 0-100px
+- **Lock Toggle**: Apply same value to all sides
+
+#### **Border**
+- **Control Type**: Border editor
+- **Enable Toggle**: Checkbox
+- **Border Width**: 0-20px
+- **Border Style**: Solid, dashed, dotted, double
+- **Border Color**: Color picker
+- **Border Radius**: 0-50px (rounded corners)
+- **Individual Sides**: Toggle which sides show border
+
+---
+
+### **Section 8: Interactivity** (for interactive exports)
+
+#### **Hyperlink**
+- **Control Type**: Text input + type selector
+- **Link Types**:
+  - URL (http://)
+  - Email (mailto:)
+  - Phone (tel:)
+  - Anchor (within document)
+  - File download
+- **Target**: Same tab, new tab, modal
+- **Styling**: Underline color, hover state
+- **Tooltip**: Custom hover tooltip text
+
+#### **Click Action**
+- **Control Type**: Dropdown
+- **Actions**:
+  - None
+  - Navigate to URL
+  - Trigger animation
+  - Show/hide element
+  - Submit form
+  - Custom JavaScript
+- **Parameters**: Context-specific fields based on action
+
+#### **Hover State**
+- **Control Type**: Duplicate property set for hover
+- **Override**: Color, background, shadow on hover
+- **Transition**: Duration and easing for hover animation
+
+---
+
+### **Section 9: Accessibility**
+
+#### **Alt Text**
+- **Control Type**: Textarea
+- **Purpose**: Description for screen readers
+- **Character Limit**: 250 characters recommended
+- **Auto-Suggest**: AI-powered description suggestion for text content
+- **Required Indicator**: Flagged if missing for headings/important text
+
+#### **ARIA Role**
+- **Control Type**: Dropdown
+- **Options**: heading, paragraph, list, listitem, etc.
+- **Default**: Auto-detected from element type
+- **Override**: For semantic corrections
+
+#### **Reading Order**
+- **Control Type**: Numeric input
+- **Purpose**: Tab index for keyboard navigation
+- **Default**: Auto (based on visual order)
+- **Manual**: Specify custom sequence
+
+#### **Language**
+- **Control Type**: Dropdown with search
+- **Purpose**: Set lang attribute for screen readers
+- **Options**: All ISO language codes
+- **Default**: Document language
+- **Inheritance**: Inherits unless overridden
+
+---
+
+### **Panel Footer Actions**
+- **Copy Style**: Copy all text formatting to clipboard
+- **Paste Style**: Apply copied formatting to selection
+- **Reset to Default**: Return to element's default properties
+- **Save as Style**: Add current formatting to styles library
+- **Convert to**: Shape (outlines), Image (rasterize), Path (vectorize)
+
+---
+
+## 3. CONTEXTUAL RIBBON DYNAMIC CONTROLS
+
+The contextual ribbon appears directly above the canvas when any text element is selected, providing quick access to the most frequently used text formatting tools. It adapts based on the text editing state.
+
+### **Ribbon States**
+
+#### **State 1: Text Element Selected (Not Editing)**
+Shows high-level controls for the entire text element
+
+#### **State 2: Text Editing Mode (Cursor Active)**
+Shows character and paragraph formatting for selected text or cursor position
+
+#### **State 3: Multi-Element Selection (Multiple Text Elements)**
+Shows common properties with "Mixed" indicators where values differ
+
+---
+
+### **Ribbon Layout (Left to Right)**
+
+#### **Group 1: Text Style Quick Access**
+
+**Style Dropdown** (Visual picker)
+- Shows current style name or "Mixed" if multiple
+- Thumbnail previews of all saved styles
+- "+" button to create new style from selection
+- Hover preview: Temporarily applies style to see effect
+- Width: 150px for style names
+
+**Font Family Dropdown** (Searchable)
+- Currently selected font or "Mixed"
+- Recent fonts at top
+- Search filters as you type
+- Font preview in dropdown options
+- Width: 180px
+- Keyboard: Start typing to filter
+
+**Font Size Combo** (Dropdown + Input)
+- Numeric input: Direct entry
+- Dropdown: Common sizes (8, 9, 10, 11, 12, 14, 16, 18, 20, 24, 28, 36, 48, 64, 72, 96)
+- Up/down arrows to increment by 1 (Shift for 10)
+- Width: 80px
+
+#### **Group 2: Font Styling** (Toggle Buttons)
+
+**Bold** (B icon)
+- Toggle button with active state
+- Keyboard: Cmd/Ctrl + B
+- Tooltip: "Bold (⌘B)"
+
+**Italic** (I icon)
+- Toggle button
+- Keyboard: Cmd/Ctrl + I
+- Tooltip: "Italic (⌘I)"
+
+**Underline** (U icon)
+- Toggle button with dropdown for underline styles
+- Primary action: Single underline
+- Dropdown: Double, Dotted, Dashed, Wavy
+- Keyboard: Cmd/Ctrl + U
+- Tooltip: "Underline (⌘U)"
+
+**Strikethrough** (S with line through)
+- Toggle button
+- Keyboard: Cmd/Ctrl + Shift + X
+- Tooltip: "Strikethrough (⌘⇧X)"
+
+**More Text Effects** (sparkle icon with dropdown)
+- Dropdown reveals: Superscript, Subscript, Small Caps, All Caps
+- Each is a toggle option
+- Keyboard shortcuts shown in dropdown
+
+---
+
+#### **Group 3: Color** (separated by subtle divider)
+
+**Text Color Button**
+- Displays current color as swatch (bottom bar under "A" icon)
+- Click: Opens color picker popover
+- Dropdown arrow: Recent/document colors
+- Eyedropper tool accessible from picker
+- Width: 40px
+
+**Highlight Color Button**
+- Background color for text selection
+- "Highlighter" icon with color swatch
+- Click: Applies last used color
+- Dropdown: Color options + "No Highlight"
+- Width: 40px
+
+**Gradient Text Toggle**
+- Icon: "A" with gradient fill
+- Toggle: Converts solid color to gradient
+- Opens gradient editor in right panel when activated
+
+---
+
+#### **Group 4: Alignment** (Horizontal button group)
+
+**Align Left** (⫰)
+- Toggle button in group
+- Keyboard: Cmd/Ctrl + Shift + L
+- Tooltip: "Align Left (⌘⇧L)"
+
+**Align Center** (≡)
+- Toggle button
+- Keyboard: Cmd/Ctrl + Shift + E
+- Tooltip: "Center (⌘⇧E)"
+
+**Align Right** (⫸)
+- Toggle button
+- Keyboard: Cmd/Ctrl + Shift + R
+- Tooltip: "Align Right (⌘⇧R)"
+
+**Justify** (≡ spread)
+- Toggle button
+- Keyboard: Cmd/Ctrl + Shift + J
+- Tooltip: "Justify (⌘⇧J)"
+
+---
+
+#### **Group 5: Lists**
+
+**Bulleted List** (• icon)
+- Toggle button with dropdown
+- Primary: Apply default bullet
+- Dropdown: Bullet style picker (visual)
+- Active state when cursor in bulleted list
+- Keyboard: Cmd/Ctrl + Shift + 8
+
+**Numbered List** (1. 2. 3. icon)
+- Toggle button with dropdown
+- Primary: Apply default numbering
+- Dropdown: Number format picker
+- Active state when cursor in numbered list
+- Keyboard: Cmd/Ctrl + Shift + 7
+
+**Checklist** (☐ icon)
+- Toggle button
+- Converts list to checklist or applies checklist
+- Interactive checkboxes in output
+
+**Increase Indent** (→ icon)
+- Button (not toggle)
+- Increases indent level or creates nested list
+- Keyboard: Tab (in lists)
+
+**Decrease Indent** (← icon)
+- Button
+- Decreases indent level or promotes list item
+- Keyboard: Shift + Tab (in lists)
+
+---
+
+#### **Group 6: Spacing**
+
+**Line Height Dropdown**
+- Shows current line height value (e.g., "1.5")
+- Dropdown options: 1.0, 1.15, 1.5, 2.0, 2.5, Custom
+- Custom opens numeric input
+- Visual preview in dropdown showing line spacing
+
+**Letter Spacing Button** (↔ icon)
+- Opens popover with slider control
+- Preset options: Tight, Normal, Loose
+- Numeric input for custom values
+- Live preview while adjusting
+
+**Paragraph Spacing Button** (↕ icon between lines)
+- Opens popover with Before/After inputs
+- Presets: None, Tight, Normal, Loose
+- Quick apply buttons
+
+---
+
+#### **Group 7: Special Features** (Right side of ribbon)
+
+**Insert Link** (chain link icon)
+- Button with dropdown
+- Primary: Opens link dialog
+- Dropdown: Edit link, Remove link (when link active)
+- Keyboard: Cmd/Ctrl + K
+- Active state when cursor in link
+
+**Text Effects Library** (wand icon)
+- Opens effects panel
+- Shows currently applied effects with count badge
+- One-click access to shadows, outlines, 3D
+
+**Convert Text** (transform icon with dropdown)
+- Dropdown menu:
+  - Convert to Path/Outlines
+  - Rasterize to Image
+  - Create Curved Text
+  - Make Vertical
+- Irreversible actions show warning
+
+**Find & Replace** (magnifying glass icon)
+- Opens find/replace modal
+- Keyboard: Cmd/Ctrl + F
+- Badge shows number of matches when active
+
+**Spell Check Toggle** (checkmark ABC icon)
+- Toggle button
+- Shows active wavy underlines when enabled
+- Badge shows error count if any
+
+---
+
+### **Ribbon Responsive Behavior**
+
+**Wide Screen (>1400px)**
+- All controls visible with text labels where helpful
+- Generous spacing between groups
+
+**Medium Screen (1000-1400px)**
+- Icon-only buttons (tooltips provide labels)
+- Groups maintain separation
+- Less common tools move to overflow menu (⋮)
+
+**Narrow Screen (<1000px)**
+- Only essential tools visible: Font, Size, Bold, Italic, Alignment
+- "More" dropdown (⋮) contains all other tools organized by category
+- Ribbon can collapse entirely to dropdown menu
+
+---
+
+### **Contextual Ribbon: Edit Mode Variations**
+
+#### **When Editing Artistic Text**
+Additional controls appear:
+- **Character Spacing**: Fine control between individual letters
+- **Rotate Characters**: Rotate selected letters
+- **Path Text**: Convert to path text
+- **Letter Effects**: Apply per-character effects
+
+#### **When Editing Text on Path**
+Additional controls:
+- **Flip Path**: Mirror text to inside/outside of path
+- **Path Alignment**: Start, Center, End position on path
+- **Edit Path**: Switch to path editing mode
+- **Detach from Path**: Convert back to regular text
+
+#### **When Editing Lists**
+Additional controls:
+- **Restart Numbering**: Reset count to 1
+- **Continue Numbering**: Continue from previous list
+- **List Level**: Visual indent level selector
+
+#### **When Editing Quotes**
+Additional controls:
+- **Quote Style**: Switch block quote, pull quote, inline
+- **Citation**: Add attribution/source line
+- **Quote Marks**: Toggle decorative quotation marks
+
+---
+
+### **Ribbon Tooltips**
+
+Every ribbon button shows a tooltip on hover (500ms delay) containing:
+- **Action Name**: Clear description (e.g., "Make Bold")
+- **Keyboard Shortcut**: If available (e.g., "⌘B")
+- **Current Value**: For dropdowns/toggles (e.g., "Currently: Regular")
+- **Help Hint**: Brief usage tip for less obvious tools
+
+Tooltips position intelligently:
+- Above button by default
+- Below if near top of screen
+- No overlap with other UI elements
+- Dismiss on click or movement
+
+---
+
+## 4. MOUSE INTERACTION PATTERNS
+
+Comprehensive documentation of every mouse-based interaction with text elements.
+
+### **Selection Behaviors**
+
+#### **Single Click: Unselected Text Element**
+**Action**: Click anywhere on text element
+**Result**:
+- Text element becomes selected
+- Bounding box appears with 8 resize handles
+- Rotation handle appears above bounding box
+- Right properties panel populates with text properties
+- Contextual ribbon appears with text tools
+- Smart alignment guides activate
+- Element highlights with selection color (default blue)
+- Other selected elements deselect (unless Shift held)
+
+**Visual Feedback**:
+- Bounding box: 1px solid blue line
+- Handles: 8px × 8px white squares with blue border
+- Rotation handle: Circular icon 20px above top-center
+- Cursor: Default arrow (not text cursor yet)
+
+**Edge Cases**:
+- Click on transparent part of text box: Selects text box
+- Click directly on character: Still selects element (doesn't enter edit mode)
+- Click on locked element: Shows "locked" indicator, no selection
+
+---
+
+#### **Single Click: Already Selected Text Element**
+**Action**: Click on already-selected text element
+**Result** (depends on text type):
+
+**For Editable Text Boxes** (paragraphs, body text):
+- Enters text editing mode
+- Text cursor (I-beam) appears at click position
+- Bounding box changes to edit-mode styling (lighter color)
+- Selection handles hidden or dimmed
+- Contextual ribbon switches to editing controls
+- Character-level formatting becomes available
+- Click position determines cursor placement between characters
+
+**For Artistic Text** (single-line, effects):
+- Enters inline editing mode
+- Cursor appears at click position
+- Can edit text content directly
+- Effects remain visible during editing
+
+**For Special Text** (dates, page numbers, merge fields):
+- May show field editor or
+- Enter text edit mode with field highlighted
+- Depends on field type
+
+**Visual Feedback**:
+- Blinking text cursor (1px line, 500ms blink rate)
+- Bounding box color changes (blue → light gray)
+- Text becomes editable inline
+
+---
+
+#### **Double Click: Unselected Text Element**
+**Action**: Double-click on text element
+**Result**:
+- Skips selection state, goes directly to editing mode
+- Text cursor positioned at double-click location
+- Additionally: Selects the word at click position (word selection)
+- Word boundaries determined by spaces and punctuation
+- Triple-click for paragraph selection
+
+**Use Case**: Fast path to editing without intermediate selection step
+
+---
+
+#### **Triple Click: Text Element**
+**Action**: Triple-click on text
+**Result**:
+- Enters edit mode AND
+- Selects entire paragraph (or entire text for single-line elements)
+- Allows immediate replacement or formatting of all text
+- Quadruple-click selects entire text element content
+
+**Visual**: Entire paragraph highlighted with selection color
+
+---
+
+#### **Click and Drag: Creating New Text Element**
+**Action**: Select text tool from left panel, then click and drag on canvas
+**Result**:
+- First click sets top-left corner anchor point
+- Drag defines width and height of text box
+- Live preview shows rectangle outline as you drag
+- Dimensions tooltip follows cursor (e.g., "450 × 200 px")
+- Snap guides appear at alignment points
+- Release completes text box creation
+- Automatically enters edit mode with cursor ready
+- Default placeholder text may appear (e.g., "Type something")
+
+**Visual Feedback**:
+- Dashed rectangle outline during drag
+- Dimensions tooltip in corner
+- Snap lines when near guides/elements
+- Cursor shows text tool icon while dragging
+
+**Constraints**:
+- Minimum size: 20px × 20px (prevents accidental tiny boxes)
+- Respects canvas boundaries (can't drag beyond)
+- Grid snapping if enabled (to 10px or custom grid)
+- Aspect ratio lock: Hold Shift for square text box
+
+**Single Click** (not drag):
+- Creates auto-width text element at click point
+- Expands as you type (no predefined width)
+- Use case: Single-line headlines, labels
+
+---
+
+#### **Shift + Click: Multi-Selection**
+**Action**: Hold Shift, click on additional text elements
+**Result**:
+- Adds clicked element to current selection
+- All selected elements show bounding boxes
+- Shared properties appear in right panel (with "Mixed" for different values)
+- If clicking already-selected element: Deselects it (toggle behavior)
+- Selection count shown in status bar
+
+**Multi-Selection Bounding Box**:
+- Group bounding box encompasses all selected elements
+- Single set of transform handles for the group
+- Transformations apply to all elements simultaneously
+
+**Visual**: Each element outlined, group bounding box in different color (e.g., purple)
+
+---
+
+#### **Command/Ctrl + Click: Add/Remove from Selection**
+**Action**: Cmd/Ctrl + Click on element
+**Result**: Same as Shift+Click (platform-specific equivalent)
+
+**Additional Behavior**:
+- Click on grouped element: Selects individual element within group
+- Cmd/Ctrl + Click again: Selects parent group
+- Progressive selection drilling (element → group → parent group)
+
+---
+
+#### **Alt/Option + Click: Select Through Layers**
+**Action**: Alt + Click on overlapping text elements
+**Result**:
+- Cycles through stacked elements at click position
+- Selects next element in Z-order (layering)
+- Visual indication of available elements (temporary outline flashes)
+- Tooltip shows element name during cycling
+- Use case: Selecting hidden or obscured text
+
+**Visual**: Brief highlight (100ms) on element about to be selected
+
+---
+
+### **Dragging and Transformation**
+
+#### **Drag Selected Text Element: Move**
+**Action**: Click and drag on selected text element (not on handles)
+**Result**:
+- Element moves with cursor
+- Position updates in real-time
+- Coordinate tooltip shows X, Y position
+- Smart guides appear when aligning with:
+  - Other elements' edges
+  - Canvas center
+  - Gridlines
+  - Custom guides
+- Snap behavior: Elements snap to guides (8px tolerance)
+- Magnetic snap indicator (visual and optional haptic feedback)
+
+**Visual Feedback**:
+- Semi-transparent ghost shows original position
+- Smart guide lines (magenta) appear at alignment points
+- Distance measurements shown between nearby elements
+- Cursor changes to four-directional move arrow
+
+**Modifiers**:
+- **Shift**: Constrains movement to horizontal or vertical (whichever direction moved first)
+- **Alt/Option**: Duplicates while dragging (creates copy, original stays)
+- **Cmd/Ctrl**: Temporarily disables snapping for precise placement
+
+**Multi-Element Drag**:
+- All selected elements move together
+- Relative positions maintained
+- Snap guides based on group bounding box
+
+---
+
+#### **Corner Handle Drag: Proportional Resize**
+**Action**: Drag any corner handle
+**Result**:
+- Resizes text box proportionally from opposite corner (anchor point)
+- Maintains aspect ratio
+- Text reflows within new dimensions
+- Dimension tooltip shows width × height
+- Text may change line breaks as width adjusts
+
+**Visual**:
+- Opposite corner stays fixed (anchor point indicator)
+- Resize preview shows new boundary
+- Text reflows in real-time (performance permitting)
+
+**Modifiers**:
+- **Shift**: Maintains aspect ratio more strictly (removes diagonal drift)
+- **Alt/Option**: Resizes from center instead of opposite corner
+- **Cmd/Ctrl**: Free resize (doesn't maintain aspect ratio) - can distort
+
+**Font Scaling**:
+- By default: Text reflows, font size unchanged
+- With Cmd+Shift held: Scales font size proportionally (maintains visual appearance)
+- Preference setting to change default behavior
+
+---
+
+#### **Side Handle Drag: Single-Dimension Resize**
+**Action**: Drag top, bottom, left, or right handle
+**Result**:
+- Stretches text box in one direction only
+- Opposite side stays fixed
+- **Horizontal handles** (left/right): Changes width, text reflows
+- **Vertical handles** (top/bottom): Changes height, may clip or add space
+
+**Visual**: Dimension guide shows changing measurement
+
+**Text Behavior**:
+- Width change: Reflows text, adjusts line breaks
+- Height change with overflow-hidden: May clip text
+- Height change with auto-height: Resizes to fit content
+
+**Modifiers**:
+- **Shift**: Maintains opposite side at fixed position (default behavior)
+- **Alt/Option**: Resizes symmetrically from center
+
+---
+
+#### **Rotation Handle Drag: Rotate**
+**Action**: Drag circular rotation handle above element
+**Result**:
+- Text element rotates around its center point (or custom pivot)
+- Rotation angle shown in tooltip (e.g., "45°")
+- Snaps to 15° increments (customizable)
+- Bounding box rotates with text
+- Text content rotates as visual element
+
+**Visual Feedback**:
+- Rotation angle arc visualization
+- Angle measurement tooltip
+- Ghost outline at 0° (original orientation)
+- Snap indicators at 45°, 90°, 180°, 270°
+
+**Modifiers**:
+- **Shift**: Snaps to 15° increments (or 45° if preference set)
+- **Cmd/Ctrl**: Free rotation (no snapping)
+- **Alt/Option**: Duplicates and rotates copy
+
+**Pivot Point**:
+- Default: Center of text element
+- Click and drag pivot point indicator to reposition (appears during rotation)
+- Common positions: 9-point grid on bounding box
+
+---
+
+#### **Special Handle: Rounded Corners** (for text boxes with borders)
+**Action**: Drag diamond-shaped handle that appears on text boxes with borders
+**Result**:
+- Adjusts corner radius of text box
+- All corners adjust uniformly by default
+- Radius value shown in tooltip (e.g., "12px")
+
+**Modifiers**:
+- **Alt/Option**: Adjust only the closest corner (individual corner control)
+- **Shift**: Snap to common values (0px, 5px, 10px, 15px, 20px)
+
+---
+
+#### **Special Handle: Artistic Text Letter Spacing**
+**Action**: For artistic text, horizontal handle appears between letters
+**Result**:
+- Adjusts spacing between specific letter pairs (kerning)
+- Manual kerning override
+- Value in em units or pixels shown
+
+---
+
+#### **Special Handle: Text on Path Controls**
+**Action**: Text on curved path shows path control handles
+**Result**:
+- Bezier curve handles to reshape text path
+- Drag handle to adjust curve
+- Text follows path in real-time
+- Additional handle to slide text along path (start position)
+
+---
+
+### **Right-Click Context Menu**
+
+#### **Right-Click on Unselected Text Element**
+**Action**: Right-click on text element
+**Result**: Opens context menu with text-specific options
+
+**Menu Structure**:
+
+**Editing Section**:
+- **Edit Text** (Cmd+E): Enters edit mode
+- **Select All Text** (Cmd+A in edit mode): Selects all text content
+- **Find and Replace...** (Cmd+F): Opens find/replace modal
+
+**Clipboard Section**:
+- **Cut** (Cmd+X)
+- **Copy** (Cmd+C)
+- **Paste** (Cmd+V)
+- **Duplicate** (Cmd+D): Creates copy offset 10px down-right
+- **Copy Style**: Copies formatting only
+- **Paste Style**: Applies copied formatting
+
+**Arrangement Section**:
+- **Bring to Front** (Cmd+Shift+])
+- **Bring Forward** (Cmd+])
+- **Send Backward** (Cmd+[)
+- **Send to Back** (Cmd+Shift+[)
+- **Align** →Submenu: Left, Center, Right, Top, Middle, Bottom, Distribute
+
+**Grouping Section**:
+- **Group** (Cmd+G): Groups with other selected elements
+- **Ungroup** (Cmd+Shift+G): If part of group
+- **Select Group**: Selects parent group
+
+**Transform Section**:
+- **Flip Horizontal**
+- **Flip Vertical**
+- **Rotate** → Submenu: 90° CW, 90° CCW, 180°, Custom angle...
+
+**Conversion Section**:
+- **Convert to** → Submenu:
+  - **Outline/Path**: Converts text to vector paths (editable shapes)
+  - **Image**: Rasterizes text
+  - **Curved Text**: Converts to text-on-path
+  - **Vertical Text**: Changes orientation
+
+**Text-Specific Section**:
+- **Text Properties...**: Opens advanced text properties modal
+- **Character Styles** → Shows saved styles, apply to selection
+- **Spell Check**: Toggle/configure spell checking
+- **Hyphenation**: Toggle hyphenation
+- **Show Invisibles**: Shows spaces, tabs, line breaks
+
+**Lock/Hide Section**:
+- **Lock** (Cmd+L): Prevents moving/editing
+- **Unlock** (Cmd+Shift+L)
+- **Hide** (Cmd+H): Hides from canvas
+- **Show All Hidden**: Reveals hidden elements
+
+**Delete Section**:
+- **Delete** (Delete/Backspace): Removes element
+
+**Context-Specific Items**:
+- Items appear/disappear based on text type
+- For links: "Edit Link", "Remove Link", "Open Link"
+- For mail merge: "Edit Field", "Preview Data"
+- For locked elements: Most options grayed out
+
+---
+
+### **Hover Interactions**
+
+#### **Hover Over Text Element (Unselected)**
+**Action**: Move cursor over text element without clicking
+**Result**:
+- Subtle highlight or outline appears (e.g., 1px light blue border)
+- Cursor changes to indicate interactivity:
+  - Default arrow: Can select
+  - Hand cursor: If element is a link
+- Tooltip appears after 1000ms delay showing:
+  - Element type (e.g., "Heading 1")
+  - First few words of content
+  - Layer name if custom
+- Quick action buttons may appear in corner:
+  - Edit icon
+  - Duplicate icon
+  - Delete icon
+
+**Visual**: Non-intrusive, distinguishes from selected state
+
+---
+
+#### **Hover Over Selected Text Element**
+**Action**: Hover over selected text (not in edit mode)
+**Result**:
+- Cursor indicates possible actions:
+  - Four-direction arrow: On element body (can move)
+  - Diagonal resize arrows: On corner handles
+  - Horizontal/vertical arrows: On side handles
+  - Circular arrow: On rotation handle
+- Handle highlights on hover (slightly larger, color change)
+- Tooltip shows handle function (e.g., "Drag to resize")
+
+---
+
+#### **Hover Over Text in Edit Mode**
+**Action**: Hover over characters while in edit mode
+**Result**:
+- Cursor changes to I-beam text cursor
+- No selection until click-and-drag
+- Spelling errors show wavy underline (red)
+- Hover over misspelling shows suggestion tooltip
+
+---
+
+#### **Hover Over Handles**
+**Action**: Hover over any transformation handle
+**Result**:
+- Handle highlights (increases size by 20%, brighter color)
+- Cursor changes to appropriate directional arrow
+- Tooltip after 500ms: "Resize width", "Rotate", etc.
+- Visual affordance clear before clicking
+
+---
+
+### **Specialized Interactions**
+
+#### **Double-Click on Handle: Reset**
+**Action**: Double-click on resize handle
+**Result**:
+- Resets that dimension to auto/default
+- E.g., double-click right handle → auto-width based on content
+- Helpful for removing manual sizing
+
+---
+
+#### **Drag with Middle Mouse Button: Pan Canvas**
+**Action**: Middle-click drag anywhere on canvas
+**Result**:
+- Pans entire canvas view
+- Doesn't interfere with element selection/editing
+- Cursor shows hand icon
+- Standard in most design tools
+
+---
+
+#### **Scroll Wheel Over Text**
+**Action**: Scroll wheel while hovering text element
+**Result** (depends on mode):
+- **Not selected**: Scrolls canvas
+- **Selected but not editing**: Zooms canvas (Cmd/Ctrl modifies)
+- **In edit mode**: Scrolls text content if overflow
+
+**Modifiers**:
+- **Cmd/Ctrl + Scroll**: Zoom in/out
+- **Shift + Scroll**: Horizontal scroll
+
+---
+
+#### **Drag & Drop from Left Panel**
+**Action**: Drag text element type from left panel to canvas
+**Result**:
+- Ghost icon follows cursor during drag
+- Drop location indicator (crosshair or outline)
+- On release: Creates text element at drop position
+- If dropped on existing text: May create nested element or replace (based on settings)
+- Smart guides assist with placement
+
+**Visual**: Semi-transparent preview of text element while dragging
+
+---
+
+#### **Text Selection Dragging (in Edit Mode)**
+**Action**: Click and drag across characters in edit mode
+**Result**:
+- Highlights text as you drag
+- Selection extends character by character
+- Double-click-and-drag: Selects word by word
+- Triple-click-and-drag: Selects paragraph by paragraph
+- Selection handles appear at start/end (for mobile/touch, but can appear on desktop too)
+
+**Visual**: Highlighted text with selection color background (default light blue)
+
+**Drag selected text**:
+- Click on highlighted text and drag: Moves text to new position (cut and paste)
+- With Cmd/Ctrl held: Copies text to new position
+
+---
+
+## 5. KEYBOARD SHORTCUT COMPREHENSIVE MAPPING
+
+Every text operation accessible via keyboard for maximum efficiency. Organized by functional category.
+
+### **Text Element Creation**
+
+| Shortcut | Action | Description |
+|----------|--------|-------------|
+| **T** | Activate Text Tool | Cursor changes to text creation mode; click to place |
+| **T, then click** | Create Auto-Width Text | Single-line text that expands with typing |
+| **T, then click-drag** | Create Text Box | Define width/height, multi-line text box |
+| **Cmd+Shift+T** / **Ctrl+Shift+T** | Insert Text Element at Center | Creates text box at canvas center, enters edit mode |
+| **H** | Create Heading | Quick-create heading at canvas center (cycles H1-H6 with repeated presses) |
+| **Cmd+L** / **Ctrl+L** | Create Bulleted List | New bulleted list element at center |
+| **Cmd+Shift+L** / **Ctrl+Shift+L** | Create Numbered List | New numbered list element |
+
+---
+
+### **Selection and Navigation**
+
+| Shortcut | Action | Description |
+|----------|--------|-------------|
+| **Click element** | Select Text Element | Basic selection |
+| **Cmd+A** / **Ctrl+A** (canvas focus) | Select All Text Elements | Selects all text on current artboard/page |
+| **Cmd+A** / **Ctrl+A** (in edit mode) | Select All Text Content | Highlights all text within current element |
+| **Cmd+D** / **Ctrl+D** | Deselect All | Clears all selections |
+| **Tab** | Select Next Element | Cycles forward through elements in layer order |
+| **Shift+Tab** | Select Previous Element | Cycles backward through elements |
+| **Cmd+Click** / **Ctrl+Click** | Add to Selection | Add/remove from multi-selection |
+| **Escape** | Exit Edit Mode / Deselect | Returns to selection mode or clears selection |
+| **Enter** / **Return** | Enter Edit Mode | From selection, starts editing selected text |
+| **Cmd+E** / **Ctrl+E** | Edit Selected Text | Alternative to Enter, enters edit mode |
+
+---
+
+### **Text Editing and Cursor Movement**
+
+#### **Cursor Navigation**
+
+| Shortcut | Action | Description |
+|----------|--------|-------------|
+| **← →** | Move Cursor Left/Right | One character at a time |
+| **↑ ↓** | Move Cursor Up/Down | One line at a time |
+| **Cmd+←** / **Ctrl+←** | Move to Line Start | Jump to beginning of current line |
+| **Cmd+→** / **Ctrl+→** | Move to Line End | Jump to end of current line |
+| **Cmd+↑** / **Ctrl+↑** | Move to Text Start | Jump to beginning of text element |
+| **Cmd+↓** / **Ctrl+↓** | Move to Text End | Jump to end of text element |
+| **Alt+←** / **Option+←** | Move One Word Left | Jump backward by word |
+| **Alt+→** / **Option+→** | Move One Word Right | Jump forward by word |
+| **Home** | Line Start | Same as Cmd+← |
+| **End** | Line End | Same as Cmd+→ |
+| **Page Up** | Scroll Up | Moves view up one screenful |
+| **Page Down** | Scroll Down | Moves view down one screenful |
+
+#### **Text Selection in Edit Mode**
+
+| Shortcut | Action | Description |
+|----------|--------|-------------|
+| **Shift+← →** | Select Character Left/Right | Extends selection one character |
+| **Shift+↑ ↓** | Select Line Up/Down | Extends selection one line |
+| **Shift+Cmd+←** / **Shift+Ctrl+←** | Select to Line Start | Highlights from cursor to line beginning |
+| **Shift+Cmd+→** / **Shift+Ctrl+→** | Select to Line End | Highlights from cursor to line end |
+| **Shift+Cmd+↑** / **Shift+Ctrl+↑** | Select to Text Start | Highlights from cursor to document start |
+| **Shift+Cmd+↓** / **Shift+Ctrl+↓** | Select to Text End | Highlights from cursor to document end |
+| **Shift+Alt+← →** / **Shift+Option+← →** | Select Word by Word | Extends selection one word at a time |
+| **Cmd+A** / **Ctrl+A** | Select All Text | Highlights all text in current element |
+| **Double-click** | Select Word | Selects word at cursor position |
+| **Triple-click** | Select Paragraph | Selects entire paragraph |
+
+---
+
+### **Basic Text Formatting**
+
+| Shortcut | Action | Description |
+|----------|--------|-------------|
+| **Cmd+B** / **Ctrl+B** | Bold | Toggle bold weight (400 ↔ 700) |
+| **Cmd+I** / **Ctrl+I** | Italic | Toggle italic style |
+| **Cmd+U** / **Ctrl+U** | Underline | Toggle underline |
+| **Cmd+Shift+X** / **Ctrl+Shift+X** | Strikethrough | Toggle strikethrough |
+| **Cmd+Shift+K** / **Ctrl+Shift+K** | Small Caps | Toggle small capitals |
+| **Cmd+Shift+=** / **Ctrl+Shift+=** | Superscript | Raise text above baseline |
+| **Cmd+=** / **Ctrl+=** | Subscript | Lower text below baseline |
+| **Cmd+Shift+\** / **Ctrl+Shift+\** | Clear Formatting | Removes all character formatting, returns to default |
+
+---
+
+### **Font Size Adjustments**
+
+| Shortcut | Action | Description |
+|----------|--------|-------------|
+| **Cmd+Shift+>** / **Ctrl+Shift+>** | Increase Font Size | Increases by preset increment (usually 2px) |
+| **Cmd+Shift+<** / **Ctrl+Shift+<** | Decrease Font Size | Decreases by preset increment |
+| **Cmd+Alt+Shift+>** / **Ctrl+Alt+Shift+>** | Increase Font Size (fine) | Increases by 1px |
+| **Cmd+Alt+Shift+<** / **Ctrl+Alt+Shift+<** | Decrease Font Size (fine) | Decreases by 1px |
+
+---
+
+### **Alignment and Paragraph Formatting**
+
+| Shortcut | Action | Description |
+|----------|--------|-------------|
+| **Cmd+Shift+L** / **Ctrl+Shift+L** | Align Left | Left-align current paragraph |
+| **Cmd+Shift+E** / **Ctrl+Shift+E** | Align Center | Center-align (E for Equidistant) |
+| **Cmd+Shift+R** / **Ctrl+Shift+R** | Align Right | Right-align current paragraph |
+| **Cmd+Shift+J** / **Ctrl+Shift+J** | Justify | Justify text (full alignment) |
+| **Cmd+M** / **Ctrl+M** | Increase Indent | Indent paragraph right |
+| **Cmd+Shift+M** / **Ctrl+Shift+M** | Decrease Indent | Outdent paragraph left |
+| **Cmd+0** / **Ctrl+0** | Remove Paragraph Spacing | Sets paragraph spacing to 0 |
+| **Cmd+1** / **Ctrl+1** | Single Line Spacing | Sets line height to 1.0 |
+| **Cmd+2** / **Ctrl+2** | Double Line Spacing | Sets line height to 2.0 |
+| **Cmd+5** / **Ctrl+5** | 1.5 Line Spacing | Sets line height to 1.5 |
+
+---
+
+### **Lists**
+
+| Shortcut | Action | Description |
+|----------|--------|-------------|
+| **Cmd+Shift+7** / **Ctrl+Shift+7** | Numbered List | Toggle numbered list formatting |
+| **Cmd+Shift+8** / **Ctrl+Shift+8** | Bulleted List | Toggle bulleted list formatting |
+| **Tab** (in list) | Increase List Level | Indent list item (nested list) |
+| **Shift+Tab** (in list) | Decrease List Level | Outdent list item |
+| **Enter** (at list item end) | New List Item | Creates next item in list |
+| **Enter Enter** (double) | Exit List | Two returns exits list formatting |
+| **Backspace** (at item start) | Remove List Formatting | Converts item back to regular text |
+
+---
+
+### **Clipboard Operations**
+
+| Shortcut | Action | Description |
+|----------|--------|-------------|
+| **Cmd+X** / **Ctrl+X** | Cut | Cut text or selected element to clipboard |
+| **Cmd+C** / **Ctrl+C** | Copy | Copy text or element |
+| **Cmd+V** / **Ctrl+V** | Paste | Paste from clipboard |
+| **Cmd+Shift+V** / **Ctrl+Shift+V** | Paste Without Formatting | Paste as plain text (strips formatting) |
+| **Cmd+Alt+V** / **Ctrl+Alt+V** | Paste Style Only | Apply formatting from copied text without content |
+| **Cmd+D** / **Ctrl+D** | Duplicate | Create copy of selected element offset 10px down-right |
+
+---
+
+### **Element Transformation** (when text element selected, not editing)
+
+| Shortcut | Action | Description |
+|----------|--------|-------------|
+| **Arrow Keys** | Nudge | Move element 1px in direction |
+| **Shift+Arrow** | Nudge Large | Move element 10px in direction |
+| **Cmd+Arrow** / **Ctrl+Arrow** | Nudge Tiny | Move element 0.1px (sub-pixel precision) |
+| **Cmd+Shift+]** / **Ctrl+Shift+]** | Bring to Front | Moves to top of layer stack |
+| **Cmd+]** / **Ctrl+]** | Bring Forward | Moves up one layer |
+| **Cmd+[** / **Ctrl+[** | Send Backward | Moves down one layer |
+| **Cmd+Shift+[** / **Ctrl+Shift+[** | Send to Back | Moves to bottom of layer stack |
+
+---
+
+### **Rotation and Flipping**
+
+| Shortcut | Action | Description |
+|----------|--------|-------------|
+| **Cmd+Alt+]** / **Ctrl+Alt+]** | Rotate 90° Clockwise | Quarter turn right |
+| **Cmd+Alt+[** / **Ctrl+Alt+[** | Rotate 90° Counter-Clockwise | Quarter turn left |
+| **Cmd+Shift+H** / **Ctrl+Shift+H** | Flip Horizontal | Mirror left-right |
+| **Cmd+Shift+V** / **Ctrl+Shift+V** | Flip Vertical | Mirror top-bottom |
+| **Cmd+T** / **Ctrl+T** | Free Transform | Enter transform mode with visual handles |
+
+---
+
+### **Grouping and Organization**
+
+| Shortcut | Action | Description |
+|----------|--------|-------------|
+| **Cmd+G** / **Ctrl+G** | Group | Group selected elements |
+| **Cmd+Shift+G** / **Ctrl+Shift+G** | Ungroup | Break apart group |
+| **Cmd+L** / **Ctrl+L** | Lock | Lock element (prevent editing/moving) |
+| **Cmd+Shift+L** / **Ctrl+Shift+L** | Unlock | Unlock locked element |
+| **Cmd+H** / **Ctrl+H** | Hide | Hide element from canvas |
+| **Cmd+Shift+H** / **Ctrl+Shift+H** | Show All | Reveal all hidden elements |
+
+---
+
+### **Search and Replace**
+
+| Shortcut | Action | Description |
+|----------|--------|-------------|
+| **Cmd+F** / **Ctrl+F** | Find | Open find dialog |
+| **Cmd+G** / **Ctrl+G** | Find Next | Jump to next match |
+| **Cmd+Shift+G** / **Ctrl+Shift+G** | Find Previous | Jump to previous match |
+| **Cmd+H** / **Ctrl+H** | Find and Replace | Open find and replace dialog |
+| **Enter** (in find) | Next Match | Highlight next occurrence |
+| **Shift+Enter** (in find) | Previous Match | Highlight previous occurrence |
+
+---
+
+### **Special Characters and Symbols**
+
+| Shortcut | Action | Description |
+|----------|--------|-------------|
+| **Cmd+Space** / **Ctrl+Space** | Emoji & Symbols Picker | System character picker (macOS) |
+| **Alt+Code** / **Option+Key** | Insert Special Character | Platform-specific special characters |
+| **Shift+Enter** | Line Break (Soft Return) | New line without new paragraph |
+| **Cmd+Enter** / **Ctrl+Enter** | Insert Page Break | Force page break (multi-page documents) |
+| **Alt+0149** | • | Insert bullet character (Windows) |
+| **Alt+0169** | © | Insert copyright symbol |
+| **Alt+0174** | ® | Insert registered trademark |
+
+---
+
+### **Undo and History**
+
+| Shortcut | Action | Description |
+|----------|--------|-------------|
+| **Cmd+Z** / **Ctrl+Z** | Undo | Reverse last action |
+| **Cmd+Shift+Z** / **Ctrl+Shift+Z** | Redo | Reapply undone action |
+| **Cmd+Y** / **Ctrl+Y** | Redo (Alt) | Alternative redo shortcut |
+
+---
+
+### **View and Navigation**
+
+| Shortcut | Action | Description |
+|----------|--------|-------------|
+| **Cmd+0** / **Ctrl+0** | Fit to Screen | Zoom to fit entire canvas in view |
+| **Cmd+1** / **Ctrl+1** | 100% Zoom | Actual size view |
+| **Cmd+2** / **Ctrl+2** | 200% Zoom | Double size |
+| **Cmd++** / **Ctrl++** | Zoom In | Increase zoom level |
+| **Cmd+-** / **Ctrl+-** | Zoom Out | Decrease zoom level |
+| **Cmd+'** / **Ctrl+'** | Toggle Guides | Show/hide alignment guides |
+| **Cmd+;** / **Ctrl+;** | Toggle Grid | Show/hide grid overlay |
+| **Cmd+R** / **Ctrl+R** | Toggle Rulers | Show/hide rulers |
+| **Space+Drag** | Pan Canvas | Temporarily activates hand tool |
+
+---
+
+### **Text-Specific Advanced**
+
+| Shortcut | Action | Description |
+|----------|--------|-------------|
+| **Cmd+Shift+P** / **Ctrl+Shift+P** | Character Panel | Open advanced character properties |
+| **Cmd+Alt+T** / **Ctrl+Alt+T** | Paragraph Panel | Open advanced paragraph properties |
+| **Cmd+K** / **Ctrl+K** | Insert/Edit Link | Opens hyperlink dialog |
+| **Cmd+Shift+K** / **Ctrl+Shift+K** | Remove Link | Removes hyperlink from selected text |
+| **Cmd+Opt+Shift+W** / **Ctrl+Alt+Shift+W** | Toggle Text Wrap | Enable/disable text wrapping around element |
+| **Cmd+Shift+O** / **Ctrl+Shift+O** | Convert to Outlines | Converts text to vector paths (irreversible) |
+
+---
+
+### **Spell Check and Proofing**
+
+| Shortcut | Action | Description |
+|----------|--------|-------------|
+| **F7** | Spell Check | Run spell checker |
+| **Cmd+;** / **Ctrl+;** | Ignore Spelling Error | Skip current flagged word |
+| **Cmd+Opt+;** / **Ctrl+Alt+;** | Auto-Correct | Apply first spelling suggestion |
+| **Cmd+Shift+;** / **Ctrl+Shift+;** | Add to Dictionary | Add word to custom dictionary |
+
+---
+
+### **Artistic and Path Text**
+
+| Shortcut | Action | Description |
+|----------|--------|-------------|
+| **Cmd+Shift+C** / **Ctrl+Shift+C** | Create Text on Path | Convert selected text to path text |
+| **Cmd+Alt+Shift+C** / **Ctrl+Alt+Shift+C** | Release Text from Path | Convert path text back to regular |
+| **Cmd+Shift+]** / **Ctrl+Shift+]** (on path text) | Flip Path Direction | Reverse text direction on path |
+| **Alt+← →** (between letters) | Adjust Kerning | Fine-tune letter spacing manually |
+
+---
+
+### **Styles and Formatting**
+
+| Shortcut | Action | Description |
+|----------|--------|-------------|
+| **Cmd+Alt+C** / **Ctrl+Alt+C** | Copy Text Style | Copy all formatting attributes |
+| **Cmd+Alt+V** / **Ctrl+Alt+V** | Paste Text Style | Apply copied formatting |
+| **Cmd+Opt+Shift+T** / **Ctrl+Alt+Shift+T** | Create Text Style | Save current formatting as reusable style |
+| **F3** | Apply Style | Opens style picker for quick application |
+| **Cmd+\** / **Ctrl+\** | Remove All Styles | Strip all formatting, return to defaults |
+
+---
+
+### **Multi-Element Text Shortcuts**
+
+| Shortcut | Action | Description |
+|----------|--------|-------------|
+| **Cmd+Alt+Shift+A** / **Ctrl+Alt+Shift+A** | Align Text Baselines | Aligns multiple text elements by their text baseline |
+| **Cmd+Opt+Shift+D** / **Ctrl+Alt+Shift+D** | Distribute Horizontally | Evenly space selected text elements horizontally |
+| **Cmd+Opt+Shift+E** / **Ctrl+Alt+Shift+E** | Distribute Vertically | Evenly space selected text elements vertically |
+
+---
+
+### **Accessibility and Reading**
+
+| Shortcut | Action | Description |
+|----------|--------|-------------|
+| **Cmd+Alt+R** / **Ctrl+Alt+R** | Toggle Screen Reader Mode | Optimizes for screen reader navigation |
+| **Cmd+Alt+I** / **Ctrl+Alt+I** | Show Invisibles | Display spaces, tabs, returns visually |
+| **Cmd+Alt+H** / **Ctrl+Alt+H** | Toggle High Contrast | Switch to high-contrast mode |
+
+---
+
+### **Customizable Shortcuts**
+
+Users can customize any shortcut through:
+- **Preferences → Keyboard Shortcuts**
+- Search for action by name
+- Click current shortcut to edit
+- Record new key combination
+- Conflict warnings if shortcut already assigned
+- Export/import shortcut sets
+- Reset to defaults option
+
+---
+
+## 6. MODAL DIALOG SPECIFICATIONS
+
+Modal dialogs provide focused interfaces for complex text operations that benefit from dedicated space and attention. Each modal is designed to be task-specific, non-intrusive yet purposeful.
+
+### **Modal 6.1: Advanced Text Properties**
+
+**Trigger**:
+- Menu: Format → Advanced Text Properties
+- Right-click → Text Properties...
+- Keyboard: Cmd/Ctrl+Shift+P
+- Ribbon: "More" overflow menu → Advanced Properties
+
+**Purpose**: Comprehensive access to all text properties simultaneously, including less commonly used settings
+
+**Dialog Layout**:
+- **Size**: 800px × 600px, resizable
+- **Position**: Centered on screen
+- **Background Overlay**: Semi-transparent (rgba(0,0,0,0.5)), click to cancel
+- **Window**: White background, drop shadow
+
+**Content Organization** (Tabbed Interface):
+
+#### **Tab 1: Character**
+All character-level formatting in one place
+
+**Sections**:
+1. **Font Settings**
+   - Font Family: Large dropdown with search
+   - Font Style: Regular, Italic, Bold, Bold Italic
+   - Size: Numeric input + slider (6-1000px)
+   - Weight: Slider from 100 (Thin) to 900 (Black) if variable font
+
+2. **Text Decoration**
+   - Underline: Checkbox + style dropdown (single, double, dotted, wavy)
+   - Strikethrough: Checkbox + position (centered, above, below)
+   - Overline: Checkbox (rarely used but available)
+   - Color: Color picker for each decoration
+
+3. **Advanced Spacing**
+   - Letter Spacing: -200px to 200px, 0.1px precision
+   - Word Spacing: -100px to 100px
+   - Baseline Shift: -100px to 100px (raise/lower characters)
+   - Tracking Presets: Buttons for common values
+
+4. **Case and Transform**
+   - Text Transform: Dropdown (none, uppercase, lowercase, capitalize, small-caps)
+   - OpenType Small Caps: Checkbox (use true small caps if available)
+   - Swash Alternates: If font supports
+   - Stylistic Sets: Checkboxes for available sets (1-20)
+
+5. **Effects**
+   - Text Color: Full color picker with gradient option
+   - Shadow: Quick shadow controls (X, Y, blur, color)
+   - Multiple Shadows: List with add/remove buttons
+   - Outline/Stroke: Width, color, position (inside/center/outside)
+
+**Preview Panel** (Right Side, 40% of dialog):
+- Live preview of "The quick brown fox jumps over the lazy dog"
+- Custom preview text input at top
+- Updates in real-time as settings change
+- Shows before/after comparison toggle
+
+**Footer**:
+- **Apply Button**: Applies and keeps dialog open (for iterating)
+- **OK Button**: Applies and closes
+- **Cancel Button**: Discards changes and closes
+- **Reset Button**: Returns all values to defaults
+- **Save as Style**: Saves current settings as named text style
+
+---
+
+#### **Tab 2: Paragraph**
+Paragraph-level formatting
+
+**Sections**:
+1. **Alignment**
+   - Horizontal: Radio buttons (Left, Center, Right, Justify, Justify All)
+   - Vertical: Dropdown (Top, Middle, Bottom) for fixed-height text boxes
+   - Text Direction: LTR, RTL, Vertical
+
+2. **Indentation**
+   - Left Indent: 0-500px
+   - Right Indent: 0-500px
+   - First Line: -500 to 500px (negative for hanging indent)
+   - Visual ruler showing indent positions
+
+3. **Spacing**
+   - Line Height: Multiplier (0.5-5.0) or absolute pixels
+   - Space Before Paragraph: 0-100px
+   - Space After Paragraph: 0-100px
+   - Lock Paragraph Spacing: Checkbox to prevent orphans/widows
+
+4. **Advanced Paragraph**
+   - Keep Lines Together: Prevent paragraph splitting across text boxes/pages
+   - Keep with Next: Keep paragraph with following paragraph
+   - Widow/Orphan Control: Minimum lines at top/bottom
+   - Page Break Before: Force page break before paragraph
+
+5. **Tabs and Columns**
+   - Tab Stops: Visual ruler with clickable tab addition
+   - Tab Alignment: Left, Center, Right, Decimal
+   - Tab Leader: None, dots, dashes, underline
+   - Columns: Number of columns (1-10), gutter width
+
+**Preview Panel**: Shows multiple paragraphs demonstrating settings
+
+---
+
+#### **Tab 3: Lists**
+Comprehensive list formatting
+
+**Sections**:
+1. **List Type**
+   - None: Regular text
+   - Bulleted: Visual bullet style picker (12+ styles)
+   - Numbered: Number format dropdown with preview
+   - Lettered: Letter style options
+   - Roman Numerals: Upper/lowercase options
+   - Custom: Text input for custom prefix
+
+2. **Bullet/Number Settings**
+   - Style: Visual picker for built-in styles
+   - Color: Independent color for list markers
+   - Size: Percentage of text size (50-200%)
+   - Position: Hanging, aligned with text, custom
+   - Custom Character: Unicode input for bullets
+   - Custom Image: Upload icon/image as bullet (max 64×64px)
+
+3. **Indentation and Spacing**
+   - List Indent: Distance from left margin
+   - Text Indent: Hanging indent from bullet/number
+   - Between Items: Vertical spacing
+   - Nested List Indent: Additional indent per level
+
+4. **Numbering Options** (for numbered lists)
+   - Start At: Initial number
+   - Restart Numbering: Each section/never/custom
+   - Continue from Previous: Link to previous list
+   - Number Format: Prefix and suffix customization
+
+5. **Multi-Level Lists**
+   - Define Level Styles: Up to 9 levels, each with own format
+   - Auto-Promote/Demote: Tab/Shift+Tab behavior
+   - Link Levels: Outline numbering (1.1, 1.1.1, etc.)
+   - Preview of all levels in hierarchy
+
+**Preview Panel**: Shows all defined list levels
+
+---
+
+#### **Tab 4: Effects**
+Visual effects and artistic treatments
+
+**Sections**:
+1. **Shadows and Glows**
+   - Drop Shadow: X, Y, blur, spread, color, opacity
+   - Inner Shadow: Same controls
+   - Outer Glow: Blur, spread, color, opacity
+   - Inner Glow: Same controls
+   - Layer List: Stack and reorder multiple effects
+
+2. **Outlines and Strokes**
+   - Stroke Width: 0-50px
+   - Stroke Color: Color picker
+   - Stroke Position: Outside, Center, Inside
+   - Stroke Style: Solid, dashed, dotted (with pattern editor)
+   - Multiple Strokes: Layer multiple outlines
+
+3. **3D and Depth**
+   - Extrude: Depth (0-100px), angle (0-360°)
+   - Bevel: Style (rounded, chiseled, etc.), depth
+   - Lighting: Angle, altitude, intensity
+   - Material: Matte, glossy, metallic
+
+4. **Fills and Patterns**
+   - Gradient Fill: Full gradient editor (linear, radial, angular)
+   - Pattern Fill: Upload or select pattern, scale, opacity
+   - Image Fill: Clip image inside text
+   - Blend Mode: Normal, multiply, screen, overlay, etc.
+
+5. **Advanced Effects**
+   - Blur: Gaussian blur (0-50px)
+   - Distortion: Warp, wave, arc
+   - Reflection: Mirror effect below text
+   - Perspective: 3D rotation (X, Y, Z axes)
+
+**Preview Panel**: Large preview area showing effects in real-time
+
+---
+
+#### **Tab 5: OpenType Features**
+Font-specific advanced typography
+
+**Layout**: Dynamically generated based on selected font's capabilities
+
+**Available Features** (checkboxes for each):
+- Standard Ligatures (fi, fl, ff, etc.)
+- Discretionary Ligatures (ct, st, etc.)
+- Contextual Alternates
+- Swashes (initial, final, both)
+- Stylistic Alternates (Set 1-20, depending on font)
+- Fractions (automatic fraction formatting)
+- Ordinals (1st, 2nd, 3rd superscript)
+- True Small Caps (vs. generated small caps)
+- Petite Caps
+- All Small Caps
+- Titling Alternates (optimized for large sizes)
+- Unicase (hybrid upper/lowercase forms)
+- Historical Forms
+- Stylistic Sets (individual sets with previews)
+- Character Variants (specific alternate glyphs)
+- Lining Figures (uniform height numbers)
+- Old-Style Figures (varied height numbers)
+- Tabular Figures (monospaced for tables)
+- Proportional Figures
+- Slashed Zero (0 with slash for distinction)
+- Superscript/Subscript (true typographic forms)
+
+**Preview**: Shows ABC abc 123 with/without features applied
+
+**Info Section**: Explains each feature's purpose when hovering
+
+---
+
+#### **Tab 6: Hyphenation & Justification**
+Fine-grained control over text flow
+
+**Hyphenation**:
+- Enable Hyphenation: Master toggle
+- Language: Dropdown (affects hyphenation rules)
+- Min Word Length: Minimum characters to hyphenate (default 5)
+- Min Characters Before Hyphen: Default 2
+- Min Characters After Hyphen: Default 3
+- Hyphenation Zone: Space before hyphenation kicks in
+- Max Consecutive Hyphens: Limit ladder effect (default 2)
+- Hyphenate Capitalized Words: Checkbox
+- Hyphenate Last Word: Checkbox
+- Hyphenation Dictionary: Custom dictionary upload
+
+**Justification** (for justified text):
+- Word Spacing: Min, desired, max percentages
+- Letter Spacing: Min, desired, max
+- Glyph Scaling: Min, desired, max (slightly stretch glyphs if needed)
+- Auto Leading: Percentage of font size
+- Single Word Justification: Left, Center, Right, Full
+- Composer: Paragraph (considers entire paragraph) vs. Single-line
+
+**Preview**: Justified paragraph showing spacing adjustments
+
+---
+
+**General Modal Features**:
+- **Keyboard Navigation**: Tab through controls, Enter to confirm, Escape to cancel
+- **Dirty State Indicator**: Asterisk in title bar if changes made but not applied
+- **Undo/Redo**: Works within modal (Cmd/Ctrl+Z/Y)
+- **Help Button**: Opens context-sensitive help documentation
+- **Presets Dropdown**: Load saved preset configurations
+- **Remember Window Size/Position**: Reappears where last positioned
+
+---
+
+### **Modal 6.2: Find and Replace**
+
+**Trigger**:
+- Menu: Edit → Find and Replace
+- Keyboard: Cmd/Ctrl+F (simple find) or Cmd/Ctrl+H (find and replace)
+- Toolbar: Search icon
+
+**Purpose**: Search text content across selected elements, all elements, or entire document
+
+**Dialog Layout**:
+- **Size**: 600px × 400px, non-resizable initially, can expand
+- **Position**: Top-right of screen (doesn't obscure text)
+- **Modeless**: Can interact with canvas while dialog is open
+
+**Interface**:
+
+**Find Section**:
+- **Find What**: Text input field, full keyboard focus on open
+- **Search In**:
+  - Current Text Element (default if one selected)
+  - All Text Elements on Current Page
+  - All Text Elements in Document
+  - Selected Text Only (if text highlighted)
+- **Options** (checkboxes):
+  - Match Case (Aa)
+  - Match Whole Words Only
+  - Use Regular Expressions (regex)
+  - Search Backwards
+  - Wrap Around (loop to beginning)
+
+**Replace Section** (expandable):
+- **Replace With**: Text input field
+- **Preserve Formatting**: Checkbox (keeps original formatting when replacing)
+
+**Action Buttons**:
+- **Find Next**: Highlights next match, scrolls to view
+- **Find Previous**: Highlights previous match
+- **Find All**: Selects all matches, shows count
+- **Replace**: Replaces current match, moves to next
+- **Replace All**: Replaces all matches (with confirmation)
+- **Count**: Shows number of matches without selecting
+
+**Results Panel** (bottom half, appears after search):
+- **List of Matches**: Shows each match with context
+  - Element name/type
+  - Surrounding text (10 words before/after)
+  - Page number if multi-page
+  - Click to jump to that match
+- **Match Count**: "X matches found" at bottom
+- **Progress Bar**: For large documents during "Find All"
+
+**Highlighting**:
+- Current match: Bright yellow highlight
+- Other matches: Pale yellow
+- Matches scroll into view automatically
+- Highlight persists until "Clear" button pressed
+
+**Advanced Options** (collapsible section):
+- **Scope**: Layer, Group, or Document
+- **Text Attributes**:
+  - Font Family
+  - Font Size (range)
+  - Color
+  - Style (bold, italic, underline)
+- **Find Special Characters**:
+  - Dropdown for common special chars (tab, line break, em dash, etc.)
+
+**Footer**:
+- **Close Button**: Closes dialog, clears highlights
+- **Clear Highlights**: Removes highlighting but keeps dialog open
+- **Options Button**: Opens preferences for find/replace
+
+---
+
+### **Modal 6.3: Insert Special Character**
+
+**Trigger**:
+- Menu: Insert → Special Character
+- Keyboard: Cmd/Ctrl+Opt/Alt+Space
+- Ribbon: Insert menu → Symbols
+
+**Purpose**: Browse and insert special characters, symbols, emoji, and glyphs
+
+**Dialog Layout**:
+- **Size**: 700px × 500px, resizable
+- **Position**: Centered
+
+**Interface**:
+
+**Category Tabs** (Top):
+- Recently Used (auto-populated)
+- Common Symbols (™, ©, ®, §, etc.)
+- Math & Logic (±, ≈, ∞, ∑, etc.)
+- Arrows (→, ←, ↑, ⇒, etc.)
+- Currency ($, €, ¥, £, ₹, etc.)
+- Punctuation (em dash, en dash, ellipsis, quotes, etc.)
+- Greek (α, β, γ, Ω, etc.)
+- Emoji & Emoticons (😊, ❤️, ⭐, etc.)
+- Dingbats & Ornaments (✓, ★, ♦, etc.)
+- Accents & Diacriticals (é, ñ, ü, etc.)
+- All Characters (full Unicode table)
+
+**Character Grid**:
+- Large grid of characters (10×10 visible, scrollable)
+- Each character: 40px × 40px cell
+- Click to select
+- Hover shows larger preview + Unicode code point + name
+- Double-click to insert immediately
+
+**Preview Panel** (Right Side):
+- **Large Preview**: 200px display of selected character
+- **Character Info**:
+  - Name (e.g., "Copyright Sign")
+  - Unicode: U+00A9
+  - HTML Entity: `&copy;`
+  - Keyboard Shortcut: If available (e.g., Alt+0169)
+- **Font Variation**: Shows character in different fonts if variant
+
+**Search Bar** (Top):
+- Search by:
+  - Character name
+  - Unicode code point
+  - Description
+- Live filtering of grid as you type
+
+**Quick Insert Strip** (Bottom):
+- Frequently used characters for quick access
+- Customizable by user
+
+**Footer**:
+- **Insert Button**: Inserts selected character at cursor position
+- **Copy Button**: Copies character to clipboard
+- **Close Button**: Dismisses dialog
+
+**Features**:
+- Remembers last 20 used characters
+- Characters displayed in current font (or fallback)
+- Support for multi-byte characters (emoji, etc.)
+- Compose sequences (e.g., type ` + e = è)
+
+---
+
+### **Modal 6.4: Text Style Manager**
+
+**Trigger**:
+- Menu: Format → Manage Text Styles
+- Keyboard: Cmd/Ctrl+Shift+S
+- Right panel: "Manage Styles" button
+
+**Purpose**: Create, edit, organize, and apply text styles (saved formatting presets)
+
+**Dialog Layout**:
+- **Size**: 900px × 600px, resizable
+- **Three-Panel Layout**:
+  - Left: Style list (30%)
+  - Center: Style editor (45%)
+  - Right: Preview (25%)
+
+**Left Panel: Style Library**
+- **Categorized List**:
+  - Headings (H1-H6)
+  - Body & Paragraphs
+  - Lists
+  - Quotes
+  - Special Text
+  - Custom Styles
+- **Each Style Shows**:
+  - Style name
+  - Visual preview thumbnail
+  - Usage count in current document
+  - Icon indicating if style is used
+- **Actions**:
+  - New Style button (creates based on current selection or blank)
+  - Duplicate Style
+  - Delete Style (with confirmation if in use)
+  - Import Styles (from other documents)
+  - Export Styles (save as style library file)
+
+**Center Panel: Style Editor**
+- **Style Name**: Editable text field
+- **Based On**: Dropdown to inherit from another style
+- **Style for Following Paragraph**: Dropdown (auto-applies style after this one)
+- **Formatting Controls**:
+  - All character formatting options (font, size, color, etc.)
+  - All paragraph formatting (alignment, spacing, indents)
+  - Effects if applicable
+- **Update Options**:
+  - Auto-update: Changes here update all instances automatically
+  - Manual: Requires explicit "Update Instances" action
+- **Keyboard Shortcut**: Assign custom shortcut to style
+- **Tags**: Add searchable tags for organization
+
+**Right Panel: Preview**
+- **Live Preview**: Shows styled text in real-time
+- **Sample Text**: Editable, defaults to lorem ipsum
+- **Before/After Toggle**: Compare to base style or previous version
+- **Usage Examples**: Shows style applied in different contexts
+
+**Footer**:
+- **Apply to Selection**: Applies style to currently selected text
+- **Update All Instances**: Updates all text using this style
+- **Revert**: Returns to last saved state
+- **Save & Close**: Saves changes and closes
+- **Cancel**: Discards changes
+
+**Features**:
+- Drag-and-drop reordering of styles
+- Bulk apply: Select multiple text elements, apply style to all
+- Style conflicts: Highlights if manual formatting overrides style
+- Clear Overrides button: Removes manual formatting, strictly applies style
+- Style hierarchy visualization (shows inheritance tree)
+
+---
+
+### **Modal 6.5: Mail Merge / Variable Data Setup**
+
+**Trigger**:
+- Menu: Data → Mail Merge Setup
+- Insert → Variable Field → Configure Data Source
+- Right-click on merge field → Edit Data Source
+
+**Purpose**: Connect text elements to external data for personalized bulk generation
+
+**Dialog Layout**:
+- **Size**: 1000px × 700px, resizable
+- **Multi-Step Wizard Interface**
+
+**Step 1: Data Source Selection**
+- **Choose Source Type**:
+  - CSV File: Upload .csv file
+  - Excel File: Upload .xlsx, select sheet
+  - Google Sheets: Authenticate and select sheet
+  - JSON Data: Paste or upload JSON
+  - Manual Entry: Built-in table editor
+  - Database Connection: Enter connection string (advanced)
+
+**Step 2: Data Preview and Mapping**
+- **Table View** of data source:
+  - First 10 rows shown
+  - Column headers detected or editable
+  - Data type detection (text, number, date, image URL)
+- **Field Mapping**:
+  - List of merge fields in document (left)
+  - Data source columns (right)
+  - Drag to map or dropdown selection
+  - Unmapped fields highlighted in yellow warning
+  - Preview shows sample data for each field
+
+**Step 3: Field Configuration**
+- **For Each Merge Field**:
+  - **Field Name**: How it appears in document
+  - **Data Column**: Mapped data source column
+  - **Default Value**: Fallback if data missing
+  - **Format**: For dates, numbers, currency
+    - Date Format: MM/DD/YYYY, DD-MM-YYYY, etc.
+    - Number Format: Decimal places, thousands separator
+    - Currency: Symbol, position
+  - **Conditional Formatting**:
+    - Show/Hide based on data value
+    - Change color if value meets criteria
+    - Change font if value in range
+  - **Validation Rules**:
+    - Required: Error if field empty
+    - Pattern: Regex validation
+    - Range: Min/max for numbers
+
+**Step 4: Preview and Generate**
+- **Record Selector**: Navigate through data records
+  - Previous/Next buttons
+  - Jump to record number
+  - Total record count displayed
+- **Preview Pane**: Shows document with current record's data merged
+  - Highlight merge fields
+  - Toggle between multiple records quickly
+- **Generation Options**:
+  - **Output Format**:
+    - Individual Files (one per record): Choose format (PDF, PNG, etc.)
+    - Multi-Page Document (all records in one file)
+    - Editable Copies (separate documents)
+  - **File Naming**:
+    - Template: `Filename_{FieldName}_{Date}`
+    - Preview of generated names
+  - **Batch Size**: Split large datasets into multiple batches
+  - **Quality Settings**: Resolution for image export
+
+**Step 5: Rules and Conditions**
+- **Conditional Content**:
+  - Show/hide text blocks based on data
+  - If/Then/Else logic builder (visual, no code)
+  - Example: "If VIP = true, show special message"
+- **Variable Images**:
+  - Map image fields to image URLs or file paths
+  - Fallback image if URL invalid
+  - Image sizing rules (fit, fill, scale)
+
+**Footer (All Steps)**:
+- **Previous/Next**: Navigate wizard steps
+- **Save Configuration**: Save setup without generating
+- **Generate Preview**: Creates sample outputs (first 3 records)
+- **Generate All**: Batch process entire dataset
+- **Cancel**: Exit without saving
+
+**Features**:
+- **Error Handling**: Lists all errors/warnings before generation
+- **Progress Bar**: Shows generation progress for large datasets
+- **Pause/Resume**: For very large batches
+- **Duplicate Detection**: Warns if duplicate data might create identical outputs
+- **Data Validation Summary**: Shows counts of valid/invalid records
+
+---
+
+### **Modal 6.6: Text Effects Library**
+
+**Trigger**:
+- Ribbon: Text Effects button with dropdown
+- Menu: Format → Text Effects Gallery
+- Right-click → Apply Effect
+
+**Purpose**: Browse and apply pre-designed text effects (shadows, 3D, outlines, gradients, etc.)
+
+**Dialog Layout**:
+- **Size**: 800px × 600px
+- **Gallery Layout**: Large thumbnails of effect presets
+
+**Interface**:
+
+**Category Sidebar** (Left, 20%):
+- All Effects
+- Shadows & Glows
+- 3D & Depth
+- Outlines & Strokes
+- Gradients & Colors
+- Artistic & Stylized
+- Favorites (user-saved)
+- Recent (last 10 used)
+
+**Effect Gallery** (Center, 60%):
+- **Grid of Effect Presets**:
+  - Each: 150px × 100px thumbnail
+  - Shows "Sample Text" with effect applied
+  - Hover: Slightly enlarges, shows effect name
+  - Click: Selects effect (highlights with blue border)
+  - Double-click: Applies immediately and closes
+- **Pagination**: If many effects, paginate or infinite scroll
+
+**Preview & Customize** (Right, 20%):
+- **Live Preview**:
+  - Shows selected text with effect applied
+  - Editable sample text input
+  - Zoom slider (50%-200%)
+- **Effect Properties** (appears when effect selected):
+  - Quick sliders for main parameters
+  - Example for shadow: Offset, Blur, Color
+  - Simplified controls for non-experts
+  - "Customize..." button opens detailed editor
+- **Variations**:
+  - Small thumbnails showing intensity variations
+  - Light, Medium, Strong versions
+  - Click to apply variation
+
+**Search Bar** (Top):
+- Search by effect name, style, or keyword
+- Tags: Subtle, Dramatic, Colorful, Monochrome, etc.
+- Live filtering
+
+**Footer**:
+- **Apply Button**: Applies selected effect
+- **Customize**: Opens advanced effect editor (another modal)
+- **Add to Favorites**: Saves effect for quick access
+- **Reset**: Removes all effects from selected text
+- **Close**: Dismisses without applying
+
+**Features**:
+- **Effect Stacking**: Option to add effect to existing (vs. replace)
+- **Copy Effect**: Copy effect to clipboard, paste on other text
+- **Create Custom Effect**: Opens effect editor to build from scratch
+- **Import Effects**: Load effect libraries from files
+- **Community Gallery**: Access shared effects (if feature enabled)
+
+---
+
+## 7. PROPERTY LOCATION MATRIX
+
+A comprehensive mapping showing every text property and all interface locations where it can be accessed and modified. This redundancy ensures users can work efficiently regardless of their preferred workflow.
+
+**Legend**:
+- ✓ = Available and primary location
+- ○ = Available but secondary/limited
+- ✗ = Not available here
+
+| **Property** | **Right Panel** | **Contextual Ribbon** | **Modal Dialog** | **Context Menu** | **Keyboard Shortcut** | **Hover/Inline** | **Other Locations** |
+|--------------|-----------------|------------------------|------------------|-------------------|-----------------------|-------------------|---------------------|
+| **Font Family** | ✓ (Typography section) | ✓ (Prominent dropdown) | ✓ (Advanced Properties, Character tab) | ○ (Submenu) | ✗ | ✗ | Left panel (style presets) |
+| **Font Size** | ✓ (Typography section, slider + input) | ✓ (Combo box) | ✓ (Advanced Properties) | ✗ | ✓ (Cmd+Shift+>/<) | ✗ | Quick size buttons in ribbon |
+| **Font Weight** | ✓ (Typography section, slider/dropdown) | ✓ (Bold toggle for 700) | ✓ (Advanced Properties, full range) | ○ (Bold only) | ✓ (Cmd+B for bold) | ✗ | — |
+| **Italic** | ✓ (Typography section, checkbox) | ✓ (Toggle button) | ✓ (Advanced Properties) | ○ (Submenu) | ✓ (Cmd+I) | ✗ | — |
+| **Underline** | ✓ (Typography section, checkbox) | ✓ (Toggle + dropdown for style) | ✓ (Advanced Properties, full options) | ○ (Submenu) | ✓ (Cmd+U) | ✗ | — |
+| **Strikethrough** | ✓ (Typography section, checkbox) | ✓ (Toggle button) | ✓ (Advanced Properties) | ○ (Submenu) | ✓ (Cmd+Shift+X) | ✗ | — |
+| **Superscript/Subscript** | ✓ (Typography section, radio buttons) | ○ (More dropdown) | ✓ (Advanced Properties) | ○ (Submenu) | ✓ (Cmd+Shift+=, Cmd+=) | ✗ | — |
+| **Small Caps** | ○ (Advanced section) | ○ (More dropdown) | ✓ (Advanced Properties, OpenType tab) | ✗ | ✓ (Cmd+Shift+K) | ✗ | — |
+| **Text Transform** | ✓ (Typography section, dropdown) | ○ (More dropdown) | ✓ (Advanced Properties) | ○ (Submenu) | ○ (Specific shortcuts per transform) | ✗ | — |
+| **Letter Spacing** | ✓ (Typography section, slider + input) | ✓ (Button opens popover) | ✓ (Advanced Properties, precise control) | ✗ | ○ (Nudge with custom shortcuts) | ✗ | — |
+| **Line Height** | ✓ (Typography section, input + dropdown) | ✓ (Dropdown with presets) | ✓ (Advanced Properties) | ✗ | ✓ (Cmd+1/2/5) | ✗ | — |
+| **Paragraph Spacing** | ✓ (Typography section, before/after inputs) | ✓ (Button opens popover) | ✓ (Advanced Properties, Paragraph tab) | ✗ | ○ (Cmd+0 to reset) | ✗ | — |
+| **Horizontal Alignment** | ✓ (Alignment section, icon buttons) | ✓ (Button group) | ✓ (Advanced Properties) | ○ (Submenu) | ✓ (Cmd+Shift+L/E/R/J) | ✗ | — |
+| **Vertical Alignment** | ✓ (Alignment section, icon buttons) | ○ (Less common, may be in overflow) | ✓ (Advanced Properties) | ○ (Submenu) | ✗ | ✗ | — |
+| **Text Direction** | ✓ (Alignment section, dropdown) | ○ (Overflow menu) | ✓ (Advanced Properties) | ○ (Submenu) | ✗ | ✗ | — |
+| **Indentation (Left/Right/First)** | ✓ (Alignment section, numeric inputs) | ○ (Increase/Decrease indent buttons) | ✓ (Advanced Properties, Paragraph tab) | ✗ | ✓ (Cmd+M, Cmd+Shift+M) | ○ (Ruler drag handles) | Visual ruler on canvas |
+| **Text Box Width** | ✓ (Alignment section, input) | ✗ | ✓ (Advanced Properties) | ✗ | ○ (Resize via arrow keys) | ○ (Drag handles) | — |
+| **Text Box Height** | ✓ (Alignment section, input) | ✗ | ✓ (Advanced Properties) | ✗ | ○ (Resize via arrow keys) | ○ (Drag handles) | — |
+| **Position (X, Y)** | ✓ (Alignment section, inputs) | ✗ | ✗ | ○ (Align submenu relative positioning) | ✓ (Arrow keys for nudging) | ○ (Drag element) | — |
+| **Text Color** | ✓ (Color section, full color picker) | ✓ (Color button + picker) | ✓ (Advanced Properties, Effects tab) | ○ (Submenu) | ✗ | ○ (Quick color swap on selection) | — |
+| **Background Color** | ✓ (Color section, color picker) | ○ (Highlight button) | ✓ (Advanced Properties) | ✗ | ✗ | ✗ | — |
+| **Stroke/Outline** | ✓ (Color section, expandable) | ○ (Effects dropdown) | ✓ (Advanced Properties, Effects tab, full control) | ✗ | ✗ | ✗ | — |
+| **Shadow** | ✓ (Color section, expandable) | ○ (Effects dropdown) | ✓ (Advanced Properties, Effects tab, all parameters) | ✗ | ✗ | ✗ | Text Effects modal |
+| **Gradient Fill** | ✓ (Color section, gradient option) | ○ (Effects dropdown) | ✓ (Advanced Properties, full gradient editor) | ✗ | ✗ | ✗ | Text Effects modal |
+| **3D Effects** | ○ (Effects section) | ○ (Effects dropdown) | ✓ (Advanced Properties, Effects tab) | ✗ | ✗ | ✗ | Text Effects modal |
+| **List Type** | ✓ (List section, dropdown) | ✓ (Bullet/Number toggle buttons) | ✓ (Advanced Properties, Lists tab) | ○ (Submenu) | ✓ (Cmd+Shift+7/8) | ✗ | — |
+| **Bullet/Number Style** | ✓ (List section, style picker) | ✓ (Dropdown from list buttons) | ✓ (Advanced Properties, Lists tab, full library) | ✗ | ✗ | ✗ | — |
+| **List Indentation** | ✓ (List section, numeric input) | ✓ (Increase/Decrease indent buttons) | ✓ (Advanced Properties, Lists tab) | ✗ | ✓ (Tab, Shift+Tab in lists) | ✗ | — |
+| **Start Number** | ✓ (List section, input) | ○ (Restart numbering option in dropdown) | ✓ (Advanced Properties, Lists tab) | ○ (Context menu on list) | ✗ | ✗ | — |
+| **OpenType Features** | ○ (Advanced Typography section, limited) | ✗ | ✓ (Advanced Properties, OpenType tab, comprehensive) | ✗ | ○ (Specific features may have shortcuts) | ✗ | — |
+| **Hyphenation** | ○ (Advanced section, toggle) | ✗ | ✓ (Advanced Properties, Hyphenation tab, full control) | ○ (Toggle in submenu) | ✗ | ✗ | — |
+| **Kerning** | ○ (Advanced section, dropdown) | ○ (Manual kerning for artistic text) | ✓ (Advanced Properties, Character tab) | ✗ | ○ (Manual adjustment with arrow keys between letters) | ○ (Drag handles between letters on artistic text) | — |
+| **Baseline Shift** | ○ (Advanced section, input) | ✗ | ✓ (Advanced Properties, Character tab) | ✗ | ✗ | ✗ | — |
+| **Overflow Handling** | ✓ (Text Box section, dropdown) | ✗ | ✓ (Advanced Properties) | ✗ | ✗ | ○ (Visual indicator when overflowing) | — |
+| **Text Wrap** | ✓ (Text Box section, toggle + options) | ✗ | ✓ (Advanced Properties) | ○ (Submenu) | ○ (Cmd+Opt+Shift+W toggle) | ✗ | — |
+| **Padding (Internal)** | ✓ (Text Box section, inputs) | ✗ | ✓ (Advanced Properties) | ✗ | ✗ | ○ (Visual guides when selected) | — |
+| **Border** | ✓ (Text Box section, border editor) | ○ (Border quick button if common) | ✓ (Advanced Properties) | ✗ | ✗ | ○ (Visual on canvas) | — |
+| **Hyperlink** | ✓ (Interactivity section, input + options) | ✓ (Link button) | ○ (Link dialog) | ✓ (Edit/Remove Link in context menu) | ✓ (Cmd+K to insert/edit) | ○ (Link icon appears on linked text) | — |
+| **Click Action** | ✓ (Interactivity section, dropdown) | ✗ | ○ (Interactivity modal) | ✗ | ✗ | ✗ | — |
+| **Hover State** | ○ (Interactivity section) | ✗ | ○ (Interactivity modal) | ✗ | ✗ | ○ (Preview on hover in interactive mode) | — |
+| **Alt Text** | ✓ (Accessibility section, textarea) | ✗ | ○ (Accessibility modal) | ○ (Accessibility submenu) | ✗ | ✗ | — |
+| **ARIA Role** | ✓ (Accessibility section, dropdown) | ✗ | ○ (Accessibility modal) | ✗ | ✗ | ✗ | — |
+| **Language** | ✓ (Accessibility section, dropdown) | ✗ | ○ (Advanced Properties, Hyphenation tab) | ✗ | ✗ | ✗ | — |
+| **Text Style Preset** | ✓ (Content section, prominent dropdown) | ○ (Styles dropdown in ribbon) | ✓ (Text Style Manager modal) | ○ (Apply Style submenu) | ✓ (F3 or custom shortcuts) | ✗ | Left panel (quick access) |
+| **Rotation** | ✓ (Transform section, if visible) | ○ (Rotation tool or value input) | ○ (Advanced Properties, Transform section) | ○ (Rotate submenu) | ○ (Cmd+Alt+[ / ]) | ○ (Rotation handle drag) | — |
+| **Flip Horizontal/Vertical** | ○ (Transform section) | ○ (Transform tools dropdown) | ✗ | ✓ (Transform submenu) | ○ (Cmd+Shift+H/V) | ✗ | — |
+| **Lock/Unlock** | ○ (Layers panel or status indicator) | ○ (Lock icon button) | ✗ | ✓ (Lock option in context menu) | ✓ (Cmd+L, Cmd+Shift+L) | ○ (Lock icon overlay on element) | Layers panel |
+| **Opacity** | ✓ (General properties, slider) | ○ (Opacity quick control if common) | ✗ | ✗ | ○ (Custom numeric shortcuts possible) | ✗ | — |
+| **Blend Mode** | ○ (Advanced properties) | ✗ | ○ (Advanced Properties, Effects tab) | ✗ | ✗ | ✗ | — |
+
+---
+
+### **Key Insights from the Matrix**:
+
+1. **Most Frequently Used Properties** (Font, Size, Color, Alignment) are accessible in:
+   - Right Panel (persistent, detailed)
+   - Contextual Ribbon (quick access, visual)
+   - Keyboard shortcuts (fastest for power users)
+
+2. **Advanced Properties** (OpenType, Hyphenation, Complex Effects) primarily accessed via:
+   - Modal dialogs (focused, comprehensive interface)
+   - Right Panel advanced sections (for iterative work)
+
+3. **Contextual Ribbon** focuses on:
+   - Properties that change frequently during editing
+   - Visual/icon-based controls for quick identification
+   - Most common text formatting tasks
+
+4. **Right Panel** is:
+   - Comprehensive (nearly all properties accessible)
+   - Organized for browsing and discovery
+   - Persistent (always available when element selected)
+
+5. **Keyboard Shortcuts** cover:
+   - High-frequency operations (Bold, Italic, Alignment)
+   - Navigation and selection
+   - Quick formatting changes
+   - NOT granular property value setting (e.g., specific font size)
+
+6. **Context Menus** provide:
+   - Quick access to common actions
+   - Clipboard operations
+   - Arrangement and transformation
+   - Entry points to modals/panels
+   - NOT detailed property editing
+
+7. **Hover/Inline Controls** used for:
+   - Direct manipulation (dragging handles)
+   - Visual affordances (indicating interactive elements)
+   - Quick previews
+   - NOT primary property setting
+
+8. **Redundancy is Intentional**:
+   - Different users have different workflows
+   - Efficiency varies by task context
+   - Discoverability vs. expert efficiency balanced
+   - No single "right" way to access properties
+
+---
+
+## 8. VISUAL FEEDBACK AND STATE COMMUNICATION
+
+Every interaction and state change must be communicated clearly to the user through immediate, unambiguous visual feedback.
+
+### **8.1 Selection States**
+
+#### **Unselected Element**
+- **Appearance**: Element renders normally, no additional visual indicators
+- **Hover State**: 
+  - 1px light blue outline (#60A5FA, 50% opacity) appears around text bounds
+  - Cursor changes to pointer/hand (indicating clickable)
+  - Subtle highlight/glow effect (optional, preference-based)
+  - Layer name tooltip after 800ms delay
+  - Quick action icons may fade in near corners (Edit, Duplicate, Delete)
+
+#### **Selected Element (Single Selection)**
+- **Bounding Box**: 1px solid blue line (#3B82F6) around text element
+- **Resize Handles**: 8 handles (4 corners, 4 sides)
+  - **Appearance**: 8px × 8px white squares with 2px blue border
+  - **Corner handles**: Diagonal resize (two-way arrows cursor)
+  - **Side handles**: Single-direction resize (horizontal/vertical arrows cursor)
+  - **Hover on handle**: Handle increases to 10px × 10px, brighter blue (#60A5FA)
+- **Rotation Handle**: 
+  - **Position**: 24px above top-center of bounding box
+  - **Appearance**: Circular icon (rotation arrow), 16px diameter
+  - **Connector**: Thin blue line from rotation handle to bounding box
+  - **Hover**: Enlarges to 20px, cursor shows rotation icon
+- **Additional Indicators**:
+  - If text has links: Small chain-link icon in corner
+  - If text is locked: Red padlock icon overlay
+  - If text overflows (hidden): Red "+" icon at overflow point
+  - If text is part of group: Subtle purple tint on bounding box
+- **Right Panel**: Populates with all text properties
+- **Contextual Ribbon**: Appears above canvas with text tools
+- **Status Bar** (bottom of app): Shows element type, size, position
+
+#### **Selected Element (Multi-Selection)**
+- **Individual Elements**: Each shows lighter blue outline (not full bounding box)
+- **Group Bounding Box**: Encompasses all selected elements
+  - **Color**: Purple (#9333EA) to differentiate from single selection
+  - **Handles**: Same 8 resize handles, but operate on group
+  - **Transformation**: Affects all selected elements simultaneously
+- **Right Panel**: 
+  - Shows properties common to all elements
+  - "Mixed" indicator where values differ (e.g., "Mixed" in font size field if elements have different sizes)
+  - Changing property applies to all
+- **Contextual Ribbon**: Shows common tools, grays out incompatible options
+- **Count Indicator**: Badge showing "3 elements selected" in status bar or ribbon
+
+#### **Editing Mode (Text Cursor Active)**
+- **Bounding Box**: Changes from solid blue to light gray (#E5E7EB), less prominent
+- **Resize Handles**: Hidden or significantly dimmed (prevents accidental dragging while editing)
+- **Text Cursor**: 
+  - **Appearance**: 1px vertical line, height matching current line height
+  - **Color**: Blue (#3B82F6) or contrasting color against background
+  - **Blink Rate**: 500ms on, 500ms off
+  - **Position**: Between characters, indicating insertion point
+- **Selection Highlight** (when text selected):
+  - **Background**: Light blue (#DBEAFE) highlight behind selected text
+  - **Text**: Remains in original color (not inverted, for readability)
+  - **Multi-line**: Highlight follows line breaks, shows across all lines
+- **Contextual Ribbon**: Switches to editing tools (character/paragraph formatting)
+- **Right Panel**: Shows properties of selected text (or cursor position if no selection)
+- **Cursor Shape**: I-beam when over text area
+
+#### **Locked Element**
+- **Visual Indicator**: 
+  - Red padlock icon overlay (16px, semi-transparent, in top-right corner)
+  - Bounding box color changes to red (#EF4444) when attempting interaction
+  - Cursor shows "prohibited" symbol (circle with slash) on hover
+- **Interaction**: 
+  - No dragging or resizing allowed
+  - Click shows tooltip: "Element is locked. Unlock to edit."
+  - Context menu shows "Unlock" as primary option
+- **Layer Panel**: Lock icon next to element name
+
+#### **Hidden Element**
+- **Canvas**: Element not visible
+- **Layer Panel**: Element name appears in light gray italic, eye icon shown crossed out
+- **Selection**: Cannot be selected from canvas, can be selected from layers panel
+- **Reveal**: "Show All Hidden" command (Cmd+Opt+Shift+H) or eye icon click in layers
+
+### **8.2 Hover States**
+
+#### **Hover Over Element (Not Selected)**
+- **Outline**: 1px dashed light blue (#93C5FD) outline appears
+- **Cursor**: Changes to default pointer (arrow)
+- **Tooltip**: After 800ms, shows:
+  - Element type: "Body Text" or "Heading 1"
+  - First 30 characters of content: "Lorem ipsum dolor sit..."
+  - Dimensions: "450 × 120 px"
+  - Layer name if custom: "Footer Info"
+- **Quick Actions** (optional, based on preferences):
+  - Small icons fade in near element corners
+  - Edit icon (pencil)
+  - Duplicate icon (two overlapping squares)
+  - Delete icon (trash)
+  - Hover over icon shows action name
+
+#### **Hover Over Resize Handles**
+- **Handle**: Enlarges from 8px to 10px
+- **Color**: Brightens to #60A5FA
+- **Cursor**: Changes to appropriate directional arrow
+  - **Corner handles**: ↖↘ or ↙↗ (diagonal two-way arrows)
+  - **Side handles**: ↔ (horizontal) or ↕ (vertical)
+  - **Rotation handle**: ↻ (circular rotation cursor)
+- **Tooltip** (after 500ms): "Resize width and height" or "Rotate element"
+
+#### **Hover Over Link (in Edit Mode)**
+- **Cursor**: Changes to hand/pointer icon
+- **Underline**: Becomes more prominent (if already underlined) or appears
+- **Tooltip**: Shows full URL (e.g., "https://example.com/page") after 600ms
+- **Color Shift**: Link color slightly brighter (visual affordance)
+- **Ctrl/Cmd Modifier**: Tooltip shows "Ctrl+Click to follow link"
+
+#### **Hover Over Misspelled Word (in Edit Mode)**
+- **Wavy Underline**: Red, remains visible
+- **Tooltip** (after 400ms): 
+  - Shows first 3 spelling suggestions
+  - "Add to Dictionary" option
+  - "Ignore" option
+- **Right-click**: Opens full spell check context menu
+
+### **8.3 Active/Interaction States**
+
+#### **Dragging Element (Move)**
+- **Original Position**: 
+  - Semi-transparent ghost outline remains (30% opacity)
+  - Shows where element started
+- **Moving Element**:
+  - Full opacity, follows cursor
+  - Slight drop shadow (2px offset, 4px blur, 30% opacity) for depth
+- **Cursor**: Four-directional move arrows (⬍)
+- **Coordinate Tooltip**:
+  - Follows cursor, offset by 20px down-right
+  - Shows current X, Y position: "X: 245 Y: 680"
+  - Updates in real-time as dragging
+- **Smart Guides**:
+  - **Appearance**: Bright magenta (#EC4899) lines, 1px, extend across canvas
+  - **Trigger**: When element edge aligns within 8px of:
+    - Other elements' edges
+    - Canvas center (horizontal/vertical)
+    - Gridlines (if visible)
+    - Custom guides
+  - **Snap Behavior**: Element "magnetically" snaps to guide when within 8px tolerance
+  - **Visual Snap**: Brief highlight pulse on guide line when snap occurs
+  - **Distance Markers**: Small tooltip showing distance between elements (e.g., "20px")
+- **Multiple Elements**: All move together, maintaining relative positions
+
+#### **Resizing Element (Handle Drag)**
+- **Bounding Box**: Updates in real-time to show new size
+- **Handle**: Remains under cursor (sticky)
+- **Ghost Outline**: Semi-transparent outline shows original size
+- **Dimension Tooltip**:
+  - Positioned near cursor
+  - Shows width × height: "450 × 200 px"
+  - Updates live during drag
+  - If maintaining aspect ratio: Shows lock icon ⚿
+- **Text Reflow**: 
+  - Text reflows within new dimensions in real-time
+  - May show performance-optimized preview if complex formatting
+  - Line breaks adjust dynamically
+- **Constraints**:
+  - If Shift held: Maintains aspect ratio, tooltip shows lock icon
+  - If Alt/Opt held: Resizes from center, both tooltip and visual center indicator
+  - Snap to grid (if enabled): Dimensions snap to grid increments
+
+#### **Rotating Element (Rotation Handle Drag)**
+- **Rotation Arc**: 
+  - Semi-transparent arc drawn from center to rotation handle
+  - Color: Light blue (#93C5FD), 2px line
+  - Radius: Distance from center to rotation handle
+- **Angle Measurement**:
+  - Tooltip shows angle: "45°" or "127°"
+  - Updates in real-time
+  - Positioned near rotation handle
+- **Snap Indicators**:
+  - At 15° increments (if enabled): Subtle tick marks on arc
+  - At major angles (0°, 45°, 90°, 135°, 180°, 270°): Larger tick marks and brief snap pulse
+  - Magnetic snap: Rotation "sticks" briefly at snap angles
+- **Pivot Point**: 
+  - Visible crosshair at center (default)
+  - Can be dragged to new position before rotating
+  - Pivot crosshair color: Orange (#FB923C)
+- **Ghost Outline**: Original orientation shown as semi-transparent outline
+
+#### **Text Selection (Highlighting Text)**
+- **Highlight Color**: Light blue (#DBEAFE) background
+- **Text Color**: Unchanged (not inverted) for accessibility
+- **Selection Bounds**: Follows exact character boundaries
+- **Multi-line**: Highlight background extends across lines
+- **Cursor**: I-beam while selecting
+- **Selection Handles** (touch/mobile, optional on desktop):
+  - Small circular handles at start and end of selection
+  - Draggable to extend/contract selection
+
+#### **Dragging Text Selection (Move Text)**
+- **Selected Text**: Appears to lift with cursor, semi-transparent
+- **Original Location**: Ghosted outline of text remains
+- **Drop Indicator**: Vertical cursor line shows where text will be inserted
+- **Cursor**: Changes to move cursor when dragging
+
+#### **Copy/Paste Operation**
+- **Copy**: 
+  - Brief visual flash or scale animation on copied element (100ms)
+  - Status message: "Copied" appears briefly near selection
+- **Paste**:
+  - Pasted element appears with selection outline
+  - Position: 10px offset down-right from original (or at cursor if paste-in-place)
+  - Brief fade-in animation (200ms)
+
+### **8.4 Loading and Processing States**
+
+#### **Opening Large Text File**
+- **Progress Indicator**:
+  - Modal overlay with spinner
+  - Progress bar (0-100%)
+  - Status message: "Loading document..." → "Parsing text..." → "Rendering..."
+  - Percentage or item count: "Loading page 3 of 15"
+- **Cancel Button**: Allows aborting operation
+
+#### **Applying Complex Effect (e.g., 3D)**
+- **Canvas Overlay**: Semi-transparent gray overlay
+- **Spinner**: Centered on affected element
+- **Status**: "Applying 3D extrusion..." below spinner
+- **Preview**: May show low-res preview while processing
+- **Duration**: If >2 seconds, show progress bar
+- **Completion**: Brief green checkmark animation (300ms), then overlay fades out
+
+#### **Mail Merge Generation**
+- **Modal Progress Dialog**:
+  - Large progress bar
+  - Current record: "Generating document 42 of 500"
+  - Estimated time remaining: "About 2 minutes remaining"
+  - Preview thumbnail of current document (optional)
+  - Pause/Cancel buttons
+- **Completion**: "Generation complete. 500 documents created." with success icon
+
+#### **Saving Document**
+- **Status Bar Indicator**: 
+  - "Saving..." text with spinner
+  - Changes to "Saved at 3:42 PM" with green checkmark when complete
+  - Brief appearance (3 seconds), then fades out
+- **Auto-Save**: Subtle indicator, non-intrusive
+
+#### **Spell Checking Large Document**
+- **Progress Bar**: In status bar or spell check modal
+- **Count**: "Checking... 45% (1,234 of 2,750 words)"
+- **Completion**: "Spell check complete. 12 errors found."
+
+### **8.5 Success and Confirmation States**
+
+#### **Successful Operation**
+- **Visual Feedback**:
+  - Green checkmark icon (✓) briefly appears (1 second)
+  - Subtle green glow around affected element (300ms fade in, 700ms fade out)
+  - Status message: "Text converted to outlines" or "Style applied successfully"
+- **Sound** (optional, user preference): Subtle success tone
+- **Toast Notification** (bottom-right corner):
+  - Appears for 3-4 seconds
+  - Green background, white text
+  - Dismissible (X button)
+  - May include undo button for reversible actions
+
+#### **Copy/Paste Confirmation**
+- **Brief Highlight**: Pasted element flashes briefly (200ms)
+- **Status Message**: "Pasted 1 text element" in status bar
+
+#### **Style Applied**
+- **Element Update**: Text instantly updates to new style
+- **Right Panel**: Property values update to match style
+- **Ribbon**: Relevant buttons update to reflect new state (e.g., Bold button becomes active)
+- **Undo Available**: "Undo Apply Style" appears in Edit menu immediately
+
+### **8.6 Error and Warning States**
+
+#### **Error Indicator (General)**
+- **Visual**:
+  - Red outline or border around problematic element
+  - Red error icon (⚠️ or ❌) overlay
+  - Error message in red text near element or in status bar
+- **Modal Error Dialog** (for critical errors):
+  - Red error icon
+  - Clear error message: "Unable to load font 'CustomFont.ttf'"
+  - Detailed explanation: "The font file may be corrupted or in an unsupported format."
+  - Suggested actions: "Try uploading a different font or use a system font."
+  - OK/Close button
+
+#### **Validation Error (e.g., Invalid Link)**
+- **Input Field**: 
+  - Red border around URL input
+  - Red text: "Please enter a valid URL"
+  - Example format shown: "https://example.com"
+- **Cannot Proceed**: OK/Apply button disabled until error resolved
+
+#### **Font Not Found**
+- **Element State**: 
+  - Text displays in fallback font (Arial/Helvetica)
+  - Yellow warning icon near element
+  - Tooltip: "Font 'DesiredFont' not available. Using fallback."
+- **Right Panel**: 
+  - Font dropdown shows "DesiredFont (Missing)" in red italic
+  - Button: "Find Replacement" opens font substitution dialog
+
+#### **Text Overflow (Clipped)**
+- **Indicator**: 
+  - Red "+" icon at bottom-right of text box
+  - Clicking icon: Options menu appears
+    - "Auto-Resize Text Box"
+    - "Reduce Font Size to Fit"
+    - "Link to Next Text Box"
+    - "Show Overflow Panel"
+- **Overflow Panel** (if opened):
+  - Shows hidden text in separate pane
+  - Allows editing or resizing
+
+#### **Spell Check Error**
+- **Wavy Underline**: Red, 2px, wavy line under misspelled word
+- **Right-Click**: Context menu with suggestions
+- **Hover**: Tooltip shows top 3 suggestions after 400ms
+
+#### **Save Failed**
+- **Modal Dialog**:
+  - Red error icon
+  - Message: "Unable to save document"
+  - Details: "Network connection lost" or "Disk full"
+  - Actions: "Retry", "Save As...", "Cancel"
+- **Status Bar**: "Save failed" in red with error icon, persists until user dismisses
+
+#### **Permission Error (Can't Edit Locked Element)**
+- **Cursor**: Prohibited symbol (🚫) when hovering over locked element
+- **Click Feedback**: Brief red flash on element border
+- **Toast Message**: "Element is locked. Unlock to edit."
+- **Context Menu**: "Unlock" option highlighted
+
+### **8.7 Disabled and Unavailable States**
+
+#### **Disabled Button/Control**
+- **Visual**:
+  - Gray color (#9CA3AF instead of default color)
+  - 50% opacity
+  - Cursor shows "not-allowed" symbol (🚫)
+- **Tooltip** (if hovering): Explains why disabled
+  - Example: "Select text to enable formatting options"
+  - Or: "Feature requires Pro subscription"
+
+#### **Grayed-Out Menu Item**
+- **Text**: Light gray, italic
+- **Hover**: No highlight
+- **Tooltip**: Brief explanation of why unavailable
+
+#### **Incompatible Property**
+- **Example**: Trying to apply list formatting to artistic text
+- **Feedback**: 
+  - Control appears disabled
+  - Tooltip: "Lists not available for artistic text elements"
+  - No change occurs if attempted
+
+### **8.8 Focus and Navigation Indicators**
+
+#### **Keyboard Focus**
+- **Focused Control**: 
+  - Blue outline (2px, #3B82F6) around focused UI element
+  - Visible in right panel, ribbon, modals
+- **Text Input Focus**:
+  - Blinking cursor inside field
+  - Blue border around input box
+- **Tab Navigation**: 
+  - Focus moves visibly through controls
+  - Skip links for accessibility
+
+#### **Active Input State**
+- **Typing in Field**: Border becomes brighter blue
+- **Dropdown Open**: Dropdown arrow rotates 180°, options panel appears with smooth slide-down animation
+
+### **8.9 Responsive and Performance Indicators**
+
+#### **High Complexity (Many Elements)**
+- **Warning**: If document has >1000 text elements
+  - Yellow warning icon in status bar
+  - Message: "Large document. Performance may be affected."
+  - Suggestion: "Consider splitting into multiple pages."
+
+#### **Rendering Large Text Block**
+- **Lazy Loading**: Show placeholder box with "Loading..." while rendering complex formatted text
+- **Progressive Enhancement**: Show basic text first, then apply effects/formatting
+
+#### **Real-Time Collaboration (if applicable)**
+- **Other User Editing**: 
+  - Element outlined in their assigned color (e.g., green for User 2)
+  - Cursor with user name label visible
+  - Tooltip: "Alice is editing this text"
+- **Conflict Warning**: 
+  - Orange border if both users editing same element
+  - Toast: "Alice is also editing this. Your changes may conflict."
+
+---
+
+## 9. ACCESSIBILITY AND INCLUSIVE DESIGN CONSIDERATIONS
+
+Ensuring all users can effectively interact with text elements regardless of abilities or assistive technologies.
+
+### **9.1 Keyboard Navigation**
+
+#### **Complete Keyboard Access**
+- **Tab Order**: Logical sequence through all controls
+  - Left panel → Canvas → Right panel → Contextual ribbon
+  - Within panels: Top to bottom, left to right
+  - Skip links: Jump to main content areas (Shift+Tab)
+- **Focus Indicators**: 
+  - Visible 2px blue outline (#3B82F6) around focused element
+  - High contrast in all color modes
+  - Never hidden (CSS outline-style: auto respected)
+- **Enter/Return**: 
+  - Activates buttons
+  - Opens dropdowns
+  - Submits forms
+  - Enters edit mode on selected text element
+- **Escape**:
+  - Closes modals, dropdowns, popovers
+  - Exits edit mode
+  - Cancels drag operations
+  - Returns to previous context
+- **Arrow Keys**:
+  - Navigate through dropdown options
+  - Move between radio buttons
+  - Navigate text cursor in edit mode
+  - Nudge selected element (when not editing)
+- **Space Bar**:
+  - Toggles checkboxes
+  - Activates buttons (alternative to Enter)
+  - Scrolls canvas if no element selected
+
+#### **Keyboard Shortcuts Accessibility**
+- **Discoverable**:
+  - All shortcuts shown in tooltips
+  - Menu items display shortcuts
+  - Help → Keyboard Shortcuts reference panel
+- **Customizable**:
+  - Users can remap any shortcut
+  - Export/import shortcut configurations
+  - Reset to defaults option
+- **Conflicts Avoided**:
+  - No conflicts with browser/OS shortcuts
+  - Users warned if custom shortcut conflicts
+- **Mnemonics**: 
+  - Menu items have underlined letters for Alt+key access (Windows)
+  - Logical associations (Cmd+B for Bold, Cmd+I for Italic)
+
+#### **Focus Management**
+- **Modal Dialogs**:
+  - Focus moves to dialog when opened
+  - Focus trapped within dialog (Tab doesn't escape)
+  - First interactive element automatically focused
+  - Escape returns focus to trigger element
+- **Popovers/Dropdowns**:
+  - Focus moves to first option when opened
+  - Arrow keys navigate
+  - Enter selects
+  - Escape closes and returns focus
+- **Canvas Interaction**:
+  - Tab selects first/next element on canvas
+  - Enter enters edit mode
+  - Escape returns to selection mode
+  - Arrow keys navigate between elements
+
+### **9.2 Screen Reader Support**
+
+#### **Semantic HTML and ARIA**
+- **Landmarks**: 
+  - `<nav>` for left panel element library
+  - `<main>` for canvas area
+  - `<aside>` for right panel properties
+  - `<form>` for settings dialogs
+- **Headings**: Logical hierarchy (h1 → h2 → h3) for screen reader navigation
+- **Labels**: Every input has associated `<label>` or `aria-label`
+- **Buttons**: 
+  - Icon buttons have `aria-label` (e.g., `aria-label="Bold"`)
+  - Disabled state communicated (`aria-disabled="true"`)
+- **Live Regions**: 
+  - Status messages announced (`role="status"`)
+  - Errors announced immediately (`role="alert"`)
+  - Progress updates (`role="progressbar"` with `aria-valuenow`)
+
+#### **Descriptive Text**
+- **Image Buttons**: Alt text or aria-label describes function, not appearance
+  - Good: "Increase font size"
+  - Bad: "Plus icon"
+- **Contextual Information**:
+  - Selected element announced: "Heading 1 text element selected"
+  - Properties panel: "Font size: 48 pixels"
+  - Editing mode: "Editing text: Type your content here"
+- **State Changes Announced**:
+  - "Bold applied"
+  - "Text aligned center"
+  - "Font changed to Arial"
+  - "3 elements selected"
+
+#### **Complex Widgets**
+- **Custom Dropdowns**: 
+  - `role="combobox"` on trigger
+  - `role="listbox"` on options
+  - `aria-expanded` indicates open/closed state
+  - `aria-activedescendant` tracks current option
+- **Sliders**: 
+  - `role="slider"`
+  - `aria-valuemin`, `aria-valuemax`, `aria-valuenow`
+  - `aria-valuetext` for non-numeric values
+- **Tabs**: 
+  - `role="tablist"`, `role="tab"`, `role="tabpanel"`
+  - `aria-selected` indicates active tab
+  - Arrow keys navigate tabs
+
+#### **Error Messages**
+- **Immediate Announcement**: Errors announced as soon as they occur
+- **Clear Language**: "Email address is invalid. Please include an @ symbol."
+- **Associated with Input**: `aria-describedby` links error to input field
+- **Persistent**: Error remains visible/announced until fixed
+
+### **9.3 Visual Accessibility**
+
+#### **Color Contrast**
+- **WCAG AA Compliance** (minimum):
+  - 4.5:1 for normal text (< 18pt)
+  - 3:1 for large text (≥ 18pt or 14pt bold)
+  - 3:1 for UI components and graphic elements
+- **WCAG AAA Compliance** (preferred):
+  - 7:1 for normal text
+  - 4.5:1 for large text
+- **Contrast Checker**:
+  - Built into color picker
+  - Shows AA/AAA compliance indicators
+  - Suggests nearest compliant color
+- **Color Independence**:
+  - Never rely solely on color to convey information
+  - Use icons, text labels, patterns in addition to color
+  - Example: Error states use red color + "X" icon + text message
+
+#### **High Contrast Mode**
+- **Support**: Respects OS high contrast settings (Windows High Contrast, macOS Increase Contrast)
+- **Custom Mode**: Built-in high contrast theme option
+  - Black background, white text
+  - Yellow highlights for selection
+  - Bold outlines on elements
+- **Overrides**: User can force high contrast regardless of theme
+
+#### **Dark Mode**
+- **Full Support**: Every UI component has dark variant
+- **Maintained Contrast**: Contrast ratios preserved in dark mode
+- **Auto-Detect**: Respects OS preference (prefers-color-scheme: dark)
+- **Toggle**: Manual dark/light/auto mode switcher in preferences
+- **Canvas**: Option for dark canvas background for reducing eye strain
+
+#### **Text Sizing**
+- **Resizable UI Text**:
+  - UI respects browser/OS text size settings
+  - User can increase UI text size independently (100%-200%)
+  - Layout reflows to accommodate larger text
+  - Minimum font size: 12px in UI (16px recommended)
+- **Canvas Text**: 
+  - Not affected by UI text scaling (canvas content is design output)
+  - But user can zoom canvas (Cmd/Ctrl +/-) for better visibility
+
+#### **Visual Clarity**
+- **Spacing**: 
+  - Generous padding between clickable elements (minimum 8px)
+  - Line height for text at least 1.5× font size
+  - Paragraph spacing to clearly separate blocks
+- **Icons**:
+  - Simple, recognizable shapes
+  - Avoid overly complex or abstract icons
+  - Paired with text labels where possible
+- **Animations**:
+  - Respect `prefers-reduced-motion` for users with vestibular disorders
+  - Option to disable animations entirely in preferences
+  - No auto-playing animations by default
+
+### **9.4 Motor Accessibility**
+
+#### **Large Click Targets**
+- **Minimum Size**: 44px × 44px for all interactive elements (WCAG 2.1 AAA)
+- **Spacing**: Minimum 8px between adjacent targets to prevent mis-clicks
+- **Hover Tolerance**: 
+  - Hover states have slight buffer (1-2px expansion)
+  - Doesn't require pixel-perfect precision
+
+#### **Drag and Drop Alternatives**
+- **Every Drag Operation Has Keyboard Equivalent**:
+  - Drag to move element → Arrow keys to nudge
+  - Drag to resize → Numeric input in properties
+  - Drag to reorder → Up/Down arrow buttons
+- **Click-to-Place**: 
+  - Alternative to click-and-drag for creating elements
+  - Click sets position, element created at default size
+  - Modify size via properties panel
+
+#### **Forgiving Interactions**
+- **Cancellable**: 
+  - Escape key cancels drags
+  - Moving cursor off before release cancels click
+- **Undo Available**: 
+  - All operations undoable (Cmd+Z)
+  - Multi-level undo (50+ steps)
+- **No Time Limits**: 
+  - No operations require speed or dexterity
+  - Tooltips/menus stay open until dismissed (no auto-hide on timer)
+
+#### **Sticky Keys & Modifier Support**
+- **Sequential Input**: 
+  - Supports "sticky keys" for users who can't hold multiple keys
+  - Pressing Shift, then separately pressing another key works
+- **Alternative Modifiers**: 
+  - Where Cmd+Click is required, provide alternative without modifier
+  - Context menus accessible via keyboard
+
+### **9.5 Cognitive Accessibility**
+
+#### **Clear Language**
+- **Simple Terms**: 
+  - "Make bold" instead of "Increase font weight to 700"
+  - "Align left" instead of "Set text-align property to start"
+- **Consistent Terminology**: 
+  - Same action always called the same thing
+  - "Delete" not sometimes "Remove" or "Erase"
+- **Avoid Jargon**: 
+  - Explain technical terms when necessary
+  - Tooltips provide context for unfamiliar concepts
+
+#### **Visual Hierarchy**
+- **Importance Indicated by**:
+  - Size (larger = more important)
+  - Color (bright/saturated = action items)
+  - Position (top-left = primary)
+- **Grouping**: Related controls visually grouped with borders or spacing
+- **Progressive Disclosure**: 
+  - Advanced options hidden until needed
+  - "Show more" expanders for detail
+
+#### **Error Prevention**
+- **Confirmation Dialogs**: 
+  - For destructive actions (delete, clear formatting)
+  - "Are you sure you want to delete this text element?"
+  - Checkbox option: "Don't ask again" for experienced users
+- **Default Safe Options**: 
+  - Defaults prevent accidental data loss
+  - Example: "Cancel" button is default focus, not "Delete"
+- **Undo Always Available**: Reduces anxiety about mistakes
+
+#### **Help and Documentation**
+- **Contextual Help**: 
+  - "?" icons open help for current panel/dialog
+  - Tooltips explain every control
+- **Onboarding**: 
+  - First-time user tutorial (optional, skippable)
+  - Highlights key features
+- **Search**: Help documentation fully searchable
+- **Examples**: Visual examples of each feature's effect
+
+#### **Consistency**
+- **Predictable Behavior**: 
+  - Same interaction patterns throughout app
+  - Buttons in same positions (OK on right, Cancel on left)
+- **Familiar Conventions**: 
+  - Follows platform conventions (macOS vs. Windows)
+  - Similar to other design tools where possible
+
+### **9.6 Assistive Technology Compatibility**
+
+#### **Screen Readers Tested**
+- **macOS**: VoiceOver
+- **Windows**: JAWS, NVDA
+- **Linux**: Orca
+- **Mobile**: TalkBack (Android), VoiceOver (iOS)
+
+#### **Screen Magnifiers**
+- **Zoom Support**: UI remains usable at 200%-400% zoom
+- **No Horizontal Scrolling**: At 200% zoom, no horizontal scroll needed
+- **Reflow**: Content reflows to fit magnified view
+
+#### **Voice Control**
+- **All Actions Named**: Every button, control has unique name for voice commands
+- **Grid Navigation**: Supports voice control grid overlays
+
+#### **Switch Access**
+- **Sequential Navigation**: All controls accessible via switch scanning
+- **Grouped Actions**: Related controls grouped for faster navigation
+
+---
+
+## 10. ELEMENT-SPECIFIC DEEP DIVES
+
+Advanced features unique to text elements, beyond general framework.
+
+### **10.1 Advanced Text Path Features (Text on Path)**
+
+#### **Path Creation and Editing**
+- **Pre-Defined Paths**:
+  - Circle/Arc (adjustable radius, start/end angles)
+  - Wave (sine wave with frequency, amplitude controls)
+  - Spiral (Archimedean or logarithmic)
+  - Custom Shapes (star, polygon, etc.)
+- **Custom Bezier Paths**:
+  - Click to add anchor points
+  - Drag handles to create curves
+  - Convert point types: corner, smooth, symmetric
+  - Close path or leave open
+- **Import Path**: 
+  - Paste SVG path data
+  - Import from vector shape on canvas
+- **Path Visibility**:
+  - Toggle: Show path as stroke (for editing) or hide (final output)
+  - Stroke color/width customizable for guides
+
+#### **Text Positioning on Path**
+- **Alignment Options**:
+  - **Start**: Text begins at path start point
+  - **Center**: Text centered on path
+  - **End**: Text ends at path end point
+  - **Justify**: Stretches text to fill entire path
+- **Baseline Offset**:
+  - Distance above/below path centerline
+  - Range: -500px to +500px
+  - Useful for creating layered effects (e.g., text on both sides of circle)
+- **Start Position Slider**:
+  - Slide text along path without changing alignment
+  - Percentage (0-100%) of path length
+- **Flip Side**:
+  - Toggle text to inside vs. outside of closed path
+  - Or above vs. below for open path
+
+#### **Character Handling**
+- **Rotation Options**:
+  - **Tangent to Path** (default): Characters rotate to follow path curvature
+  - **Upright**: Characters remain vertical, only position follows path
+  - **Perpendicular**: Characters perpendicular to path tangent
+- **Spacing Modes**:
+  - **Auto**: Even visual spacing along path
+  - **Fixed**: Consistent character spacing (may bunch on tight curves)
+  - **Manual Kerning**: Adjust spacing between individual letters
+
+#### **Advanced Path Effects**
+- **Repeating Text**: Repeat text multiple times around closed path (e.g., circular badge)
+- **Offset Copies**: Create concentric rings of text
+- **Path Morphing**: Animate path shape (if exporting interactive/video)
+
+---
+
+### **10.2 Variable and Dynamic Text Advanced**
+
+#### **Mail Merge Field Types**
+1. **Text Fields**: 
+   - Map to text columns in data source
+   - Formatting: Uppercase, lowercase, title case
+   - Trimming: Auto-trim whitespace
+   - Fallback: Default value if empty
+
+2. **Number Fields**:
+   - Format: Decimal places (0-10)
+   - Thousands separator (comma, period, space, none)
+   - Negative numbers: (123), -123, or 123-
+   - Prefix/Suffix: $ for currency, % for percentage
+
+3. **Date/Time Fields**:
+   - Input format detection (MM/DD/YYYY, ISO 8601, etc.)
+   - Output format selection (50+ formats)
+   - Locale-specific formatting
+   - Relative dates: "3 days ago", "Next Tuesday"
+
+4. **Image Fields**:
+   - URL or file path in data source
+   - Image fitting: Fill, fit, stretch, center
+   - Fallback image if URL broken
+   - Image caching for performance
+
+5. **Boolean Fields**:
+   - True/false values in data
+   - Display as: Yes/No, True/False, custom text, or icons
+   - Conditional visibility: Show/hide entire text block based on boolean
+
+6. **List/Array Fields**:
+   - Multiple values in single cell (comma-separated)
+   - Display as: Bulleted list, numbered list, comma-separated, custom separator
+
+#### **Conditional Logic**
+- **Simple Conditionals**:
+  - If [Field] = "Value", show "Text A", else show "Text B"
+  - Visual rule builder (no code)
+  - Comparison operators: =, ≠, >, <, ≥, ≤, contains, starts with, ends with
+- **Complex Conditions**:
+  - AND/OR logic: If [Field1] = "X" AND [Field2] > 100
+  - Nested conditions: If (A AND B) OR (C AND D)
+  - Regular expressions: If [Field] matches pattern
+
+#### **Formulas and Calculations**
+- **Basic Math**: 
+  - Add, subtract, multiply, divide fields
+  - Example: `{Price} × {Quantity} = {Total}`
+- **Text Manipulation**:
+  - Concatenate: `{FirstName} + " " + {LastName}`
+  - Substring: First 10 characters of {Description}
+  - Replace: Replace "LLC" with "Limited" in {CompanyName}
+- **Date Calculations**:
+  - Add days: `{OrderDate} + 7 days`
+  - Difference: Days between {StartDate} and {EndDate}
+- **Lookup/Reference**:
+  - VLOOKUP-style: Find value in external table
+  - Default values: If {Field} is empty, use "N/A"
+
+#### **Data Validation**
+- **Pre-Generation Validation**:
+  - Check all fields have values (or allowed to be empty)
+  - Validate data types (number fields contain numbers)
+  - Range validation (age between 0-120)
+  - Pattern matching (email format, phone format)
+- **Error Handling**:
+  - List all validation errors before generation
+  - Highlight problematic rows in data source
+  - Options: Skip invalid rows, use default values, or abort
+
+#### **Preview and Testing**
+- **Record Navigation**:
+  - Previous/Next buttons to cycle through data
+  - Jump to specific record number
+  - Search/filter records by field value
+  - Random sample: Preview random selection of records
+- **Side-by-Side Comparison**: 
+  - View multiple records simultaneously
+  - Spot inconsistencies in data
+- **Export Preview**: Generate PDF/PNG of first 5 records for review
+
+---
+
+### **10.3 List Formatting Advanced Features**
+
+#### **Multi-Level Lists (Outline Numbering)**
+- **Level Definition**:
+  - Up to 9 indent levels
+  - Each level has independent formatting
+  - Level 1: 1, 2, 3
+  - Level 2: 1.1, 1.2, 1.3
+  - Level 3: 1.1.1, 1.1.2, etc.
+- **Number Format Combinations**:
+  - Mix number types: Level 1 Roman (I, II), Level 2 Letters (A, B), Level 3 Numbers (1, 2)
+  - Legal numbering: 1.1, 1.1.1, 1.1.1.1
+  - Custom separators: 1-1, 1.1, 1:1
+- **Automatic Continuation**:
+  - Numbering continues across non-list paragraphs
+  - Option to restart at each section
+  - Link lists: "Continue from previous list" option
+
+#### **Custom Bullets and Icons**
+- **Image Bullets**:
+  - Upload custom icon (PNG, SVG)
+  - Max size: 64×64px
+  - Auto-scaling to match text size
+  - Color overlay option (for monochrome icons)
+- **Unicode Characters**:
+  - Full Unicode support for bullets
+  - Emoji bullets: ✓, ★, ❤, 🔥, etc.
+  - Geometric shapes: ◆, ▶, ▸, ▪
+- **Dynamic Bullets**:
+  - Bullet changes based on list item content
+  - Example: Checkmarks for completed items, X for incomplete
+  - Requires conditional formatting
+
+#### **Smart Lists**
+- **Auto-Formatting**:
+  - Type "1." followed by space → Numbered list
+  - Type "-" or "*" followed by space → Bulleted list
+  - Type "[ ]" for checkbox item
+- **Auto-Increment**:
+  - Pressing Enter creates next item with next number/letter
+  - Tab indents and changes to sub-level format
+  - Shift+Tab outdents
+- **Auto-Terminate**:
+  - Two consecutive Enters exits list
+  - Backspace at empty item removes list formatting
+
+#### **List Continuation Control**
+- **Restart Numbering**:
+  - Right-click → "Restart at 1"
+  - Manual start number entry
+  - Automatic restart after headings (optional)
+- **Continue Previous**:
+  - Link to previous list for seamless continuation
+  - Works across text boxes/pages
+  - Visual indicator showing connection
+
+#### **List Styling**
+- **Separator Customization**:
+  - Between number and text: Period, parenthesis, dash, colon, nothing
+  - Example: "1." vs "1)" vs "1-" vs "1:"
+- **Alignment**:
+  - Number alignment: Left, right, centered
+  - Text alignment: Independent of number
+- **Hanging vs. Flush**:
+  - Hanging indent: Text wraps below itself
+  - Flush: Text wraps to align with number
+
+---
+
+### **10.4 OpenType Typography Advanced**
+
+#### **Variable Fonts**
+- **Weight Axis**:
+  - Continuous slider: 100 (Thin) to 900 (Black)
+  - Smooth interpolation between weights
+  - No limitation to predefined weights
+- **Width Axis**:
+  - Condensed to Extended
+  - Percentage scale: 50% to 200%
+- **Slant Axis** (Italic variation):
+  - Continuous angle: 0° (upright) to 20° (italic)
+- **Optical Size**:
+  - Optimizes letterforms for display size
+  - Auto-adjusts based on font size (if supported)
+- **Custom Axes** (font-specific):
+  - Grade, Expression, Casual, Cursive, etc.
+  - Exposed as sliders for user control
+- **Preset Instances**:
+  - Named combinations of axis values
+  - Example: "Display Bold", "Text Regular"
+
+#### **Stylistic Sets**
+- **Set Activation**:
+  - Each set is a collection of alternate glyphs
+  - Sets numbered 1-20 (ss01-ss20)
+  - Multiple sets can be active simultaneously
+- **Preview**:
+  - Live preview showing before/after for each set
+  - Affected characters highlighted
+- **Character Variants (cv01-cv99)**:
+  - Individual character alternates
+  - Example: Different styles of lowercase 'a'
+  - Choose per-character basis
+
+#### **Ligature Control**
+- **Standard Ligatures** (typically on by default):
+  - fi, fl, ff, ffi, ffl
+  - Improve readability and aesthetics
+- **Discretionary Ligatures**:
+  - ct, st, sp, etc.
+  - Optional, more stylistic
+- **Contextual Ligatures**:
+  - Auto-applied based on surrounding characters
+  - Font-specific logic
+- **Historical Ligatures**:
+  - Old-style ligatures (long s, etc.)
+  - Rarely used, but available
+
+#### **Number Formatting**
+- **Lining Figures** (default):
+  - All numbers same height as capitals
+  - Good for all-caps text, tables
+- **Old-Style Figures**:
+  - Varied height (some below baseline)
+  - More elegant in body text
+- **Tabular Figures**:
+  - Monospaced (all same width)
+  - Perfect for tables, financial data
+  - Columns align vertically
+- **Proportional Figures**:
+  - Variable width (natural spacing)
+  - Better for running text
+- **Slashed Zero**:
+  - Zero with diagonal slash
+  - Distinguishes from letter O
+
+#### **Fractions**
+- **Automatic Fractions**:
+  - Typing "1/2" auto-converts to ½
+  - Diagonal (½) or stacked (
+  - Supports arbitrary fractions (e.g., 3/7)
+- **Numerator/Denominator**:
+  - Manual control over fraction components
+  - Superscript numerator, subscript denominator
+
+#### **Case-Sensitive Forms**
+- **All Caps Adjustments**:
+  - Punctuation positions adjust for all-caps
+  - Example: Hyphen raises to center height
+- **Small Caps**:
+  - True small caps (designed, not scaled)
+  - Option: All small caps or Small Caps From Caps
+- **Petite Caps**: Smaller than small caps (if font supports)
+
+---
+
+### **10.5 Text Effects: Deep Customization**
+
+#### **Shadow Effects (Multiple Layers)**
+- **Layer Stack**:
+  - Add up to 10 shadow layers
+  - Each layer independent
+  - Reorderable (drag to change stacking)
+- **Per-Layer Controls**:
+  - Type: Drop shadow, inner shadow, outer glow, inner glow
+  - Color: Full RGBA with opacity
+  - Offset X/Y: -100px to +100px
+  - Blur radius: 0-50px
+  - Spread: -50px to +50px (expands/contracts shadow)
+  - Angle: 0-360° (for radial shadows)
+  - Distance: Combined offset calculation
+- **Blend Modes**:
+  - Normal, multiply, screen, overlay, etc.
+  - Controls how shadow interacts with background
+- **Quality Settings**:
+  - Low (fast, jagged), Medium, High (smooth, slower)
+  - Preview quality vs. export quality
+
+#### **3D Extrusion**
+- **Depth Control**:
+  - Extrusion depth: 0-100px
+  - Direction: X, Y, Z axes
+  - Perspective strength: 0-100% (vanishing point distance)
+- **Bevel**:
+  - Type: None, rounded, chiseled, emboss, pillow
+  - Depth: 0-20px
+  - Angle: Direction of bevel highlight
+- **Lighting**:
+  - Light source position: Altitude (0-90°), Azimuth (0-360°)
+  - Intensity: 0-100%
+  - Ambient light: Base illumination level
+  - Specular highlights: Shininess of surface
+- **Material Properties**:
+  - Matte, glossy, metallic, plastic
+  - Diffuse color vs. specular color
+  - Roughness slider
+- **Depth Map**:
+  - Custom depth gradient for variable extrusion
+  - Example: Convex, concave, undulating
+
+#### **Gradient Fills (Advanced)**
+- **Gradient Types**:
+  - Linear: Straight line transition
+  - Radial: Circular from center
+  - Angular: Sweep around center point
+  - Diamond: Four-corner radial
+  - Reflected: Mirror effect
+- **Color Stops**:
+  - Unlimited color stops
+  - Each stop: Position (0-100%), color, opacity
+  - Add/remove/reorder stops
+  - Copy/paste gradient presets
+- **Gradient Editor**:
+  - Visual gradient bar with draggable stops
+  - Angle control: 0-360° rotation
+  - Scale: Size of gradient relative to text
+  - Position: Offset gradient origin
+- **Gradient on Stroke**:
+  - Apply gradient to text outline (stroke)
+  - Independent from fill gradient
+  - Creates outlined rainbow effects
+
+#### **Pattern and Texture Fills**
+- **Pattern Types**:
+  - Upload custom texture (PNG, JPEG)
+  - Library of built-in patterns (stripes, dots, grids, etc.)
+  - Procedural patterns (noise, waves)
+- **Pattern Controls**:
+  - Scale: 10%-500% of original size
+  - Rotation: 0-360°
+  - Offset X/Y: Shift pattern position
+  - Opacity: 0-100%
+  - Blend mode: How pattern interacts with text color
+- **Texture Mapping**:
+  - Fit: Scale to fit text bounds
+  - Tile: Repeat pattern
+  - Stretch: Distort to fill
+  - Center: Position at center, crop edges
+
+#### **Distortion and Warp Effects**
+- **Warp Presets**:
+  - Arc, Arch, Bulge, Shell, Flag, Wave, Fish, Rise, Fisheye, Inflate, Squeeze, Twist
+  - Each with intensity slider (0-100%)
+  - Direction control (horizontal/vertical)
+- **Custom Mesh Warp**:
+  - Bezier mesh overlay on text
+  - Drag mesh points to distort
+  - 3×3 to 10×10 grid density
+  - Pin points to prevent distortion in areas
+- **Perspective Transform**:
+  - 3D rotation: X, Y, Z axes (-180° to +180°)
+  - Vanishing point position
+  - Depth simulation (closer/farther)
+
+#### **Blur and Effects**
+- **Gaussian Blur**:
+  - Radius: 0-50px
+  - Direction: Horizontal, vertical, or both
+- **Motion Blur**:
+  - Angle: 0-360°
+  - Distance: 0-100px
+  - Creates speed effect
+- **Radial Blur**:
+  - Center point selection
+  - Amount: 0-100
+  - Zoom or spin effect
+- **Noise**:
+  - Add texture/grain to text
+  - Amount: 0-100%
+  - Type: Uniform, Gaussian, salt & pepper
+
+---
+
+### **10.6 Text Masking and Clipping**
+
+#### **Image Clipping Inside Text**
+- **Image Source**:
+  - Upload image
+  - Select from library
+  - Drag and drop onto text
+- **Fitting Options**:
+  - Fill: Image covers all text, may crop
+  - Fit: Image fully visible, may leave gaps
+  - Stretch: Distorts image to exact text bounds
+  - Tile: Repeats image pattern
+- **Image Adjustment**:
+  - Position: Drag image within text bounds
+  - Scale: Zoom in/out
+  - Rotate: Angle of image
+  - Filters: Brightness, contrast, saturation, blur applied to image
+- **Knockout**:
+  - Text acts as window to image
+  - Background transparent where text isn't
+
+#### **Compound Clipping**
+- **Multiple Text Elements as Mask**:
+  - Group text elements
+  - Apply single image clipped by all text
+  - Creates unified masked effect
+- **Gradient Masks**:
+  - Text fades in/out using gradient
+  - Alpha channel gradient determines opacity
+- **Pattern Masks**:
+  - Repeated pattern visible only within text
+
+---
+
+## 11. INTEGRATION AND CROSS-ELEMENT CONSIDERATIONS
+
+How text elements interact with other elements in the system.
+
+### **11.1 Layering and Z-Order**
+
+#### **Stacking Behavior**
+- **Default**: Text elements added to canvas appear on top of existing elements
+- **Z-Index**: Each element has numeric z-index (1 to 9999+)
+- **Layer Panel**: Visual representation of stacking order
+  - Top of list = top of canvas
+  - Drag to reorder
+  - Nested groups show hierarchy
+- **Overlap Handling**:
+  - Clicking selects topmost element
+  - Alt+Click cycles through stack
+  - Outline flash shows available elements
+
+#### **Interaction with Other Element Types**
+- **Text Above Images**: 
+  - Text renders on top for legibility
+  - Auto-shadow suggestion if contrast poor
+- **Text Behind Shapes**:
+  - Can send text to back for creative effects
+  - Opacity adjustments maintain readability
+- **Text Within Containers**:
+  - Text can be child of frame/group
+  - Inherits container transformations (move, rotate, scale)
+  - Can be clipped by container bounds
+
+### **11.2 Grouping Capabilities**
+
+#### **Text-Only Groups**
+- **Purpose**: Manage related text elements together
+- **Behavior**:
+  - Transform as unit (move, resize, rotate)
+  - Individual elements remain editable
+  - Common properties editable via right panel
+- **Examples**: Headline + subtitle, bullet list + heading
+
+#### **Mixed Element Groups**
+- **Text + Images**: Common for layouts
+- **Text + Shapes**: Badges, buttons, labels
+- **Text + Charts**: Annotations, legends
+- **Behavior**:
+  - Text maintains editability within group
+  - Text properties accessible even when group selected
+  - Some properties show "Mixed" if incompatible types in group
+
+#### **Nested Groups**
+- **Hierarchy**: Groups within groups
+- **Depth**: Up to 20 levels (though 3-4 typical)
+- **Editing**:
+  - Double-click group to enter
+  - Breadcrumb navigation shows depth
+  - Escape to exit group editing mode
+
+### **11.3 Alignment and Distribution**
+
+#### **Relative to Other Elements**
+- **Align Edges**:
+  - Left, right, top, bottom edges
+  - Smart guides show alignment in real-time
+- **Align Centers**:
+  - Horizontal center (vertical line through center)
+  - Vertical center (horizontal line through center)
+- **Distribute Spacing**:
+  - Horizontal: Even spacing left-to-right
+  - Vertical: Even spacing top-to-bottom
+  - Smart distribution: Based on element sizes
+
+#### **Align to Canvas/Artboard**
+- **Canvas Alignment**:
+  - Center on canvas
+  - Align to canvas edges
+  - Margin-aware alignment (10px from edge)
+- **Grid Snapping**:
+  - Snap to grid lines (customizable grid: 10px, 20px, etc.)
+  - Pixel-perfect alignment
+  - Toggle snapping on/off (Cmd+')
+
+#### **Baseline Alignment** (Text-Specific)
+- **Align Baselines**: 
+  - Multiple text elements align on text baseline (not element box)
+  - Useful for different font sizes on same line
+  - Example: "Sale" in large text + "50% off" in small text aligned on baseline
+
+### **11.4 Responsive and Adaptive Behaviors**
+
+#### **Canvas Resize Handling**
+- **Fixed Position**: 
+  - Text stays at absolute X, Y coordinates
+  - May move off-canvas if canvas shrinks
+- **Relative Position**:
+  - Position as percentage of canvas size
+  - Example: Always 10% from left, 20% from top
+  - Maintains relative layout when canvas resizes
+- **Anchored**:
+  - Pinned to canvas edge (top, bottom, left, right, or corners)
+  - Example: Footer text always 20px from bottom
+- **Auto-Resize Text Box**:
+  - Text box width/height adjusts with canvas
+  - Maintains margin from edges
+  - Text reflows within new dimensions
+
+#### **Constraints**
+- **Minimum/Maximum Size**:
+  - Text box won't shrink below 50px width
+  - Won't expand beyond 800px (prevents over-stretching)
+- **Aspect Ratio Lock**:
+  - Maintains proportions during resize
+  - Useful for text in specific shapes
+
+#### **Breakpoints** (for multi-device templates)
+- **Device-Specific Text**:
+  - Different font sizes for mobile vs. desktop
+  - Show/hide text elements based on device
+  - Example: Full paragraph on desktop, abbreviated on mobile
+- **Automatic Adjustments**:
+  - Font size scales down on smaller screens
+  - Line height adjusts for readability
+  - Margins compress on mobile
+
+### **11.5 Export and Rendering**
+
+#### **Text Rendering Modes**
+1. **Editable Text** (for .docx, .pptx, editable PDFs):
+   - Text remains selectable and editable
+   - Font embedding required
+   - File size smaller (text is just characters)
+   
+2. **Outlined/Vectorized** (for .svg, .eps, precise printing):
+   - Text converted to vector paths
+   - No longer editable as text
+   - Font embedding not required
+   - Preserves exact appearance
+   - Larger file size
+   
+3. **Rasterized** (for .png, .jpg, .gif):
+   - Text rendered as pixels
+   - Resolution-dependent (set DPI: 72, 150, 300, etc.)
+   - No fonts needed
+   - File size depends on resolution and compression
+
+#### **Font Embedding and Licensing**
+- **Embed Fonts**:
+  - Option to embed fonts in PDF/DOCX exports
+  - Ensures appearance on systems without font installed
+  - Licensing check: Warns if font license prohibits embedding
+- **Subset Embedding**:
+  - Only embed characters actually used (reduces file size)
+  - Full embedding vs. subset toggle
+- **Fallback Fonts**:
+  - Specify fallback if primary font unavailable
+  - System fonts recommended for web/email templates
+
+#### **Export Quality Settings**
+- **Text Anti-Aliasing**:
+  - None (pixel-perfect, low quality)
+  - Standard (smooth edges)
+  - Subpixel (ClearType/LCD optimization)
+  - Best quality (maximum smoothing, larger file)
+- **DPI/Resolution** (for raster exports):
+  - Screen (72 DPI): Web, digital use
+  - Print (300 DPI): Professional printing
+  - High-res (600+ DPI): Large format printing
+- **Compression**:
+  - Text usually benefits from lossless (PNG) or minimal compression
+  - Avoid heavy JPEG compression on text (creates artifacts)
+
+#### **Format-Specific Considerations**
+- **PDF**:
+  - Editable vs. flattened
+  - PDF/A compliance for archival
+  - Accessibility tags (for screen readers)
+  - Form fields from text inputs
+- **SVG**:
+  - Text as `<text>` elements (scalable, selectable) or
+  - Text as `<path>` elements (appearance guaranteed)
+  - CSS styling embedded or inline
+- **HTML/Email**:
+  - Web fonts (Google Fonts, self-hosted)
+  - Fallback font stack: "Arial, Helvetica, sans-serif"
+  - Email-safe fonts (limited set for compatibility)
+  - Responsive CSS for mobile
+- **Image Formats**:
+  - PNG: Best for text (lossless, transparency)
+  - JPEG: Avoid for sharp text (compression artifacts)
+  - GIF: Limited colors, avoid for multi-color text
+  - WebP: Modern format, good quality and compression
+
+### **11.6 Performance Implications**
+
+#### **Large Text Elements**
+- **Long Documents** (>10,000 words):
+  - Pagination or virtual scrolling for editing
+  - Lazy rendering: Only visible portion rendered
+  - Background spell-check (doesn't block UI)
+- **Many Text Elements** (>500 on canvas):
+  - Warning if approaching limit
+  - Performance mode: Simplifies rendering during pan/zoom
+  - LOD (Level of Detail): Lower quality during interactions, high quality when static
+
+#### **Complex Effects**
+- **3D, Shadows, Gradients**:
+  - GPU acceleration where possible
+  - Option to disable effects preview during editing (for low-end hardware)
+  - Render proxies: Low-res preview, full render on export
+- **Path Text**:
+  - Complex paths (100+ anchor points) may slow rendering
+  - Simplify path suggestion
+  - Pre-render for export
+
+#### **Optimization Strategies**
+- **Rasterize Complex Text**:
+  - Convert heavily-styled text to image
+  - Reduces rendering overhead
+  - Trade-off: Loses editability
+- **Reduce Shadow/Blur Quality**:
+  - Lower quality during editing
+  - High quality for final export
+- **Limit Undo History**:
+  - Keep last 50 actions (vs. unlimited)
+  - Clears old history to free memory
+
+---
+
+## 12. BEST PRACTICES AND COMMON PATTERNS
+
+Guidance on effective text element usage, drawn from Microsoft Word, Canva, and modern design principles.
+
+### **12.1 Typography Best Practices**
+
+#### **Font Selection**
+- **Readability First**:
+  - Body text: Sans-serif (Arial, Helvetica, Roboto) or serif (Georgia, Times) at 14-18px
+  - Headings: More decorative allowed, but still legible
+  - Avoid overly stylized fonts for body text
+- **Font Pairing**:
+  - Maximum 2-3 fonts per design
+  - Pair serif headings with sans-serif body (or vice versa)
+  - Similar x-heights for visual harmony
+  - Contrast weights (light body, bold headings)
+- **Hierarchy Through Size**:
+  - H1: 2.5-3× body size
+  - H2: 2× body size
+  - H3: 1.5× body size
+  - Consistent scale ratio (e.g., 1.5× per level)
+
+#### **Line Length and Spacing**
+- **Optimal Line Length**:
+  - 50-75 characters per line for readability
+  - Too short: Choppy reading
+  - Too long: Eye strain, losing place
+- **Line Height**:
+  - Body text: 1.4-1.6× font size
+  - Headings: 1.1-1.3× (tighter)
+  - Lists: 1.6-1.8× (more space)
+  - Adjust for font: Condensed fonts need more line height
+- **Paragraph Spacing**:
+  - 0.5-1× line height between paragraphs
+  - Or use first-line indent (20-30px) instead of spacing
+  - Don't use both indent and spacing
+
+#### **Alignment and Justification**
+- **Left Align** (most common):
+  - Easiest to read for Western languages
+  - Uneven right edge (ragged right) is fine
+- **Center Align**:
+  - Headings, titles, short text
+  - Poor for long paragraphs (hard to find line start)
+- **Right Align**:
+  - Rare, mostly for design effect
+  - Captions aligned to right edge of image
+- **Justify**:
+  - Formal documents, newspapers
+  - Requires hyphenation to avoid large gaps
+  - Can create "rivers" of white space (avoid)
+
+#### **Color and Contrast**
+- **High Contrast for Readability**:
+  - Dark text on light background (or vice versa)
+  - Minimum 4.5:1 contrast ratio (WCAG AA)
+  - 7:1 for better accessibility (WCAG AAA)
+- **Color Meaning**:
+  - Red: Errors, warnings, stop
+  - Green: Success, go, positive
+  - Blue: Links, information, trust
+  - Use consistently throughout design
+- **Avoid**:
+  - Low contrast (light gray on white)
+  - Red/green only for critical info (colorblind users)
+  - Busy backgrounds behind text
+
+### **12.2 Layout and Composition**
+
+#### **White Space (Negative Space)**
+- **Importance**: 
+  - Gives text room to breathe
+  - Improves comprehension
+  - Creates visual hierarchy
+- **Application**:
+  - Margins: Minimum 50px from canvas edge
+  - Padding: 20-30px inside text boxes
+  - Between sections: 40-60px vertical space
+  - Around headlines: More space above than below (shows heading belongs to following content)
+
+#### **Grid Systems**
+- **Columns**:
+  - Single column: 600px max width (readability)
+  - Two columns: 300-400px each
+  - Three+ columns: Magazine/newspaper style
+  - Gutter: 20-40px between columns
+- **Baseline Grid**:
+  - All text aligns to invisible horizontal grid
+  - Grid unit: Line height (e.g., 24px)
+  - Creates rhythm and consistency
+  - Especially important for multi-column layouts
+
+#### **Visual Hierarchy**
+- **Size**: Larger = more important
+- **Weight**: Bold = emphasis
+- **Color**: Bright/saturated = attention
+- **Position**: Top-left = first seen (in Western layouts)
+- **Spacing**: Isolated = important
+- **Typographic Hierarchy Example**:
+  1. Main headline: 48px, bold, dark
+  2. Subheading: 24px, regular, medium gray
+  3. Body: 16px, regular, dark gray
+  4. Caption: 12px, italic, light gray
+
+### **12.3 Common Design Patterns**
+
+#### **Hero Section**
+- **Structure**:
+  - Large headline (48-72px)
+  - Subheading or tagline (24-36px)
+  - Call-to-action button with text
+  - Background image with text overlay
+- **Best Practice**:
+  - High contrast for text over image
+  - Consider gradient overlay on image for better readability
+  - Limit to 1-2 sentences in headline
+
+#### **Card Layouts**
+- **Elements**:
+  - Card title (H3, 24px)
+  - Description text (16px, 2-3 lines)
+  - Metadata (date, category - 14px, gray)
+- **Spacing**:
+  - 20px padding inside card
+  - 16px between title and description
+  - 8px between description and metadata
+
+#### **Forms and Input Labels**
+- **Label Positioning**:
+  - Above input (most common, mobile-friendly)
+  - Left of input (compact, desktop)
+  - Inside input as placeholder (accessible only if label remains visible)
+- **Hierarchy**:
+  - Label: 14px, medium weight
+  - Input text: 16px, regular
+  - Helper text: 12px, gray
+  - Error text: 12px, red
+
+#### **Callouts and Quotes**
+- **Block Quote**:
+  - Larger text (120-150% of body)
+  - Indented or bordered
+  - Italic or contrasting font
+  - Attribution below or to side
+- **Pull Quote**:
+  - Even larger (200-250%)
+  - Centered or floated
+  - Decorative quotation marks
+  - Used to highlight key phrase from text
+
+#### **Lists in Design**
+- **Bulleted Lists**:
+  - Feature lists
+  - Non-sequential information
+  - Keep items parallel (same grammatical structure)
+  - Limit to 7±2 items for scannability
+- **Numbered Lists**:
+  - Steps, instructions, rankings
+  - Sequential information
+  - Use when order matters
+- **Icon Lists**:
+  - Replace bullet with icon
+  - Icons should be relevant (checkmark = completed, star = featured)
+  - Align icons for clean look
+
+### **12.4 Workflow Recommendations**
+
+#### **Efficient Text Creation**
+1. **Start with Structure**:
+   - Add all headings first
+   - Fill in body text
+   - Add lists, quotes, captions last
+2. **Use Styles Early**:
+   - Define text styles at project start
+   - Apply styles to all text
+   - Makes global changes easy later
+3. **Placeholder Text**:
+   - Use lorem ipsum for layout
+   - Replace with real content when available
+   - Check layout doesn't break with real text (length variations)
+
+#### **Editing Workflow**
+1. **Content Pass**: Write/edit text content, ignore formatting
+2. **Formatting Pass**: Apply styles, adjust spacing, alignment
+3. **Polish Pass**: Fine-tune kerning, widows/orphans, hyphenation
+4. **Review**: Check spelling, grammar, consistency
+5. **Accessibility Check**: Contrast, alt text, reading order
+
+#### **Collaboration**
+- **Version Control**:
+  - Name versions: "ProjectName_v1_2025-02-06"
+  - Save major milestones
+  - Use "Save As" before major changes
+- **Comments/Annotations**:
+  - Use comment feature for feedback
+  - Tag collaborators for specific issues
+  - Mark comments resolved when addressed
+- **Style Libraries**:
+  - Share style libraries across team
+  - Brand guidelines in styles
+  - Consistent application across projects
+
+### **12.5 Accessibility Best Practices**
+
+#### **Text-Specific Accessibility**
+- **Alt Text**:
+  - Every important text element should have alt text
+  - Describe content and purpose
+  - Keep under 250 characters
+  - Decorative text can have empty alt text
+- **Reading Order**:
+  - Ensure logical tab order/reading sequence
+  - Headings → Subheadings → Body → Lists
+  - Test with screen reader
+- **Language Tags**:
+  - Set language attribute for correct pronunciation
+  - Especially important for multilingual documents
+- **Semantic Structure**:
+  - Use heading levels correctly (H1 → H2 → H3, not H1 → H3)
+  - Proper list markup for lists
+  - Don't use bold as heading substitute
+
+#### **Color and Contrast**
+- **Check All Text**:
+  - Use contrast checker on all text/background combinations
+  - Include text in images
+  - Consider different color blindness types
+- **Don't Rely on Color Alone**:
+  - Links: Underline + color
+  - Errors: Icon + color + text
+  - Status: Label + color
+
+#### **Font and Sizing**
+- **Minimum Sizes**:
+  - Body text: 16px minimum
+  - Mobile: 14px absolute minimum
+  - Avoid text smaller than 12px
+- **Resizable**:
+  - Support browser zoom (200%+)
+  - Layout shouldn't break when text enlarged
+  - Test at 200% zoom
+
+### **12.6 Performance Optimization**
+
+#### **Reduce Element Count**
+- **Combine Text**:
+  - Multiple small text elements → One text box with line breaks
+  - Reduces overhead of managing many elements
+- **Limit Effects**:
+  - Not every text needs shadow/3D
+  - Effects on key elements only
+  - Disable effects during editing if slow
+
+#### **Font Loading**
+- **Preload Critical Fonts**:
+  - Load fonts used above-the-fold first
+  - Lazy load decorative fonts
+- **Font Subset**:
+  - Only include characters needed
+  - Latin-only if no special characters
+  - Reduces font file size 50-90%
+- **Fallbacks**:
+  - Always specify fallback fonts
+  - Similar metrics to reduce layout shift
+
+#### **Text Rendering**
+- **Avoid Over-Nesting**:
+  - Deep group hierarchies slow rendering
+  - Flatten groups when possible
+- **Cache**:
+  - Rasterize static text that never changes
+  - Cache rendered output for reuse
+  - Clear cache if text edited
+
+### **12.7 Common Mistakes to Avoid**
+
+#### **Typography Mistakes**
+- **Too Many Fonts**: Stick to 2-3 maximum
+- **All Caps Overuse**: Hard to read, use sparingly
+- **Poor Contrast**: Light gray on white is not accessible
+- **Inconsistent Spacing**: Different line heights randomly
+- **Orphans and Widows**: Single word on last line, or single line at top of column (use widow/orphan control)
+- **Justified Text Without Hyphenation**: Creates awkward gaps
+- **Center-Aligned Body Text**: Hard to read, use left-align
+- **Fake Bold/Italic**: Use actual bold/italic fonts, not browser rendering
+
+#### **Layout Mistakes**
+- **No White Space**: Cramming too much text
+- **Unequal Margins**: Asymmetric margins that look accidental
+- **Ignoring Alignment**: Elements not aligning to grid or each other
+- **Inconsistent Hierarchy**: H2 larger than H1, etc.
+- **Text Too Close to Edges**: Needs breathing room
+
+#### **Accessibility Mistakes**
+- **Missing Alt Text**: Critical for screen readers
+- **Color as Only Indicator**: Color blindness issues
+- **Low Contrast**: Below WCAG standards
+- **Tiny Text**: Below 12px
+- **No Keyboard Access**: Can't navigate without mouse
+
+#### **Workflow Mistakes**
+- **Not Using Styles**: Manual formatting everywhere (hard to change)
+- **Editing Before Content Final**: Wasting time formatting placeholder text
+- **No Backups**: Losing work due to no version control
+- **Ignoring Feedback**: Not incorporating review comments
+- **Skipping Proofreading**: Spelling/grammar errors in final
+
+---
+
+## CONCLUSION
+
+This comprehensive documentation covers every aspect of text elements in a graphics template design web application. From the initial selection in the left panel to the final export settings, each property, interaction, shortcut, and interface location has been thoroughly documented.
+
+**Key Takeaways**:
+1. **Multiple Pathways**: Every property is accessible through multiple interface locations to accommodate different user preferences and workflows
+2. **Accessibility First**: All features designed with keyboard navigation, screen reader support, and visual accessibility in mind
+3. **Progressive Disclosure**: Basic properties immediately available, advanced features tucked away but easily accessible
+4. **Consistency**: Interaction patterns and visual feedback consistent across all text element types
+5. **Best Practices Embedded**: Interface guides users toward typographically sound and accessible designs
+
+**Implementation Priorities**:
+- **Phase 1**: Core text creation, basic formatting (font, size, color, alignment), selection, and editing
+- **Phase 2**: Styles, lists, advanced typography (OpenType), effects (shadows, outlines)
+- **Phase 3**: Dynamic text (mail merge, variables), text on path, advanced effects (3D, gradients)
+- **Phase 4**: Collaboration features, performance optimizations, advanced accessibility
+
+This documentation serves as a complete specification for developers, designers, and stakeholders to understand exactly how text elements should function in the application, ensuring a professional, accessible, and delightful user experience.
